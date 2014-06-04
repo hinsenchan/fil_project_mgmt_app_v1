@@ -10,6 +10,7 @@ package frugalLab;
  */
 public class FileTypePanel extends javax.swing.JPanel {
     FrugalController frugalController;
+    FileTypeTableController fileTypeTableController;
 
     /**
      * Creates new form MediaPanel2
@@ -17,6 +18,9 @@ public class FileTypePanel extends javax.swing.JPanel {
     public FileTypePanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.fileTypeTableController = new FileTypeTableController(this);
+        jTable.setModel(fileTypeTableController.getTableModel());
+        jTable.getSelectionModel().addListSelectionListener(fileTypeTableController);
     }
 
     /**
@@ -265,4 +269,16 @@ public class FileTypePanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    public String getFileTypeTextField() {
+        return fileTypeTextField.getText();
+    }
+
+    public void setFileTypeTextField(String fileType) {
+        fileTypeTextField.setText(fileType);
+    }
+    
+    public void updateTable() {
+    	jTable.setModel(fileTypeTableController.getTableModel());
+    }
 }

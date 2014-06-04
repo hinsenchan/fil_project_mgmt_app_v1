@@ -13,12 +13,14 @@ import javax.swing.*;
  */
 public class FrugalController {
     private FrugalView frugalView;
+    private FrugalModel frugalModel;
     private boolean loggedIn = false;
     private JPanel mainPanel;
     private CardLayout cardLayout;
     
     public FrugalController(FrugalView frugalView) {
         this.frugalView = frugalView;
+        frugalModel = new FrugalModel();        
         setupComponents();
     }
     

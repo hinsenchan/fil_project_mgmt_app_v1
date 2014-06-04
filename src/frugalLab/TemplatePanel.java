@@ -8,12 +8,12 @@ package frugalLab;
  *
  * @author fattymcphatfat
  */
-public class TagPanel2 extends javax.swing.JPanel {
+public class TemplatePanel extends javax.swing.JPanel {
 
     /**
      * Creates new form MediaPanel2
      */
-    public TagPanel2() {
+    public TemplatePanel() {
         initComponents();
     }
 
