@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class FileTypeTableModel extends AbstractTableModel {
     List<FileType> fileTypeResultList;   // stores the model data in a List collection of type FileTypeEntity
@@ -132,4 +132,10 @@ public class FileTypeTableModel extends AbstractTableModel {
          
         numrows++;
     }	    
+    
+    public boolean locate(String fileType) {
+        if (fileTypeService.findFileType(fileType))        
+            return true;
+        return false;
+    }
 }

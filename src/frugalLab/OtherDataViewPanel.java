@@ -6,7 +6,7 @@ package frugalLab;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class OtherDataViewPanel extends javax.swing.JPanel {
     private FrugalController frugalController;

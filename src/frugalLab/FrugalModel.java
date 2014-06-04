@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class FrugalModel {
     private static final String PERSISTENCE_UNIT_NAME = "coen275projectPU";

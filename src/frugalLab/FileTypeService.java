@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class FileTypeService {
     private EntityManager manager;
@@ -55,5 +55,16 @@ public class FileTypeService {
     	if (fileType != null) {
             manager.remove(fileType);
     	}
+    }
+    
+    public boolean findFileType(String fileTypeName) {
+        TypedQuery<FileType> query = manager.createQuery("SELECT e.fileType FROM FILE_TYPE e", FileType.class);
+        List<FileType> result = query.getResultList();        
+
+        if (result.contains(fileTypeName)) {
+            return true;
+        }
+        
+        return false;
     }
 }

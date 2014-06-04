@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /**
  *
- * @author Administrator
+ * @author Hinsen Chan
  */
 public class FrugalView extends javax.swing.JFrame {
     private FrugalController frugalController;

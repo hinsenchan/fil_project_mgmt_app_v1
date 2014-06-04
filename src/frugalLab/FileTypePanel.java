@@ -4,9 +4,12 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class FileTypePanel extends javax.swing.JPanel {
     FrugalController frugalController;
@@ -233,7 +236,16 @@ public class FileTypePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String fileType = fileTypeTextField.getText();
+        if (!fileTypeTableController.locate(fileType)) {
+            String[] fileTypeArray = {fileType};
+            fileTypeTableController.addRow(fileTypeArray);
+            fileTypeTableController.tableChanged(new TableModelEvent(fileTypeTableController.getTableModel()));
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "This file type already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+        }           
+
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed

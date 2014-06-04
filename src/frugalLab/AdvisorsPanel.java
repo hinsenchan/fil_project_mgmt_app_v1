@@ -6,7 +6,7 @@ package frugalLab;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class AdvisorsPanel extends javax.swing.JPanel {
     FrugalController frugalController;

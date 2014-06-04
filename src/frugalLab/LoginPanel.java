@@ -6,7 +6,7 @@ package frugalLab;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class LoginPanel extends javax.swing.JPanel {
     private FrugalController frugalController;

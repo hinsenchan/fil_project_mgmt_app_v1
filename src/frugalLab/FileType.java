@@ -13,7 +13,7 @@ import javax.persistence.Column;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 @Entity(name = "FILE_TYPE")
 public class FileType implements Serializable {

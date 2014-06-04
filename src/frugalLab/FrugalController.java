@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /**
  *
- * @author fattymcphatfat
+ * @author Hinsen Chan
  */
 public class FrugalController {
     private FrugalView frugalView;

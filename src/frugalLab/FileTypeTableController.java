@@ -9,7 +9,7 @@ import javax.swing.event.*;
 
 /**
 * 
-* @author 
+* @author Hinsen Chan
 */
 public class FileTypeTableController implements ListSelectionListener, TableModelListener{
     private FileTypeTableModel fileTypeTableModel;
@@ -20,8 +20,7 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
         // create the tableModel using the data in the cachedRowSet
 	fileTypeTableModel = new FileTypeTableModel(); 
 	fileTypeTableModel.addTableModelListener(this);
-    }
-	
+    }	
 	
     // new code
     public TableModel getTableModel() {
@@ -50,7 +49,7 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
 	    fileTypePanel.updateTable();
 	    
 	    // read the data in each column using getValueAt and display it on corresponding textfield
-            fileTypePanel.setFileTypeTextField( (String) fileTypeTableModel.getValueAt(firstIndex, 0));
+            fileTypePanel.setFileTypeTextField( (String) fileTypeTableModel.getValueAt(firstIndex, 0));            
 	} catch(Exception exp) {
             exp.getMessage();
             exp.printStackTrace();
@@ -59,5 +58,9 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
 
     public void addRow(String[] array) {
         fileTypeTableModel.addRow(array);			
+    }
+    
+    public boolean locate(String fileType) {
+        return fileTypeTableModel.locate(fileType);
     }
 }
