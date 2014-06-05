@@ -122,6 +122,7 @@ public class FileTypeTableModel extends AbstractTableModel {
 		 
 	// set the current row to rowIndex
         fileTypeResultList.add(newRecord);
+        
         int row = fileTypeResultList.size();  
         int col = 0;
 
@@ -132,6 +133,32 @@ public class FileTypeTableModel extends AbstractTableModel {
          
         numrows++;
     }	    
+    
+    public void updateRow(int index, String[] array) {
+        EntityTransaction userTransaction = manager.getTransaction();  
+	userTransaction.begin();
+	FileType updatedRecord = fileTypeService.updateFileType((long)index, array[0]);
+	userTransaction.commit();
+        
+        for (String data : array) {
+            setValueAt ((String) data, index, 1);
+            
+        }
+    }
+    
+    public void deleteRow(int row) {
+        long id = Long.parseLong(getValueAt(row,0).toString());
+        String fileType = getValueAt(row,1).toString();
+	
+        EntityTransaction userTransaction = manager.getTransaction();          
+        userTransaction.begin();
+        fileTypeService.deleteFileType(id);
+        userTransaction.commit();
+        fileTypeResultList.remove(row);        
+        fireTableRowsUpdated(row, row);
+        
+        numrows--;
+    }
     
     public boolean locate(String fileType) {
         if (fileTypeService.findFileType(fileType))        

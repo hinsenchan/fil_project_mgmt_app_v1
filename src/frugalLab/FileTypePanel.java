@@ -237,27 +237,40 @@ public class FileTypePanel extends javax.swing.JPanel {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         String fileType = fileTypeTextField.getText();
-        if (!fileTypeTableController.locate(fileType)) {
-            String[] fileTypeArray = {fileType};
-            fileTypeTableController.addRow(fileTypeArray);
-            fileTypeTableController.tableChanged(new TableModelEvent(fileTypeTableController.getTableModel()));
+
+        if (fileType.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a file name.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            JOptionPane.showMessageDialog(this, "This file type already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-        }           
-
+            String[] fileTypeArray = {fileType};
+            fileTypeTableController.addRow(fileTypeArray);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String fileType = fileTypeTextField.getText();
+        int[] index = jTable.getSelectedRows();
+
+        if (fileType.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a file name.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (index.length > 1) {
+            JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] fileTypeArray = {fileType};
+            fileTypeTableController.updateRow(fileTypeArray);
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        fileTypeTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        fileTypeTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
