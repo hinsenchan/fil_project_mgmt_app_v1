@@ -20,31 +20,33 @@ import java.util.Comparator;
 */
 public class FileTypeTableController implements ListSelectionListener, TableModelListener{
     private FileTypeTableModel fileTypeTableModel;
-    private FileTypePanel fileTypePanel;
+    private FileTypePanel fileTypePanel; 
     private boolean jTableRowSelected = false; // monitors if row is selected in jTable
-    private int firstIndex;
+    private int firstIndex; // first selected index in the table
+    private int selectedIndex; // selected index in the table
 	
     public FileTypeTableController(FileTypePanel fileTypePanel) {
         this.fileTypePanel = fileTypePanel;   
-        // create the tableModel using the data in the cachedRowSet
-	fileTypeTableModel = new FileTypeTableModel(); 
-	fileTypeTableModel.addTableModelListener(this);
+	fileTypeTableModel = new FileTypeTableModel(); // create new table model
+	fileTypeTableModel.addTableModelListener(this); // listen to this controller with table model
     }	
 	
-    // new code
+    // returns the table model for this controller
     public TableModel getTableModel() {
         return fileTypeTableModel;
     }
 	
+    // listselection handler. updates textfield in panel
     public void valueChanged(ListSelectionEvent e) {        
         jTableRowSelected = true; // row is selected in jTable
         ListSelectionModel selectModel = (ListSelectionModel) e.getSource();
-	firstIndex = selectModel.getMinSelectionIndex();                
+	firstIndex = selectModel.getMinSelectionIndex();     
 		
 	// read the data in each column using getValueAt and display it on corresponding textfield
 	fileTypePanel.setFileTypeTextField( (String)fileTypeTableModel.getValueAt(firstIndex, 1));
     }
 	
+    // table listener. updates table in panel
     public void tableChanged(TableModelEvent e)
     {
         try {
@@ -55,21 +57,19 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
 	    fileTypeTableModel = new FileTypeTableModel(fileTypeTableModel.getList(), fileTypeTableModel.getEntityManager());
 	    fileTypeTableModel.addTableModelListener(this);
 	    // update the JTable with the data
-	    fileTypePanel.updateTable();
-	    
-	    // read the data in each column using getValueAt and display it on corresponding textfield
-            fileTypePanel.setFileTypeTextField( (String) fileTypeTableModel.getValueAt(firstIndex, 1));            
+	    fileTypePanel.updateTable();	    	   
 	} catch(Exception exp) {
             exp.getMessage();
             exp.printStackTrace();
 	}
     }
 
+    // add a new row to the table
     public void addRow(String[] array) {   
         try {
             if (!locate(array[0])) {
                 fileTypeTableModel.addRow(array); // add row to database
-                tableChanged(new TableModelEvent(getTableModel()));                
+                tableChanged(new TableModelEvent(getTableModel())); 
             }
             else {
                 JOptionPane.showMessageDialog(fileTypePanel, "This file type already exists!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -82,14 +82,20 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
         }
     }
     
+    // update a row in the table
     public void updateRow(String[] array) {
         try {
             if (jTableRowSelected == true) {
+                if (locate(array[0])) {
+                    JOptionPane.showMessageDialog(fileTypePanel, "This file type already exists!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);      
+                }
                 fileTypeTableModel.updateRow(firstIndex, array);
                 tableChanged(new TableModelEvent(getTableModel()));
+                fileTypePanel.setFileTypeTextField((String)fileTypeTableModel.getValueAt(getSelectedIndex(),1));
             }
             else {
-                JOptionPane.showMessageDialog(fileTypePanel, "Please select a file type to delete.", 
+                JOptionPane.showMessageDialog(fileTypePanel, "Please select a file type to update.", 
                     "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
@@ -100,6 +106,7 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
         }
     }
 
+    // delete a row from the table
     public void deleteRow(int[] index) {
         try {            
             List<Integer> list = new ArrayList<Integer>();
@@ -131,11 +138,27 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
         }
     }
     
+    // clear textfield in panel
     public void clearRow() {
         fileTypePanel.setFileTypeTextField("");
     }
     
+    // locate an item in the table
     public boolean locate(String fileType) {
         return fileTypeTableModel.locate(fileType);
+    }
+
+    /**
+     * @return the selectedIndex
+     */
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    /**
+     * @param selectedIndex the selectedIndex to set
+     */
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
     }
 }

@@ -57,6 +57,7 @@ public class FileTypeService {
     	}
     }
     
+    // method to find a record using file type
     public boolean findFileType(String fileTypeName) {
         TypedQuery<FileType> query = manager.createQuery("SELECT e.fileType FROM FILE_TYPE e", FileType.class);
         List<FileType> result = query.getResultList();        

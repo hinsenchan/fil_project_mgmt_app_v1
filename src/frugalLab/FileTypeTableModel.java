@@ -17,14 +17,13 @@ import java.util.*;
  * @author Hinsen Chan
  */
 public class FileTypeTableModel extends AbstractTableModel {
-    List<FileType> fileTypeResultList;   // stores the model data in a List collection of type FileTypeEntity
+    List<FileType> fileTypeResultList;   // stores the model data in a List collection of type FileType
     private static final String PERSISTENCE_UNIT_NAME = "coen275projectPU";  // Used in persistence.xml
-    private static EntityManagerFactory factory;  // JPA  
-    private EntityManager manager;				// JPA 
-    private FileType fileType;			    // represents the entity courselist
+    private static EntityManagerFactory factory;  
+    private EntityManager manager;
+    private FileType fileType;	
     private FileTypeService fileTypeService;
     
-    // This field contains additional information about the results   
     int numcols, numrows;           // number of rows and columns
     
     public FileTypeTableModel() {
@@ -81,7 +80,6 @@ public class FileTypeTableModel extends AbstractTableModel {
 	
     // update the data in the given row and column to aValue
     public void setValueAt(Object aValue, int row, int col) {
-        //data[rowIndex][columnIndex] = (String) aValue;
 	try {
             FileType element = fileTypeResultList.get(row);
             element.setColumnData(col, aValue); 
@@ -134,6 +132,7 @@ public class FileTypeTableModel extends AbstractTableModel {
         numrows++;
     }	    
     
+    // update a row in the table
     public void updateRow(int index, String[] array) {
         EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
@@ -141,11 +140,11 @@ public class FileTypeTableModel extends AbstractTableModel {
 	userTransaction.commit();
         
         for (String data : array) {
-            setValueAt ((String) data, index, 1);
-            
+            setValueAt ((String) data, index, 1);            
         }
     }
     
+    // delete a row from the table
     public void deleteRow(int row) {
         long id = Long.parseLong(getValueAt(row,0).toString());
         String fileType = getValueAt(row,1).toString();
@@ -160,6 +159,7 @@ public class FileTypeTableModel extends AbstractTableModel {
         numrows--;
     }
     
+    // locate a file type in the table
     public boolean locate(String fileType) {
         if (fileTypeService.findFileType(fileType))        
             return true;

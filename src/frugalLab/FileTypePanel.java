@@ -12,18 +12,18 @@ import javax.swing.event.TableModelEvent;
  * @author Hinsen Chan
  */
 public class FileTypePanel extends javax.swing.JPanel {
-    FrugalController frugalController;
-    FileTypeTableController fileTypeTableController;
+    FrugalController frugalController; // controller for the main panel
+    FileTypeTableController fileTypeTableController; // controller for the file type panel
 
     /**
      * Creates new form MediaPanel2
      */
     public FileTypePanel(FrugalController frugalController) {
-        initComponents();
-        this.frugalController = frugalController;
+        initComponents(); // netbeans initializer
+        this.frugalController = frugalController; 
         this.fileTypeTableController = new FileTypeTableController(this);
-        jTable.setModel(fileTypeTableController.getTableModel());
-        jTable.getSelectionModel().addListSelectionListener(fileTypeTableController);
+        jTable.setModel(fileTypeTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(fileTypeTableController); // add a listener to the table model
     }
 
     /**
@@ -235,6 +235,7 @@ public class FileTypePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // add button handler. adds a new entry to the table
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         String fileType = fileTypeTextField.getText();
 
@@ -247,6 +248,7 @@ public class FileTypePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
+    // update button handler. updates a selected entry from the table
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         String fileType = fileTypeTextField.getText();
         int[] index = jTable.getSelectedRows();
@@ -259,20 +261,24 @@ public class FileTypePanel extends javax.swing.JPanel {
         }
         else {
             String[] fileTypeArray = {fileType};
+            fileTypeTableController.setSelectedIndex(jTable.getSelectedRow());
             fileTypeTableController.updateRow(fileTypeArray);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 
+    // delete button handler. deletes selected entries from the table
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] index = jTable.getSelectedRows();
         fileTypeTableController.deleteRow(index);
         jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    // clear button handler. clears the textfield on the current panel
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         fileTypeTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
+    // done button handler. return to the previous screen
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
         frugalController.launchMediaPanel();
     }//GEN-LAST:event_doneButtonActionPerformed
@@ -302,7 +308,8 @@ public class FileTypePanel extends javax.swing.JPanel {
     public void setFileTypeTextField(String fileType) {
         fileTypeTextField.setText(fileType);
     }
-    
+
+    // updates the table model using the controller
     public void updateTable() {
     	jTable.setModel(fileTypeTableController.getTableModel());
     }

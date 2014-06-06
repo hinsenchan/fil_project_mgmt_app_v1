@@ -17,12 +17,13 @@ import javax.persistence.Column;
  */
 @Entity(name = "FILE_TYPE")
 public class FileType implements Serializable {
-    //private static final long serialVersionUID = 1L;
+    //primary key id
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    // column filetype
     @Column(name = "FILETYPE")
     private String fileType;
 
