@@ -10,6 +10,7 @@ package frugalLab;
  */
 public class ProjectPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    private static final String[] STATUS = {"Active", "Completed", "Suspended", "Aborted"};
 
     /**
      * Creates new form ProjectPanel
