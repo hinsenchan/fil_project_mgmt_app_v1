@@ -50,6 +50,7 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
         try {
             // get the index of the inserted row
 	    firstIndex =  e.getFirstRow();
+            System.out.println();
 	    	
 	    // create a new table model with the new data
 	    fileTypeTableModel = new FileTypeTableModel(fileTypeTableModel.getList(), fileTypeTableModel.getEntityManager());
