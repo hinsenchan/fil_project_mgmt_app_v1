@@ -4,13 +4,18 @@
  */
 package frugalLab;
 
+import java.sql.Date;
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class ProjectPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
-    private static final String[] STATUS = {"Active", "Completed", "Suspended", "Aborted"};
+    ProjectTableController projectTableController; // controller for the project panel
+    
 
     /**
      * Creates new form ProjectPanel
@@ -18,6 +23,9 @@ public class ProjectPanel extends javax.swing.JPanel {
     public ProjectPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.projectTableController = new ProjectTableController(this);
+        jTable.setModel(projectTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(projectTableController); // add a listener to the table model
     }
 
     /**
@@ -65,7 +73,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         advisorsManageButton = new javax.swing.JButton();
         tablePanel = new javax.swing.JPanel();
         tableScrollPane = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         buttonPanel = new javax.swing.JPanel();
         buttonLayoutPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
@@ -116,7 +124,11 @@ public class ProjectPanel extends javax.swing.JPanel {
         outcomeLabel.setText("Outcome:");
         outcomeLabel.setOpaque(true);
 
-        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        projectIDTextField.setEditable(false);
+        projectIDTextField.setBackground(new java.awt.Color(197, 193, 189));
+        projectIDTextField.setOpaque(false);
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please select one...", "Active", "Completed", "Suspended", "Aborted" }));
         statusComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusComboBoxActionPerformed(evt);
@@ -389,7 +401,7 @@ public class ProjectPanel extends javax.swing.JPanel {
 
         tablePanel.setBackground(new java.awt.Color(143, 19, 21));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -405,7 +417,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tableScrollPane.setViewportView(table);
+        tableScrollPane.setViewportView(jTable);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
@@ -510,20 +522,100 @@ public class ProjectPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // add button handler. adds a new entry to the table    
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String title = getTitleTextField();
+        String status = getStatusComboBox();
+        String startDate = getStartDateTextField();        
+        String endDate = getEndDateTextField();
+        String outcome = getOutcomeTextArea();  
+        
+        if (title.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (status.equals("Please select one...")) {
+            JOptionPane.showMessageDialog(this, "Please select a status.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }                
+        else if (outcome.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an outcome.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            try {
+                Date sDate = Date.valueOf(startDate);
+                Date eDate = Date.valueOf(endDate);
+                
+                String[] projectArray = {title, status, startDate, endDate, outcome};
+                projectTableController.addRow(projectArray);
+            }
+            catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid date using this format: "
+                            + "yyyy-mm-dd", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
+    // update button handler. updates a selected entry from the table    
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String id = getProjectIDTextField();
+        String title = getTitleTextField();
+        String status = getStatusComboBox();
+        String startDate = getStartDateTextField();        
+        String endDate = getEndDateTextField();
+        String outcome = getOutcomeTextArea();  
+        
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No project ID detected. "
+                    + "Please select a project to update.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);            
+        }
+        else if (title.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (status.equals("Please select one...")) {
+            JOptionPane.showMessageDialog(this, "Please select a status.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }                
+        else if (outcome.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an outcome.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            try {
+                Date sDate = Date.valueOf(startDate);
+                Date eDate = Date.valueOf(endDate);
+                
+                int[] index = jTable.getSelectedRows();
+
+                if (index.length > 1) {
+                    JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    String[] projectArray = {id, title, status, startDate, endDate, outcome};
+                    projectTableController.setSelectedIndex(jTable.getSelectedRow());
+                    projectTableController.updateRow(projectArray);
+                }
+            }
+            catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid date using this format: "
+                            + "yyyy-mm-dd", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }         
     }//GEN-LAST:event_updateButtonActionPerformed
 
+    // delete button handler. deletes selected entries from the table
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        projectTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    // clear button handler. clears the textfield on the current panel
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        projectTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void studentsManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsManageButtonActionPerformed
@@ -575,6 +667,7 @@ public class ProjectPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel endDateLabel;
     private javax.swing.JTextField endDateTextField;
+    private javax.swing.JTable jTable;
     private javax.swing.JPanel leftPropPanel;
     private javax.swing.JButton mediaButton;
     private javax.swing.JLabel mediaLabel;
@@ -597,7 +690,6 @@ public class ProjectPanel extends javax.swing.JPanel {
     private javax.swing.JLabel statusLabel;
     private javax.swing.JLabel studentsLabel;
     private javax.swing.JButton studentsManageButton;
-    private javax.swing.JTable table;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JScrollPane tagScrollPane;
@@ -607,4 +699,93 @@ public class ProjectPanel extends javax.swing.JPanel {
     private javax.swing.JTextField titleTextField;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(projectTableController.getTableModel());
+    }
+    
+    /**
+     * @return the projectIDTextField
+     */
+    public String getProjectIDTextField() {
+        return projectIDTextField.getText();
+    }
+
+    /**
+     * @param projectIDTextField the projectIDTextField to set
+     */
+    public void setProjectIDTextField(String projectIDTextField) {
+        this.projectIDTextField.setText(projectIDTextField);
+    }
+    
+    /**
+     * @return the titleTextField
+     */
+    public String getTitleTextField() {
+        return titleTextField.getText();
+    }
+
+    /**
+     * @param titleTextField the titleTextField to set
+     */
+    public void setTitleTextField(String titleTextField) {
+        this.titleTextField.setText(titleTextField);
+    }
+    
+    /**
+     * @return the statusComboBox
+     */
+    public String getStatusComboBox() {
+        return (String)statusComboBox.getSelectedItem();
+    }
+
+    /**
+     * @param statusComboBox the statusComboBox to set
+     */
+    public void setStatusComboBox(String statusComboBox) {
+        this.statusComboBox.setSelectedItem(statusComboBox);
+    }
+
+    /**
+     * @return the startDateTextField
+     */
+    public String getStartDateTextField() {
+        return startDateTextField.getText();
+    }
+
+    /**
+     * @param startDateTextField the startDateTextField to set
+     */
+    public void setStartDateTextField(String startDateTextField) {
+        this.startDateTextField.setText(startDateTextField);
+    }
+
+    /**
+     * @return the endDateTextField
+     */
+    public String getEndDateTextField() {
+        return endDateTextField.getText();
+    }
+
+    /**
+     * @param endDateTextField the endDateTextField to set
+     */
+    public void setEndDateTextField(String endDateTextField) {
+        this.endDateTextField.setText(endDateTextField);
+    }
+
+    /**
+     * @return the outcomeTextArea
+     */
+    public String getOutcomeTextArea() {
+        return outcomeTextArea.getText();
+    }
+
+    /**
+     * @param outcomeTextArea the outcomeTextArea to set
+     */
+    public void setOutcomeTextArea(String outcomeTextArea) {
+        this.outcomeTextArea.setText(outcomeTextArea);
+    }
 }
