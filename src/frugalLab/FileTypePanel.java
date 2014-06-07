@@ -15,9 +15,6 @@ public class FileTypePanel extends javax.swing.JPanel {
     FrugalController frugalController; // controller for the main panel
     FileTypeTableController fileTypeTableController; // controller for the file type panel
 
-    /**
-     * Creates new form MediaPanel2
-     */
     public FileTypePanel(FrugalController frugalController) {
         initComponents(); // netbeans initializer
         this.frugalController = frugalController; 
