@@ -97,7 +97,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     public void updateRow(String[] array) {
         try {
             if (jTableRowSelected == true) {
-                if (locate(array[1])) {                    
+                if (locate(array[1], array[0])) {                    
                     JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", 
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
@@ -170,7 +170,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
     
     // locate an item excluding specified primary key
-    public boolean locate(String title, long id) {
+    public boolean locate(String title, String id) {
         return projectTableModel.locate(title, id);
     }
 

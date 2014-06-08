@@ -171,8 +171,14 @@ public class ProjectTableModel extends AbstractTableModel {
     }
     
     // locate a project in the table excluding specied primary key
-    public boolean locate(String title, long id) {
-        if (projectService.findProject(title, id))        
+    public boolean locate(String title, String id) {
+        long longProjectID = -1;
+        try {
+            longProjectID = Long.parseLong(id);
+        }
+        catch (NumberFormatException e) {}
+        
+        if (projectService.findProject(title, longProjectID))        
             return true;
         return false;
     }

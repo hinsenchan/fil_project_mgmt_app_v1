@@ -97,7 +97,15 @@ public class StudentsService {
     
     // method to find a record using title
     public boolean findStudents(String name) {
-        TypedQuery<Students> query = manager.createQuery("SELECT e.name FROM STUDENTS e", Students.class);
+        long longProjectID = -1;
+        
+        try {
+            longProjectID = Long.parseLong(projectID);
+        }        
+        catch (NumberFormatException e) {}
+        
+        TypedQuery<Students> query = manager.createQuery("SELECT e.name FROM STUDENTS e WHERE e.pid = :pidValue", Students.class);
+        query.setParameter("pidValue", longProjectID);
         List<Students> result = query.getResultList();        
 
         if (result.contains(name)) {

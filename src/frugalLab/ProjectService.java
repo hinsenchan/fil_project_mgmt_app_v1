@@ -83,7 +83,7 @@ public class ProjectService {
     
     // method to find a record using title excluding specified primary key
     public boolean findProject(String projectName, long id) {
-        TypedQuery<Project> query = manager.createQuery("SELECT e.title FROM PROJECT e WHERE e.id = :targetID", Project.class);
+        TypedQuery<Project> query = manager.createQuery("SELECT e.title FROM PROJECT e WHERE e.id != :targetID", Project.class);
         query.setParameter("targetID", id);
         List<Project> result = query.getResultList();        
 
