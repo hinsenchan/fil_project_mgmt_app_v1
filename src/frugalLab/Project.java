@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.*;
 import java.sql.*;
+import java.util.Set;
 
 /**
  *
@@ -43,6 +45,19 @@ public class Project implements Serializable {
     // column start date
     @Column(name = "OUTCOME")
     private String outcome;
+    
+    /*
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="PROJECT_STUDENTS", 
+    joinColumns = @JoinColumn(name="PID"),
+    inverseJoinColumns = @JoinColumn(name="SID"))
+    */
+    /*
+    @ManyToMany(cascade=CascadeType.PERSIST, mappedBy="projects")
+    private Set<Students> students;
+    */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private Set<Students> students;
     
     public Long getId() {
         return id;
@@ -90,6 +105,14 @@ public class Project implements Serializable {
 
     public void setOutcome(String outcome) {
         this.outcome = outcome;
+    }
+    
+    public Set<Students> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Students> students) {
+        this.students = students;
     }
     
     // return number of columns in the table

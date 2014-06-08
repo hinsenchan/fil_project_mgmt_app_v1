@@ -4,12 +4,18 @@
  */
 package frugalLab;
 
+import java.sql.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class StudentsPanel extends javax.swing.JPanel {
-    FrugalController frugalController;
+    private FrugalController frugalController;
+    private StudentsTableController studentsTableController; // controller for the students panel
+    private long projectID;
+    private long studentID;
     
     /**
      * Creates new form MediaPanel2
@@ -17,6 +23,9 @@ public class StudentsPanel extends javax.swing.JPanel {
     public StudentsPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.studentsTableController = new StudentsTableController(this);
+        jTable.setModel(studentsTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(studentsTableController); // add a listener to the table model
     }
 
     /**
@@ -226,19 +235,47 @@ public class StudentsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getStudentNameTextField();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {
+            String[] studentsArray = {name};
+            studentsTableController.addRow(studentsArray);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getStudentNameTextField();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {                
+            int[] index = jTable.getSelectedRows();
+
+            if (index.length > 1) {
+                JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String[] projectArray = {String.valueOf(studentID), name};
+                studentsTableController.setSelectedIndex(jTable.getSelectedRow());
+                studentsTableController.updateRow(projectArray);
+            }
+        }         
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        studentsTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        studentsTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -262,4 +299,53 @@ public class StudentsPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(studentsTableController.getTableModel());
+    }
+
+    /**
+     * @return the studentNameTextField
+     */
+    public String getStudentNameTextField() {
+        return studentNameTextField.getText();
+    }
+
+    /**
+     * @param studentNameTextField the studentNameTextField to set
+     */
+    public void setStudentNameTextField(String studentNameTextField) {
+        this.studentNameTextField.setText(studentNameTextField);
+    }
+
+    /**
+     * @return the projectID
+     */
+    public long getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(long projectID) {
+        this.projectID = projectID;
+    }
+
+    /**
+     * @return the studentID
+     */
+    public long getStudentID() {
+        return studentID;
+    }
+
+    /**
+     * @param studentID the studentID to set
+     */
+    public void setStudentID(long studentID) {
+        this.studentID = studentID;
+    }
+    
+    
 }
