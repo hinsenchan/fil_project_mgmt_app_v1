@@ -44,6 +44,13 @@ public class ProjectService {
 
     	return result;   	 
     }
+    
+    public List<Category> readCategories() {
+        TypedQuery<Category> query = manager.createQuery("SELECT e FROM CATEGORY e", Category.class);
+        List<Category> result =  query.getResultList();
+
+    	return result;           
+    }    
      
     // method to update a record
     public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome) {

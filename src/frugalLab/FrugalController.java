@@ -67,6 +67,8 @@ public class FrugalController {
     }
     
     public void launchProjectPanel() {
+        frugalView.setProjectPanel(new ProjectPanel(this));
+        mainPanel.add(frugalView.getProjectPanel(), "ProjectPanel");          
         cardLayout.show(mainPanel, "ProjectPanel");
     }
     

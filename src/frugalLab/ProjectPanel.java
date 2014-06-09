@@ -5,8 +5,12 @@
 package frugalLab;
 
 import java.sql.Date;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelEvent;
 
 /**
  *
@@ -24,6 +28,25 @@ public class ProjectPanel extends javax.swing.JPanel {
         initComponents();
         this.frugalController = frugalController;
         this.projectTableController = new ProjectTableController(this);
+        
+        // get file types from the table                
+        List<Category> categories = ((ProjectTableModel)this.projectTableController.getTableModel()).getCategories();        
+        Collections.sort(categories,new Comparator<Category>() {
+            public int compare(Category a, Category b) {
+                return a.getCategory().compareTo(b.getCategory());
+            }
+        });
+                
+        DefaultListModel listModel = new DefaultListModel();
+        listModel.addElement("Select one...");
+        listModel.addElement("Add new category...");
+        
+        for (int i=0; i<categories.size(); i++) {
+            listModel.addElement(categories.get(i).getCategory());
+        }
+        
+        categoriesList.setModel(listModel);
+        
         jTable.setModel(projectTableController.getTableModel()); // set the table model using the controller
         jTable.getSelectionModel().addListSelectionListener(projectTableController); // add a listener to the table model
     }
@@ -262,7 +285,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         otherDataLabel.setOpaque(true);
 
         categoriesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Select one...", "Add new category...", "Cat1", "Cat2", "Cat3" };
+            String[] strings = { "Select one...", "Add new category..." };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });

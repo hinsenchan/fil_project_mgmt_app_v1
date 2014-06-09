@@ -18,37 +18,32 @@ import java.util.Comparator;
 * 
 * @author Hinsen Chan
 */
-public class ProjectTableController implements ListSelectionListener, TableModelListener{
-    private ProjectTableModel projectTableModel;
-    private ProjectPanel projectPanel; 
+public class CategoryTableController implements ListSelectionListener, TableModelListener{
+    private CategoryTableModel categoryTableModel;
+    private CategoryPanel categoryPanel; 
     private boolean jTableRowSelected = false; // monitors if row is selected in jTable
     private int firstIndex; // first selected index in the table
     private int selectedIndex; // selected index in the table
 	
-    public ProjectTableController(ProjectPanel projectPanel) {
-        this.projectPanel = projectPanel;   
-	projectTableModel = new ProjectTableModel(); // create new table model
-	projectTableModel.addTableModelListener(this); // listen to this controller with table model
+    public CategoryTableController(CategoryPanel categoryPanel) {
+        this.categoryPanel = categoryPanel;   
+	categoryTableModel = new CategoryTableModel(); // create new table model
+	categoryTableModel.addTableModelListener(this); // listen to this controller with table model
     }	
 	
     // returns the table model for this controller
     public TableModel getTableModel() {
-        return projectTableModel;
+        return categoryTableModel;
     }
 	
     // listselection handler. updates textfield in panel
     public void valueChanged(ListSelectionEvent e) {        
         jTableRowSelected = true; // row is selected in jTable
         ListSelectionModel selectModel = (ListSelectionModel) e.getSource();
-	firstIndex = selectModel.getMinSelectionIndex();             
+	firstIndex = selectModel.getMinSelectionIndex();     
 		
 	// read the data in each column using getValueAt and display it on corresponding textfield
-	projectPanel.setProjectIDTextField( (String)projectTableModel.getValueAt(firstIndex, 0));
-        projectPanel.setTitleTextField( (String)projectTableModel.getValueAt(firstIndex, 1));
-        projectPanel.setStatusComboBox( (String)projectTableModel.getValueAt(firstIndex, 2));
-        projectPanel.setStartDateTextField( (String)projectTableModel.getValueAt(firstIndex, 3));
-        projectPanel.setEndDateTextField( (String)projectTableModel.getValueAt(firstIndex, 4));
-        projectPanel.setOutcomeTextArea( (String)projectTableModel.getValueAt(firstIndex, 5));
+	categoryPanel.setCategoryTextField( (String)categoryTableModel.getValueAt(firstIndex, 1));
     }
 	
     // table listener. updates table in panel
@@ -57,19 +52,15 @@ public class ProjectTableController implements ListSelectionListener, TableModel
         try {
             // get the index of the inserted row
 	    firstIndex =  e.getFirstRow();
-            
+	    	
 	    // create a new table model with the new data
-	    projectTableModel = new ProjectTableModel(projectTableModel.getList(), projectTableModel.getEntityManager(), projectTableModel.getCategories());
-	    projectTableModel.addTableModelListener(this);
+	    categoryTableModel = new CategoryTableModel(categoryTableModel.getList(), categoryTableModel.getEntityManager());
+	    categoryTableModel.addTableModelListener(this);
 	    // update the JTable with the data
-	    projectPanel.updateTable();	    
+	    categoryPanel.updateTable();	    	   
             
-            projectPanel.setProjectIDTextField((String)projectTableModel.getValueAt(firstIndex, 0));
-            projectPanel.setTitleTextField((String)projectTableModel.getValueAt(firstIndex, 1));
-            projectPanel.setStatusComboBox((String)projectTableModel.getValueAt(firstIndex, 2));
-            projectPanel.setStartDateTextField((String)projectTableModel.getValueAt(firstIndex, 3));
-            projectPanel.setEndDateTextField((String)projectTableModel.getValueAt(firstIndex, 4));
-            projectPanel.setOutcomeTextArea((String)projectTableModel.getValueAt(firstIndex, 5));
+            //experimenting with this...
+            categoryPanel.setCategoryTextField( (String)categoryTableModel.getValueAt(firstIndex, 1));
 	} catch(Exception exp) {
             exp.getMessage();
             exp.printStackTrace();
@@ -80,10 +71,11 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     public void addRow(String[] array) {   
         try {
             if (!locate(array[0])) {
-                projectTableModel.addRow(array); // add row to database
+                categoryTableModel.addRow(array); // add row to database
+                tableChanged(new TableModelEvent(getTableModel())); 
             }
             else {
-                JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(categoryPanel, "This category already exists!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -97,16 +89,18 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     public void updateRow(String[] array) {
         try {
             if (jTableRowSelected == true) {
-                if (locate(array[1], array[0])) {                    
-                    JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", 
+                if (locate(array[0])) {
+                    JOptionPane.showMessageDialog(categoryPanel, "This category already exists!", 
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 else {
-                    projectTableModel.updateRow(firstIndex, array);
+                    categoryTableModel.updateRow(firstIndex, array);
+                    //tableChanged(new TableModelEvent(getTableModel()));
+                    //categoryPanel.setCategoryTextField((String)categoryTableModel.getValueAt(getSelectedIndex(),1));
                 }
             }
             else {
-                JOptionPane.showMessageDialog(projectPanel, "Please select a project to update.", 
+                JOptionPane.showMessageDialog(categoryPanel, "Please select a category to update.", 
                     "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
@@ -131,19 +125,14 @@ public class ProjectTableController implements ListSelectionListener, TableModel
             
             if (jTableRowSelected == true) {
                 for (int data : list) {
-                    projectTableModel.deleteRow(data); // delete row from jTable                
+                    categoryTableModel.deleteRow(data); // delete row from jTable                
                 }
                 
                 tableChanged(new TableModelEvent(getTableModel()));                
-                projectPanel.setProjectIDTextField("");
-                projectPanel.setTitleTextField("");
-                projectPanel.setStatusComboBox("Please select one...");
-                projectPanel.setStartDateTextField("");
-                projectPanel.setEndDateTextField("");
-                projectPanel.setOutcomeTextArea("");
+                categoryPanel.setCategoryTextField("");
             }
             else {
-                JOptionPane.showMessageDialog(projectPanel, "Please select a project to delete.", 
+                JOptionPane.showMessageDialog(categoryPanel, "Please select a category to delete.", 
             	    "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
@@ -156,22 +145,12 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     
     // clear textfield in panel
     public void clearRow() {
-        projectPanel.setProjectIDTextField("");
-        projectPanel.setTitleTextField("");
-        projectPanel.setStatusComboBox("Please select one...");
-        projectPanel.setStartDateTextField("");
-        projectPanel.setEndDateTextField("");
-        projectPanel.setOutcomeTextArea("");
+        categoryPanel.setCategoryTextField("");
     }
     
     // locate an item in the table
-    public boolean locate(String title) {
-        return projectTableModel.locate(title);
-    }
-    
-    // locate an item excluding specified primary key
-    public boolean locate(String title, String id) {
-        return projectTableModel.locate(title, id);
+    public boolean locate(String category) {
+        return categoryTableModel.locate(category);
     }
 
     /**
