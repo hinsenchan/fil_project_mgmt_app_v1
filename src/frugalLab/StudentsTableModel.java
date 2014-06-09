@@ -23,7 +23,6 @@ public class StudentsTableModel extends AbstractTableModel {
     private EntityManager manager;
     private Students students;	
     private StudentsService studentsService;
-    public String projectID;
     
     int numcols, numrows;           // number of rows and columns
     
@@ -138,7 +137,7 @@ public class StudentsTableModel extends AbstractTableModel {
         EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
 
-	Students updatedRecord = studentsService.updateStudents(Long.parseLong(array[0]), array[1]);
+	Students updatedRecord = studentsService.updateStudents(array[0], array[1]);
 	userTransaction.commit();
         
         int col = 0;
@@ -170,7 +169,7 @@ public class StudentsTableModel extends AbstractTableModel {
     }
     
     // locate a students in the table excluding specied primary key
-    public boolean locate(String title, long id) {
+    public boolean locate(String title, String id) {
         if (studentsService.findStudents(title, id))        
             return true;
         return false;

@@ -17,7 +17,7 @@ public class FrugalController {
     private boolean loggedIn = false;
     private JPanel mainPanel;
     private CardLayout cardLayout;
-    public String pid;
+    private String pid;
     
     public FrugalController(FrugalView frugalView) {
         this.frugalView = frugalView;
@@ -116,5 +116,19 @@ public class FrugalController {
      */
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    /**
+     * @return the pid
+     */
+    public String getPid() {
+        return pid;
+    }
+
+    /**
+     * @param pid the pid to set
+     */
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 }

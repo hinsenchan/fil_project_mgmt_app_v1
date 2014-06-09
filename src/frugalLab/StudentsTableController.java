@@ -24,12 +24,12 @@ public class StudentsTableController implements ListSelectionListener, TableMode
     private boolean jTableRowSelected = false; // monitors if row is selected in jTable
     private int firstIndex; // first selected index in the table
     private int selectedIndex; // selected index in the table
-    public String projectID;
+    private String projectID;
 	
     public StudentsTableController(StudentsPanel studentsPanel) {
         this.studentsPanel = studentsPanel; 
-        projectID = this.studentsPanel.projectID;
-	studentsTableModel = new StudentsTableModel(projectID); // create new table model
+        projectID = this.studentsPanel.getProjectID();
+	studentsTableModel = new StudentsTableModel(getProjectID()); // create new table model
 	studentsTableModel.addTableModelListener(this); // listen to this controller with table model
     }	
 	
@@ -45,7 +45,7 @@ public class StudentsTableController implements ListSelectionListener, TableMode
 	firstIndex = selectModel.getMinSelectionIndex();     
 		
 	// read the data in each column using getValueAt and display it on corresponding textfield
-        studentsPanel.setStudentID( Long.parseLong(studentsTableModel.getValueAt(firstIndex, 0).toString()));
+        studentsPanel.setStudentID( (String)studentsTableModel.getValueAt(firstIndex, 0));
         studentsPanel.setStudentNameTextField( (String)studentsTableModel.getValueAt(firstIndex, 1));
     }
 	
@@ -57,7 +57,7 @@ public class StudentsTableController implements ListSelectionListener, TableMode
 	    firstIndex =  e.getFirstRow();
             
 	    // create a new table model with the new data
-	    studentsTableModel = new StudentsTableModel(projectID, studentsTableModel.getList(), studentsTableModel.getEntityManager());
+	    studentsTableModel = new StudentsTableModel(getProjectID(), studentsTableModel.getList(), studentsTableModel.getEntityManager());
 	    studentsTableModel.addTableModelListener(this);
 	    // update the JTable with the data
 	    studentsPanel.updateTable();	                
@@ -89,8 +89,8 @@ public class StudentsTableController implements ListSelectionListener, TableMode
     public void updateRow(String[] array) {
         try {
             if (jTableRowSelected == true) {
-                if (locate(array[1])) {                    
-                    JOptionPane.showMessageDialog(studentsPanel, "This students title already exists!", 
+                if (locate(array[1], array[0])) {                    
+                    JOptionPane.showMessageDialog(studentsPanel, "This students name already exists!", 
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 else {
@@ -152,7 +152,7 @@ public class StudentsTableController implements ListSelectionListener, TableMode
     }
     
     // locate an item excluding specified primary key
-    public boolean locate(String title, long id) {
+    public boolean locate(String title, String id) {
         return studentsTableModel.locate(title, id);
     }
 
@@ -168,5 +168,19 @@ public class StudentsTableController implements ListSelectionListener, TableMode
      */
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
+    }
+
+    /**
+     * @return the projectID
+     */
+    public String getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
     }
 }

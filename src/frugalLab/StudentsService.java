@@ -76,8 +76,15 @@ public class StudentsService {
     }
      
     // method to update a record
-    public Students updateStudents(Long id, String name) {
-        Students students = manager.find(Students.class, id);
+    public Students updateStudents(String sid, String name) {
+        long longStudentID = -1;
+        
+        try {
+            longStudentID = Long.parseLong(sid);
+        }
+        catch(NumberFormatException e) {}
+        
+        Students students = manager.find(Students.class, longStudentID);
         
     	if (students != null) {
             students.setName(name);
@@ -116,12 +123,15 @@ public class StudentsService {
     }
     
     // method to find a record using title excluding specified primary key
-    public boolean findStudents(String name, long id) {
-        TypedQuery<Students> query = manager.createQuery("SELECT e.name FROM STUDENTS e WHERE e.id = :targetID", Students.class);
-        query.setParameter("targetID", id);
-        List<Students> result = query.getResultList();        
-
-        if (result.contains(name)) {
+    public boolean findStudents(String name, String sid) {
+        long longProjectID = -1;
+        
+        TypedQuery<Students> query = manager.createQuery("SELECT e FROM STUDENTS e WHERE e.pid = :pidValue AND e.name = :nameValue", Students.class);
+        query.setParameter("pidValue", longProjectID);
+        query.setParameter("nameValue", name);
+        List<Students> result = query.getResultList();                
+        
+        if (result.size() > 0) {
             return true;
         }
         

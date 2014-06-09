@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 public class StudentsPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
     private StudentsTableController studentsTableController; // controller for the students panel
-    public String projectID;
-    private long studentID;
+    private String projectID;
+    private String studentID;
     
     /**
      * Creates new form MediaPanel2
@@ -23,7 +23,7 @@ public class StudentsPanel extends javax.swing.JPanel {
     public StudentsPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
-        projectID = frugalController.pid;
+        projectID = frugalController.getPid();
         this.studentsTableController = new StudentsTableController(this);
         jTable.setModel(studentsTableController.getTableModel()); // set the table model using the controller
         jTable.getSelectionModel().addListSelectionListener(studentsTableController); // add a listener to the table model
@@ -251,6 +251,7 @@ public class StudentsPanel extends javax.swing.JPanel {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         String name = getStudentNameTextField();
         
+        
         if (name.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
                     JOptionPane.ERROR_MESSAGE);
@@ -262,9 +263,10 @@ public class StudentsPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                String[] projectArray = {String.valueOf(studentID), name};
+                String[] projectArray = {studentID, name};
                 studentsTableController.setSelectedIndex(jTable.getSelectedRow());
                 studentsTableController.updateRow(projectArray);
+                jTable.clearSelection();
             }
         }         
     }//GEN-LAST:event_updateButtonActionPerformed
@@ -337,14 +339,14 @@ public class StudentsPanel extends javax.swing.JPanel {
     /**
      * @return the studentID
      */
-    public long getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
     /**
      * @param studentID the studentID to set
      */
-    public void setStudentID(long studentID) {
+    public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
     
