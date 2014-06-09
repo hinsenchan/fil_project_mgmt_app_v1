@@ -89,7 +89,7 @@ public class StudentsTableController implements ListSelectionListener, TableMode
     public void updateRow(String[] array) {
         try {
             if (jTableRowSelected == true) {
-                if (locate(array[1], array[0])) {                    
+                if (locate(array[1])) {                    
                     JOptionPane.showMessageDialog(studentsPanel, "This students name already exists!", 
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
@@ -130,7 +130,7 @@ public class StudentsTableController implements ListSelectionListener, TableMode
                 studentsPanel.setStudentNameTextField("");
             }
             else {
-                JOptionPane.showMessageDialog(studentsPanel, "Please select a students to delete.", 
+                JOptionPane.showMessageDialog(studentsPanel, "Please select a student to delete.", 
             	    "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
@@ -147,13 +147,8 @@ public class StudentsTableController implements ListSelectionListener, TableMode
     }
     
     // locate an item in the table
-    public boolean locate(String title) {
-        return studentsTableModel.locate(title);
-    }
-    
-    // locate an item excluding specified primary key
-    public boolean locate(String title, String id) {
-        return studentsTableModel.locate(title, id);
+    public boolean locate(String name) {
+        return studentsTableModel.locate(name);
     }
 
     /**

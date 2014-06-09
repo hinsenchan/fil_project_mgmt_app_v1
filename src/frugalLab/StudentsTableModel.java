@@ -162,15 +162,8 @@ public class StudentsTableModel extends AbstractTableModel {
     }
     
     // locate a students in the table
-    public boolean locate(String title) {
-        if (studentsService.findStudents(title))        
-            return true;
-        return false;
-    }
-    
-    // locate a students in the table excluding specied primary key
-    public boolean locate(String title, String id) {
-        if (studentsService.findStudents(title, id))        
+    public boolean locate(String name) {
+        if (studentsService.findStudents(name))        
             return true;
         return false;
     }

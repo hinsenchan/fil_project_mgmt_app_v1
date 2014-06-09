@@ -549,6 +549,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                 
                 String[] projectArray = {title, status, startDate, endDate, outcome};
                 projectTableController.addRow(projectArray);
+                jTable.clearSelection();
             }
             catch (IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid date using this format: "
@@ -597,6 +598,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                     String[] projectArray = {id, title, status, startDate, endDate, outcome};
                     projectTableController.setSelectedIndex(jTable.getSelectedRow());
                     projectTableController.updateRow(projectArray);
+                    jTable.clearSelection();
                 }
             }
             catch (IllegalArgumentException e) {
@@ -626,7 +628,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         }
         else { 
             frugalController.launchStudentsPanel();
-            jTable.clearSelection();
+            //jTable.clearSelection();
         }
     }//GEN-LAST:event_studentsManageButtonActionPerformed
 

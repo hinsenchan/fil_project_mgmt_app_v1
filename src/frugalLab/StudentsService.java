@@ -111,25 +111,12 @@ public class StudentsService {
         }        
         catch (NumberFormatException e) {}
         
-        TypedQuery<Students> query = manager.createQuery("SELECT e.name FROM STUDENTS e WHERE e.pid = :pidValue", Students.class);
-        query.setParameter("pidValue", longProjectID);
-        List<Students> result = query.getResultList();        
-
-        if (result.contains(name)) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    // method to find a record using title excluding specified primary key
-    public boolean findStudents(String name, String sid) {
-        long longProjectID = -1;
-        
         TypedQuery<Students> query = manager.createQuery("SELECT e FROM STUDENTS e WHERE e.pid = :pidValue AND e.name = :nameValue", Students.class);
         query.setParameter("pidValue", longProjectID);
         query.setParameter("nameValue", name);
-        List<Students> result = query.getResultList();                
+        List<Students> result = query.getResultList();        
+        
+        System.out.println(result);
         
         if (result.size() > 0) {
             return true;

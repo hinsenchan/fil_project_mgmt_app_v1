@@ -245,6 +245,7 @@ public class StudentsPanel extends javax.swing.JPanel {
         else {
             String[] studentsArray = {name};
             studentsTableController.addRow(studentsArray);
+            jTable.clearSelection();
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -260,7 +261,7 @@ public class StudentsPanel extends javax.swing.JPanel {
             int[] index = jTable.getSelectedRows();
 
             if (index.length > 1) {
-                JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please update 1 student at a time.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 String[] projectArray = {studentID, name};
@@ -279,6 +280,7 @@ public class StudentsPanel extends javax.swing.JPanel {
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         studentsTableController.clearRow();
+        jTable.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed

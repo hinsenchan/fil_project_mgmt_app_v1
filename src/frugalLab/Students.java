@@ -41,7 +41,7 @@ public class Students implements Serializable {
     inverseJoinColumns = @JoinColumn(name="PID"))
     private Set<Project> projects; 
     */
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne//(cascade=CascadeType.ALL)
     @JoinColumn(name="pid", insertable = false, updatable = false)
     private Project project; 
     
