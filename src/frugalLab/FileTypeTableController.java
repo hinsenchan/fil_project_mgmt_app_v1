@@ -58,6 +58,9 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
 	    fileTypeTableModel.addTableModelListener(this);
 	    // update the JTable with the data
 	    fileTypePanel.updateTable();	    	   
+            
+            //experimenting with this...
+            fileTypePanel.setFileTypeTextField( (String)fileTypeTableModel.getValueAt(firstIndex, 1));
 	} catch(Exception exp) {
             exp.getMessage();
             exp.printStackTrace();
@@ -90,9 +93,11 @@ public class FileTypeTableController implements ListSelectionListener, TableMode
                     JOptionPane.showMessageDialog(fileTypePanel, "This file type already exists!", 
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
-                fileTypeTableModel.updateRow(firstIndex, array);
-                tableChanged(new TableModelEvent(getTableModel()));
-                fileTypePanel.setFileTypeTextField((String)fileTypeTableModel.getValueAt(getSelectedIndex(),1));
+                else {
+                    fileTypeTableModel.updateRow(firstIndex, array);
+                    //tableChanged(new TableModelEvent(getTableModel()));
+                    //fileTypePanel.setFileTypeTextField((String)fileTypeTableModel.getValueAt(getSelectedIndex(),1));
+                }
             }
             else {
                 JOptionPane.showMessageDialog(fileTypePanel, "Please select a file type to update.", 

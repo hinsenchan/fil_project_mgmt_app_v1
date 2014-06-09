@@ -122,25 +122,29 @@ public class FileTypeTableModel extends AbstractTableModel {
         fileTypeResultList.add(newRecord);
         
         int row = fileTypeResultList.size();  
-        int col = 0;
+        //int col = 0;
+        int col = 1;
 
         // update the data in the model to the entries in array
         for (Object data : array) {
-            setValueAt((String) data, row-1, col++);
+            //setValueAt((String) data, row-1, col++);
+            setValueAt((String) data, row-1, col);
         }
          
         numrows++;
     }	    
     
     // update a row in the table
-    public void updateRow(int index, String[] array) {
+    public void updateRow(int index, String[] array) {        
         EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
-	FileType updatedRecord = fileTypeService.updateFileType((long)index, array[0]);
+	FileType updatedRecord = fileTypeService.updateFileType(fileTypeResultList.get(index).getId(), array[0]);
 	userTransaction.commit();
         
+        int col = 1;
+        
         for (String data : array) {
-            setValueAt ((String) data, index, 1);            
+            setValueAt ((String) data, index, col);            
         }
     }
     
