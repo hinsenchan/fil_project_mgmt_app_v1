@@ -10,13 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  *
  * @author Hinsen Chan
  */
 @Entity(name = "CATEGORY")
-public class Category implements Serializable {
+public class Category implements Serializable, Comparable {
     //primary key id
     @Id
     @Column(name = "ID")
@@ -26,6 +30,13 @@ public class Category implements Serializable {
     // column filetype
     @Column(name = "CATEGORY")
     private String category;
+    
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(name="PROJECT_CATEGORY", 
+    joinColumns = @JoinColumn(name="CID"),
+    inverseJoinColumns = @JoinColumn(name="PID"))
+    private Set<Project> projects; 
+    //private Project projects; 
 
     public Long getId() {
         return id;
@@ -106,5 +117,27 @@ public class Category implements Serializable {
     public String toString() {
         return "CATEGORY [Id = " + id + ", Category = " + category + "]";
     }
+
+    /**
+     * @return the projects
+     */
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    /**
+     * @param projects the projects to set
+     */
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
     
+    public int compareTo(Object o1) {
+        if (getCategory().compareTo(((Category)o1).getCategory()) == 0)
+            return 0;
+        else if (getCategory().compareTo(((Category)o1).getCategory()) > 0)
+            return 1;
+        else
+            return -1;
+    }
 }

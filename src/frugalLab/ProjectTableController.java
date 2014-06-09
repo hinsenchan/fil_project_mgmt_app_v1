@@ -77,10 +77,10 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
 
     // add a new row to the table
-    public void addRow(String[] array) {   
+    public void addRow(String[] array, String category) {   
         try {
             if (!locate(array[0])) {
-                projectTableModel.addRow(array); // add row to database
+                projectTableModel.addRow(array, category); // add row to database
             }
             else {
                 JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", "Error", JOptionPane.ERROR_MESSAGE);

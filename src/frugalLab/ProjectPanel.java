@@ -552,6 +552,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         String startDate = getStartDateTextField();        
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
+        List<String> category = getCategoriesList();
         
         if (title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
@@ -587,13 +588,13 @@ public class ProjectPanel extends javax.swing.JPanel {
                     }
                     else {
                         String[] projectArray = {title, status, startDate, endDate, outcome};
-                        projectTableController.addRow(projectArray);
+                        projectTableController.addRow(projectArray, category.get(0));
                         jTable.clearSelection();                        
                     }
                 }
                 else {                
                     String[] projectArray = {title, status, startDate, endDate, outcome};
-                    projectTableController.addRow(projectArray);
+                    projectTableController.addRow(projectArray, category.get(0));
                     jTable.clearSelection();
                 }
             }
@@ -872,5 +873,9 @@ public class ProjectPanel extends javax.swing.JPanel {
      */
     public void setOutcomeTextArea(String outcomeTextArea) {
         this.outcomeTextArea.setText(outcomeTextArea);
+    }
+
+    public List<String> getCategoriesList() {
+        return categoriesList.getSelectedValuesList();
     }
 }

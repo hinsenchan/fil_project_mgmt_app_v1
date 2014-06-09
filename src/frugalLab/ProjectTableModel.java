@@ -116,14 +116,14 @@ public class ProjectTableModel extends AbstractTableModel {
 	 
     // In this method, a newly inserted row in the GUI is added to the table model as well as the database table
     // The argument to this method is an array containing the data in the textfields of the new row.
-    public void addRow(Object[] array) {
+    public void addRow(Object[] array, String category) {
         //data[rowIndex][columnIndex] = (String) aValue;
         
 	// add row to database
 	EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
 	Project newRecord = projectService.createProject((String)array[0],(String)array[1],
-                (String)array[2],(String)array[3],(String)array[4]);
+                (String)array[2],(String)array[3],(String)array[4], category);
 	userTransaction.commit();		 
         
 	// set the current row to rowIndex

@@ -20,7 +20,7 @@ public class ProjectService {
     }    
     
         // method to create a new record
-    public Project createProject(String title, String status, String startDate, String endDate, String outcome) {        
+    public Project createProject(String title, String status, String startDate, String endDate, String outcome, String category) {        
         Project project = new Project();
         project.setTitle(title);
         project.setStatus(status);
@@ -29,7 +29,24 @@ public class ProjectService {
             project.setEndDate(Date.valueOf(endDate));
         }
         project.setOutcome(outcome);
- 	manager.persist(project);
+        
+        Long newID = -1L;
+        List<Category> catList = readCategories();
+        for (int i = 0; i < catList.size(); i++) {
+            if (catList.get(i).getCategory().equals(category)) {
+                newID = catList.get(i).getId();
+                break;
+            }
+        }
+        
+        Set<Category> newCategoryList = new TreeSet<Category>();
+        Category newCategory = new Category();
+        newCategory.setCategory(category);
+        newCategory.setId(newID);
+        newCategoryList.add(newCategory);
+        project.setCategory(newCategoryList);
+ 	
+        manager.persist(project);
  	return project;
     }
     
