@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.Desktop;
 import java.io.*;
 import java.util.List;
+import java.util.Comparator;
+import java.util.Collections;
 
 /**
  *
@@ -28,16 +30,17 @@ public class MediaPanel extends javax.swing.JPanel {
         projectID = frugalController.getPid();       
         this.mediaTableController = new MediaTableController(this);
         
-        // make a new function to get file types from the table
-        
-        List<FileType> fileTypes = ((MediaTableModel)this.mediaTableController.getTableModel()).getFileTypes();
+        // get file types from the table                
+        List<FileType> fileTypes = ((MediaTableModel)this.mediaTableController.getTableModel()).getFileTypes();        
+        Collections.sort(fileTypes,new Comparator<FileType>() {
+            public int compare(FileType a, FileType b) {
+                return a.getFileType().compareTo(b.getFileType());
+            }
+        });
         
         for (int i=0; i<fileTypes.size(); i++) {
             fileTypeComboBox.addItem(fileTypes.get(i).getFileType());
         }
-        
-        //fileTypeComboBox.addItem("category1");
-        //fileTypeComboBox.addItem("category2"); 
         
         jTable.setModel(mediaTableController.getTableModel()); // set the table model using the controller
         jTable.getSelectionModel().addListSelectionListener(mediaTableController); // add a listener to the table model        
