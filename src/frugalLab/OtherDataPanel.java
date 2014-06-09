@@ -4,12 +4,17 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class OtherDataPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    private OtherDataTableController otherDataTableController;
+    private String projectID;
+    private String otherDataID;
 
     /**
      * Creates new form TagPanel
@@ -17,6 +22,10 @@ public class OtherDataPanel extends javax.swing.JPanel {
     public OtherDataPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        projectID = frugalController.getPid();
+        this.otherDataTableController = new OtherDataTableController(this);
+        jTable.setModel(otherDataTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(otherDataTableController); // add a listener to the table model        
     }
 
     /**
@@ -230,19 +239,60 @@ public class OtherDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String otherDataType = getOtherDataTypeTextField();
+        String otherDataValue = getOtherDataValueTextField();
+        
+        if (otherDataType.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a data type.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (otherDataValue.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a data value.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }                
+        else {
+            String[] otherDataArray = {otherDataType, otherDataValue};
+            otherDataTableController.addRow(otherDataArray);
+            jTable.clearSelection();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String otherDataType = getOtherDataTypeTextField();
+        String otherDataValue = getOtherDataValueTextField();
+        
+        if (otherDataType.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a data type.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (otherDataValue.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a data value.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {                
+            int[] index = jTable.getSelectedRows();
+
+            if (index.length > 1) {
+                JOptionPane.showMessageDialog(this, "Please update 1 data type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String[] otherDataArray = {getOtherDataID(), otherDataType, otherDataValue};
+                otherDataTableController.setSelectedIndex(jTable.getSelectedRow());
+                otherDataTableController.updateRow(otherDataArray);
+                jTable.clearSelection();
+            }
+        } 
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        otherDataTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        otherDataTableController.clearRow();
+        jTable.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -266,4 +316,65 @@ public class OtherDataPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(otherDataTableController.getTableModel());
+    }
+    
+    /**
+     * @return the projectID
+     */
+    public String getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    /**
+     * @return the otherDataID
+     */
+    public String getOtherDataID() {
+        return otherDataID;
+    }
+
+    /**
+     * @param otherDataID the otherDataID to set
+     */
+    public void setOtherDataID(String otherDataID) {
+        this.otherDataID = otherDataID;
+    }
+
+    /**
+     * @return the otherDataTypeTextField
+     */
+    public String getOtherDataTypeTextField() {
+        return otherDataTypeTextField.getText();
+    }
+
+    /**
+     * @param otherDataTypeTextField the otherDataTypeTextField to set
+     */
+    public void setOtherDataTypeTextField(String otherDataTypeTextField) {
+        this.otherDataTypeTextField.setText(otherDataTypeTextField);
+    }
+
+    /**
+     * @return the otherDataValueTextField
+     */
+    public String getOtherDataValueTextField() {
+        return otherDataValueTextField.getText();
+    }
+
+    /**
+     * @param otherDataValueTextField the otherDataValueTextField to set
+     */
+    public void setOtherDataValueTextField(String otherDataValueTextField) {
+        this.otherDataValueTextField.setText(otherDataValueTextField);
+    }
 }
