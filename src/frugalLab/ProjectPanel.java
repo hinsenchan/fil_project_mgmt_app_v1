@@ -656,7 +656,14 @@ public class ProjectPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_advisorsManageButtonActionPerformed
 
     private void mediaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediaButtonActionPerformed
-        frugalController.launchMediaPanel();
+        frugalController.setPid(getProjectIDTextField());
+        if (getProjectIDTextField().equals("")) {
+            JOptionPane.showMessageDialog(this, "Please select a project.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        else { 
+            frugalController.launchMediaPanel();
+        }        
     }//GEN-LAST:event_mediaButtonActionPerformed
 
     private void otherDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otherDataButtonActionPerformed

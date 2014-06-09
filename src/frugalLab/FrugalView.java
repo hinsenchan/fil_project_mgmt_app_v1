@@ -61,7 +61,7 @@ public class FrugalView extends javax.swing.JFrame {
         //setAdvisorsPanel(new AdvisorsPanel(frugalController));         
         setCategoryPanel(new CategoryPanel(frugalController));         
         setTagPanel(new TagPanel(frugalController));
-        setMediaPanel(new MediaPanel(frugalController));
+        //setMediaPanel(new MediaPanel(frugalController));
         setFileTypePanel(new FileTypePanel(frugalController));
         //setOtherDataPanel(new OtherDataPanel(frugalController));
     }
@@ -82,7 +82,7 @@ public class FrugalView extends javax.swing.JFrame {
         //mainPanel.add(getAdvisorsPanel(), "AdvisorsPanel");            
         mainPanel.add(getCategoryPanel(), "CategoryPanel");          
         mainPanel.add(getTagPanel(), "TagPanel");
-        mainPanel.add(getMediaPanel(), "MediaPanel");
+        //mainPanel.add(getMediaPanel(), "MediaPanel");
         mainPanel.add(getFileTypePanel(), "FileTypePanel");
         //mainPanel.add(getOtherDataPanel(), "OtherDataPanel");
         ((CardLayout)mainPanel.getLayout()).show(mainPanel, "BannerPanel");        

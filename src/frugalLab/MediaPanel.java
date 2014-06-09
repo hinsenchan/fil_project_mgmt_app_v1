@@ -4,12 +4,20 @@
  */
 package frugalLab;
 
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+import java.util.List;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class MediaPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    private MediaTableController mediaTableController;
+    private String projectID;
+    private String mediaID;    
 
     /**
      * Creates new form TagPanel
@@ -17,6 +25,22 @@ public class MediaPanel extends javax.swing.JPanel {
     public MediaPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        projectID = frugalController.getPid();       
+        this.mediaTableController = new MediaTableController(this);
+        
+        // make a new function to get file types from the table
+        
+        List<FileType> fileTypes = ((MediaTableModel)this.mediaTableController.getTableModel()).getFileTypes();
+        
+        for (int i=0; i<fileTypes.size(); i++) {
+            fileTypeComboBox.addItem(fileTypes.get(i).getFileType());
+        }
+        
+        //fileTypeComboBox.addItem("category1");
+        //fileTypeComboBox.addItem("category2"); 
+        
+        jTable.setModel(mediaTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(mediaTableController); // add a listener to the table model        
     }
 
     /**
@@ -71,13 +95,11 @@ public class MediaPanel extends javax.swing.JPanel {
         fileLocationLabel.setText("File Location:");
         fileLocationLabel.setOpaque(true);
 
-        fileNameTextField.setText("jTextField1");
         fileNameTextField.setPreferredSize(new java.awt.Dimension(180, 27));
 
-        fileLocationTextField.setText("jTextField1");
         fileLocationTextField.setPreferredSize(new java.awt.Dimension(400, 27));
 
-        fileTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        fileTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please select one..." }));
         fileTypeComboBox.setPreferredSize(new java.awt.Dimension(180, 27));
         fileTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,23 +302,85 @@ public class MediaPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+        String fileLocation = getFileLocationTextField();
+        if (!fileLocation.isEmpty()) {
+            try {
+                File file = new File(fileLocation);
+            
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(file);
+                }
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Unable to open file or directory.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String fileType = getFileTypeComboBox();
+        String fileName = getFileNameTextField();
+        String fileLocation = getFileLocationTextField();
+        
+        if (fileType.equals("Please select one...")) {
+            JOptionPane.showMessageDialog(this, "Please select a file type.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (fileName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a file name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (fileLocation.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a file location.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }                
+        else {
+            String[] mediaArray = {fileType, fileName, fileLocation};
+            mediaTableController.addRow(mediaArray);            
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String fileType = getFileTypeComboBox();
+        String fileName = getFileNameTextField();
+        String fileLocation = getFileLocationTextField();
+        
+        if (fileType.equals("Please select one...")) {
+            JOptionPane.showMessageDialog(this, "Please select a file type.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (fileName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a file name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else if (fileLocation.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a file location.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {                
+            int[] index = jTable.getSelectedRows();
+
+            if (index.length > 1) {
+                JOptionPane.showMessageDialog(this, "Please update 1 media at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String[] mediaArray = {getMediaID(), fileType, fileName, fileLocation};
+                mediaTableController.setSelectedIndex(jTable.getSelectedRow());
+                mediaTableController.updateRow(mediaArray);
+            }
+        } 
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        mediaTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        mediaTableController.clearRow();
+        jTable.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -332,4 +416,80 @@ public class MediaPanel extends javax.swing.JPanel {
     private javax.swing.JButton updateButton;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(mediaTableController.getTableModel());
+    }
+    
+    /**
+     * @return the projectID
+     */
+    public String getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    /**
+     * @return the mediaID
+     */
+    public String getMediaID() {
+        return mediaID;
+    }
+
+    /**
+     * @param mediaID the mediaID to set
+     */
+    public void setMediaID(String mediaID) {
+        this.mediaID = mediaID;
+    }
+
+    /**
+     * @return the fileLocationTextField
+     */
+    public String getFileLocationTextField() {
+        return fileLocationTextField.getText();
+    }
+
+    /**
+     * @param fileLocationTextField the fileLocationTextField to set
+     */
+    public void setFileLocationTextField(String fileLocationTextField) {
+        this.fileLocationTextField.setText(fileLocationTextField);
+    }
+
+    /**
+     * @return the fileNameTextField
+     */
+    public String getFileNameTextField() {
+        return fileNameTextField.getText();
+    }
+
+    /**
+     * @param fileNameTextField the fileNameTextField to set
+     */
+    public void setFileNameTextField(String fileNameTextField) {
+        this.fileNameTextField.setText(fileNameTextField);
+    }
+
+    /**
+     * @return the fileTypeComboBox
+     */
+    public String getFileTypeComboBox() {
+        return (String)fileTypeComboBox.getSelectedItem();
+    }
+
+    /**
+     * @param fileTypeComboBox the fileTypeComboBox to set
+     */
+    public void setFileTypeComboBox(String fileTypeComboBox) {
+        // may have to use conditions here!!!
+        this.fileTypeComboBox.setSelectedItem((Object)fileTypeComboBox);
+    }
 }

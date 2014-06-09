@@ -97,6 +97,8 @@ public class FrugalController {
     }
     
     public void launchMediaPanel() {
+        frugalView.setMediaPanel(new MediaPanel(this));
+        mainPanel.add(frugalView.getMediaPanel(), "MediaPanel");        
         cardLayout.show(mainPanel, "MediaPanel");
     }
     
