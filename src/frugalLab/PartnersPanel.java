@@ -4,12 +4,17 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class PartnersPanel extends javax.swing.JPanel {
     FrugalController frugalController;
+    private PartnersTableController partnersTableController; // controller for the students panel
+    private String projectID;
+    private String partnerID;
     
     /**
      * Creates new form MediaPanel2
@@ -17,6 +22,10 @@ public class PartnersPanel extends javax.swing.JPanel {
     public PartnersPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        projectID = frugalController.getPid();
+        this.partnersTableController = new PartnersTableController(this);
+        jTable.setModel(partnersTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(partnersTableController); // add a listener to the table model
     }
 
     /**
@@ -226,19 +235,51 @@ public class PartnersPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getPartnerNameTextField();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {
+            String[] partnersArray = {name};
+            partnersTableController.addRow(partnersArray);
+            jTable.clearSelection();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getPartnerNameTextField();
+        
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {                
+            int[] index = jTable.getSelectedRows();
+
+            if (index.length > 1) {
+                JOptionPane.showMessageDialog(this, "Please update 1 partner at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String[] projectArray = {getPartnerID(), name};
+                partnersTableController.setSelectedIndex(jTable.getSelectedRow());
+                partnersTableController.updateRow(projectArray);
+                jTable.clearSelection();
+            }
+        } 
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        partnersTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        partnersTableController.clearRow();
+        jTable.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -262,4 +303,52 @@ public class PartnersPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(partnersTableController.getTableModel());
+    }
+
+    /**
+     * @return the partnerNameTextField
+     */
+    public String getPartnerNameTextField() {
+        return partnerNameTextField.getText();
+    }
+
+    /**
+     * @param partnerNameTextField the partnerNameTextField to set
+     */
+    public void setPartnerNameTextField(String partnerNameTextField) {
+        this.partnerNameTextField.setText(partnerNameTextField);
+    }
+
+    /**
+     * @return the projectID
+     */
+    public String getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    /**
+     * @return the partnerID
+     */
+    public String getPartnerID() {
+        return partnerID;
+    }
+
+    /**
+     * @param partnerID the partnerID to set
+     */
+    public void setPartnerID(String partnerID) {
+        this.partnerID = partnerID;
+    }
+
 }

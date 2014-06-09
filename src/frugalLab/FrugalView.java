@@ -57,13 +57,13 @@ public class FrugalView extends javax.swing.JFrame {
         setUserManagerPanel(new UserManagerPanel(frugalController));
         setProjectPanel(new ProjectPanel(frugalController));
         //setStudentsPanel(new StudentsPanel(frugalController));
-        setPartnersPanel(new PartnersPanel(frugalController));        
-        setAdvisorsPanel(new AdvisorsPanel(frugalController));         
+        //setPartnersPanel(new PartnersPanel(frugalController));        
+        //setAdvisorsPanel(new AdvisorsPanel(frugalController));         
         setCategoryPanel(new CategoryPanel(frugalController));         
         setTagPanel(new TagPanel(frugalController));
         setMediaPanel(new MediaPanel(frugalController));
         setFileTypePanel(new FileTypePanel(frugalController));
-        setOtherDataPanel(new OtherDataPanel(frugalController));
+        //setOtherDataPanel(new OtherDataPanel(frugalController));
     }
     
     public void setupMainPanel() {
@@ -78,13 +78,13 @@ public class FrugalView extends javax.swing.JFrame {
         mainPanel.add(getUserManagerPanel(), "UserManagerPanel");
         mainPanel.add(getProjectPanel(), "ProjectPanel");
         //mainPanel.add(getStudentsPanel(), "StudentsPanel");        
-        mainPanel.add(getPartnersPanel(), "PartnersPanel");          
-        mainPanel.add(getAdvisorsPanel(), "AdvisorsPanel");            
+        //mainPanel.add(getPartnersPanel(), "PartnersPanel");          
+        //mainPanel.add(getAdvisorsPanel(), "AdvisorsPanel");            
         mainPanel.add(getCategoryPanel(), "CategoryPanel");          
         mainPanel.add(getTagPanel(), "TagPanel");
         mainPanel.add(getMediaPanel(), "MediaPanel");
         mainPanel.add(getFileTypePanel(), "FileTypePanel");
-        mainPanel.add(getOtherDataPanel(), "OtherDataPanel");
+        //mainPanel.add(getOtherDataPanel(), "OtherDataPanel");
         ((CardLayout)mainPanel.getLayout()).show(mainPanel, "BannerPanel");        
     }
     

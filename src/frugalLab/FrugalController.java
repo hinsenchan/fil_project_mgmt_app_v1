@@ -77,10 +77,14 @@ public class FrugalController {
     }
     
     public void launchPartnersPanel() {
+        frugalView.setPartnersPanel(new PartnersPanel(this));
+        mainPanel.add(frugalView.getPartnersPanel(), "PartnersPanel"); 
         cardLayout.show(mainPanel, "PartnersPanel");
     }    
     
     public void launchAdvisorsPanel() {
+        frugalView.setAdvisorsPanel(new AdvisorsPanel(this));
+        mainPanel.add(frugalView.getAdvisorsPanel(), "AdvisorsPanel");        
         cardLayout.show(mainPanel, "AdvisorsPanel");
     }    
 
@@ -101,6 +105,8 @@ public class FrugalController {
     }
     
     public void launchOtherDataPanel() {
+        frugalView.setOtherDataPanel(new OtherDataPanel(this));
+        mainPanel.add(frugalView.getOtherDataPanel(), "OtherDataPanel");        
         cardLayout.show(mainPanel, "OtherDataPanel");
     }    
 

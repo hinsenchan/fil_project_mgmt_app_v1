@@ -4,19 +4,25 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class AdvisorsPanel extends javax.swing.JPanel {
     FrugalController frugalController;
+    private AdvisorsTableController advisorsTableController;
+    private String projectID;
+    private String advisorID;
     
-    /**
-     * Creates new form MediaPanel2
-     */
     public AdvisorsPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        projectID = frugalController.getPid();
+        this.advisorsTableController = new AdvisorsTableController(this);
+        jTable.setModel(advisorsTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(advisorsTableController); // add a listener to the table model
     }
 
     /**
@@ -226,19 +232,51 @@ public class AdvisorsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getAdvisorNameTextField();
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {
+            String[] studentsArray = {name};
+            advisorsTableController.addRow(studentsArray);
+            jTable.clearSelection();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String name = getAdvisorNameTextField();
+        
+        
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a name.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }        
+        else {                
+            int[] index = jTable.getSelectedRows();
+
+            if (index.length > 1) {
+                JOptionPane.showMessageDialog(this, "Please update 1 advisor at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String[] projectArray = {getAdvisorID(), name};
+                advisorsTableController.setSelectedIndex(jTable.getSelectedRow());
+                advisorsTableController.updateRow(projectArray);
+                jTable.clearSelection();
+            }
+        } 
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        advisorsTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        advisorsTableController.clearRow();
+        jTable.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -262,4 +300,45 @@ public class AdvisorsPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(advisorsTableController.getTableModel());
+    }
+    
+    public String getAdvisorNameTextField() {
+        return advisorNameTextField.getText();
+    }
+
+    public void setAdvisorNameTextField(String advisorNameTextField) {
+        this.advisorNameTextField.setText(advisorNameTextField);
+    }
+
+    /**
+     * @return the projectID
+     */
+    public String getProjectID() {
+        return projectID;
+    }
+
+    /**
+     * @param projectID the projectID to set
+     */
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    /**
+     * @return the advisorID
+     */
+    public String getAdvisorID() {
+        return advisorID;
+    }
+
+    /**
+     * @param advisorID the advisorID to set
+     */
+    public void setAdvisorID(String advisorID) {
+        this.advisorID = advisorID;
+    }
 }
