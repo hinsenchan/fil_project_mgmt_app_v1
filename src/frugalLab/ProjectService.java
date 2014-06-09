@@ -25,7 +25,9 @@ public class ProjectService {
         project.setTitle(title);
         project.setStatus(status);
         project.setStartDate(Date.valueOf(startDate));
-        project.setEndDate(Date.valueOf(endDate));
+        if (!endDate.isEmpty()) {
+            project.setEndDate(Date.valueOf(endDate));
+        }
         project.setOutcome(outcome);
  	manager.persist(project);
  	return project;

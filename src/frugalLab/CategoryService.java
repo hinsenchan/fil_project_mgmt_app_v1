@@ -42,10 +42,7 @@ public class CategoryService {
      
     // method to update a record
     public Category updateCategory(Long id, String newCategory) {
-        System.out.println(id);
-        System.out.println(newCategory);
         Category category = manager.find(Category.class, id);        
-        System.out.println(category);
     	if (category != null) {
             category.setCategory(newCategory);
             manager.persist(category);

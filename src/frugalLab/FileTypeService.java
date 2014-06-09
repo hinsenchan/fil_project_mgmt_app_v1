@@ -42,10 +42,7 @@ public class FileTypeService {
      
     // method to update a record
     public FileType updateFileType(Long id, String newFileType) {
-        System.out.println(id);
-        System.out.println(newFileType);
         FileType fileType = manager.find(FileType.class, id);        
-        System.out.println(fileType);
     	if (fileType != null) {
             fileType.setFileType(newFileType);
             manager.persist(fileType);

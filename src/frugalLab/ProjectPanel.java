@@ -565,14 +565,37 @@ public class ProjectPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please enter an outcome.", "Error", 
                     JOptionPane.ERROR_MESSAGE);
         }
+        else if (categoriesList.getSelectedIndices().length == 0) {
+            JOptionPane.showMessageDialog(this, "Please select one category.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);                        
+        }
+        else if (categoriesList.getSelectedIndices().length > 1) {
+            JOptionPane.showMessageDialog(this, "Please select only one category.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);            
+        }
         else {
             try {
+                // Validates dates entered
                 Date sDate = Date.valueOf(startDate);
-                Date eDate = Date.valueOf(endDate);
                 
-                String[] projectArray = {title, status, startDate, endDate, outcome};
-                projectTableController.addRow(projectArray);
-                jTable.clearSelection();
+                if (!endDate.isEmpty()) {
+                    Date eDate = Date.valueOf(endDate); 
+                
+                    if (sDate.compareTo(eDate) > 0) {
+                        JOptionPane.showMessageDialog(this, "End date entered must be after start date.", "Error", 
+                                JOptionPane.ERROR_MESSAGE);                           
+                    }
+                    else {
+                        String[] projectArray = {title, status, startDate, endDate, outcome};
+                        projectTableController.addRow(projectArray);
+                        jTable.clearSelection();                        
+                    }
+                }
+                else {                
+                    String[] projectArray = {title, status, startDate, endDate, outcome};
+                    projectTableController.addRow(projectArray);
+                    jTable.clearSelection();
+                }
             }
             catch (IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid date using this format: "
