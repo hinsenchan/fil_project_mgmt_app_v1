@@ -553,6 +553,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
         List<String> category = getCategoriesList();
+        int[] selectedCategory = categoriesList.getSelectedIndices();
         
         if (title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
@@ -613,6 +614,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         String startDate = getStartDateTextField();        
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
+        List<String> category = getCategoriesList();        
         
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No project ID detected. "
@@ -633,18 +635,32 @@ public class ProjectPanel extends javax.swing.JPanel {
         }
         else {
             try {
+                // Validates dates entered
                 Date sDate = Date.valueOf(startDate);
-                Date eDate = Date.valueOf(endDate);
-                
-                int[] index = jTable.getSelectedRows();
-
-                if (index.length > 1) {
-                    JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+				
+		int[] index = jTable.getSelectedRows();
+				
+		if (index.length > 1) {
+                    JOptionPane.showMessageDialog(this, "Please update 1 project at a time.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                else {
+                else if (!endDate.isEmpty()) {
+                    Date eDate = Date.valueOf(endDate); 
+                
+                    if (sDate.compareTo(eDate) > 0) {
+                        JOptionPane.showMessageDialog(this, "End date entered must be after start date.", "Error", 
+                                JOptionPane.ERROR_MESSAGE);                           
+                    }
+                    else {
+                        String[] projectArray = {id, title, status, startDate, endDate, outcome};
+                        projectTableController.setSelectedIndex(jTable.getSelectedRow());
+                        projectTableController.updateRow(projectArray, category.get(0));
+                        jTable.clearSelection();
+                    }
+                }
+                else {                
                     String[] projectArray = {id, title, status, startDate, endDate, outcome};
                     projectTableController.setSelectedIndex(jTable.getSelectedRow());
-                    projectTableController.updateRow(projectArray);
+               	    projectTableController.updateRow(projectArray, category.get(0));
                     jTable.clearSelection();
                 }
             }
@@ -660,11 +676,13 @@ public class ProjectPanel extends javax.swing.JPanel {
         int[] index = jTable.getSelectedRows();
         projectTableController.deleteRow(index);
         jTable.clearSelection();
+        categoriesList.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     // clear button handler. clears the textfield on the current panel
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         projectTableController.clearRow();
+        categoriesList.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void studentsManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsManageButtonActionPerformed
@@ -877,5 +895,11 @@ public class ProjectPanel extends javax.swing.JPanel {
 
     public List<String> getCategoriesList() {
         return categoriesList.getSelectedValuesList();
+    }
+    
+    public void setCategoriesList(String[] categories) {
+        for (int i = 0; i < categories.length; i++) {
+            categoriesList.setSelectedValue(categories[i], true);    
+        }        
     }
 }

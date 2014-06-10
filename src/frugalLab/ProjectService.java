@@ -60,9 +60,43 @@ public class ProjectService {
     public List<Project> readAll() {
         TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e", Project.class);
         List<Project> result =  query.getResultList();
-
+        
+        
+        List<Project> projList = findRelatedProjects();
+        List<Category> catList = findRelatedCategories();
+        
+        for (int i = 0; i < projList.size(); i++) {
+            if (result.contains(projList.get(i))) {
+                for (int j = 0; j < result.size(); j++) {
+                    if (result.get(j).getId().equals(projList.get(i).getId())) {
+                        Set<Category> catSet = new TreeSet<Category>();
+                        catSet.add(catList.get(i));                        
+                        result.get(j).setCategory(catSet);
+                    }
+                }
+            }
+        }
+        /*
+        for (int i = 0; i< result.size(); i++) {
+            System.out.println(result.get(i));
+        }
+        */
+        
     	return result;   	 
     }
+    
+    public List<Project> findRelatedProjects() {
+        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e JOIN e.category f", Project.class);
+        List<Project> result =  query.getResultList();
+        return result;
+    }            
+    
+    public List<Category> findRelatedCategories() {
+        TypedQuery<Category> query = manager.createQuery("SELECT e FROM CATEGORY e JOIN e.projects f", Category.class);
+        List<Category> result =  query.getResultList();
+        return result;
+    }        
+    
     
     public List<Category> readCategories() {
         TypedQuery<Category> query = manager.createQuery("SELECT e FROM CATEGORY e", Category.class);
@@ -72,7 +106,7 @@ public class ProjectService {
     }    
      
     // method to update a record
-    public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome) {
+    public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome, String category) {
         Project project = manager.find(Project.class, id);
         
     	if (project != null) {
@@ -81,6 +115,23 @@ public class ProjectService {
             project.setStartDate(Date.valueOf(startDate));
             project.setEndDate(Date.valueOf(endDate));
             project.setOutcome(outcome);
+            
+            Long newID = -1L;
+            List<Category> catList = readCategories();
+            for (int i = 0; i < catList.size(); i++) {
+                if (catList.get(i).getCategory().equals(category)) {
+                    newID = catList.get(i).getId();
+                    break;
+                }
+            }
+        
+            Set<Category> newCategoryList = new TreeSet<Category>();
+            Category newCategory = new Category();
+            newCategory.setCategory(category);
+            newCategory.setId(newID);
+            newCategoryList.add(newCategory);
+            project.setCategory(newCategoryList);            
+            
             manager.persist(project);
     	}
         

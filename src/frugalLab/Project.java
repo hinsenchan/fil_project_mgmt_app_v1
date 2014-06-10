@@ -210,7 +210,7 @@ public class Project implements Serializable, Comparable {
     public String toString() {
         return "PROJECT [Id = " + id + ", Title = " + title + 
                 ", Status = " + status + ", Start Date = " + startDate + 
-                ", End Date = " + endDate + ", Outcome = " + outcome + "]";
+                ", End Date = " + endDate + ", Outcome = " + outcome + ", Category = " + category.toString() + "]";
     }    
 
     /**
@@ -234,5 +234,5 @@ public class Project implements Serializable, Comparable {
             return 1;
         else
             return -1;
-    }
+    }    
 }

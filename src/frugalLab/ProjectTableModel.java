@@ -136,17 +136,17 @@ public class ProjectTableModel extends AbstractTableModel {
         for (Object data : array) {
             setValueAt((String) data, row-1, col++);
         }
-         
+          
         numrows++;
     }	    
     
     // update a row in the table
-    public void updateRow(int index, String[] array) {        
+    public void updateRow(int index, String[] array, String category) {        
         EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
 
 	Project updatedRecord = projectService.updateProject(Long.parseLong(array[0]), array[1], 
-                array[2], array[3], array[4], array[5]);
+                array[2], array[3], array[4], array[5], category);
 	userTransaction.commit();
         
         int col = 0;

@@ -8,10 +8,9 @@ import javax.swing.table.TableModel;
 import javax.swing.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -49,6 +48,26 @@ public class ProjectTableController implements ListSelectionListener, TableModel
         projectPanel.setStartDateTextField( (String)projectTableModel.getValueAt(firstIndex, 3));
         projectPanel.setEndDateTextField( (String)projectTableModel.getValueAt(firstIndex, 4));
         projectPanel.setOutcomeTextArea( (String)projectTableModel.getValueAt(firstIndex, 5));
+        
+        Set<Category> catSet;
+        String[] catList;
+        Iterator<Category> iter;
+        int counter = 0;
+        
+        try {
+            catSet = projectTableModel.getList().get(firstIndex).getCategory();
+            catList = new String[catSet.size()];
+            iter = catSet.iterator();
+            
+            while (iter.hasNext()) {
+                catList[counter++] = iter.next().getCategory();
+            }
+            
+            projectPanel.setCategoriesList(catList);
+        }
+        catch (Exception ex) {}                                                
+        
+        //System.out.println(projectTableModel.getList().get(firstIndex).getCategory());        
     }
 	
     // table listener. updates table in panel
@@ -94,7 +113,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
     
     // update a row in the table
-    public void updateRow(String[] array) {
+    public void updateRow(String[] array, String category) {
         try {
             if (jTableRowSelected == true) {
                 if (locate(array[1], array[0])) {                    
@@ -102,7 +121,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 else {
-                    projectTableModel.updateRow(firstIndex, array);
+                    projectTableModel.updateRow(firstIndex, array, category);
                 }
             }
             else {
