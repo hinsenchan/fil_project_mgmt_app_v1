@@ -13,13 +13,14 @@ import javax.persistence.Column;
 import javax.persistence.*;
 import java.sql.*;
 import java.util.Set;
+import java.util.List;
 
 /**
  *
  * @author Hinsen Chan
  */
 @Entity(name = "PROJECT")
-public class Project implements Serializable {
+public class Project implements Serializable, Comparable {
     //primary key id
     @Id
     @Column(name = "ID")
@@ -58,6 +59,19 @@ public class Project implements Serializable {
     */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private Set<Students> students;
+    
+    //@ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(name="PROJECT_CATEGORY",
+    joinColumns = @JoinColumn(name="PID"),
+    inverseJoinColumns = @JoinColumn(name="CID"))
+    private Set<Category> category;
+    
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(name="PROJECT_TAG",
+    joinColumns = @JoinColumn(name="PID"),
+    inverseJoinColumns = @JoinColumn(name="TID"))
+    private Set<Tag> tags;    
     
     public Long getId() {
         return id;
@@ -202,6 +216,44 @@ public class Project implements Serializable {
     public String toString() {
         return "PROJECT [Id = " + id + ", Title = " + title + 
                 ", Status = " + status + ", Start Date = " + startDate + 
-                ", End Date = " + endDate + ", Outcome = " + outcome + "]";
+                ", End Date = " + endDate + ", Outcome = " + outcome + 
+                ", Category = " + category.toString() + ", Tag = " + tags.toString() + "]";
+    }    
+
+    /**
+     * @return the category
+     */
+    public Set<Category> getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(Set<Category> category) {
+        this.category = category;
+    }
+    
+    /**
+     * @return the category
+     */
+    public Set<Tag> getTag() {
+        return tags;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setTag(Set<Tag> tags) {
+        this.tags = tags;
+    }    
+    
+    public int compareTo(Object o1) {
+        if (this.title.compareTo(((Project) o1).title) == 0)
+            return 0;
+        else if (this.title.compareTo(((Project) o1).title) > 0)
+            return 1;
+        else
+            return -1;
     }    
 }

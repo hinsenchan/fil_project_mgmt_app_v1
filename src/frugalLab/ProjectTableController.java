@@ -8,10 +8,9 @@ import javax.swing.table.TableModel;
 import javax.swing.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -49,6 +48,58 @@ public class ProjectTableController implements ListSelectionListener, TableModel
         projectPanel.setStartDateTextField( (String)projectTableModel.getValueAt(firstIndex, 3));
         projectPanel.setEndDateTextField( (String)projectTableModel.getValueAt(firstIndex, 4));
         projectPanel.setOutcomeTextArea( (String)projectTableModel.getValueAt(firstIndex, 5));
+        
+        Set<Category> catSet;
+        String[] catList;
+        Iterator<Category> iter;
+        int counter = 0;
+        
+        try {
+            catSet = projectTableModel.getList().get(firstIndex).getCategory();
+            catList = new String[catSet.size()];
+            iter = catSet.iterator();
+            
+            while (iter.hasNext()) {
+                catList[counter++] = iter.next().getCategory();
+            }
+            
+            projectPanel.setCategoriesList(catList);
+        }
+        catch (Exception ex) {}     
+        
+        Set<Tag> tagSet;
+        String[] tagList;
+        Iterator<Tag> iter2;
+        counter = 0;
+        
+        try {
+            tagSet = projectTableModel.getList().get(firstIndex).getTag();
+            tagList = new String[tagSet.size()];
+            iter2 = tagSet.iterator();
+            
+            while (iter2.hasNext()) {
+                tagList[counter++] = iter2.next().getTag();
+            }
+            
+            /*
+            for (String data : tagList) {
+                //System.out.println(data);
+            }
+            */
+            
+            int[] indices = new int[tagList.length];
+            counter = 0;
+
+            for (int i = 0; i < projectPanel.getTagJList().getModel().getSize(); i++) {
+                for (int j = 0; j < tagList.length; j++) {
+                    if (projectPanel.getTagJList().getModel().getElementAt(i).toString().equals(tagList[j])) {
+                        indices[counter++] = i;
+                    }
+                }
+            }           
+            projectPanel.getTagJList().setSelectedIndices(indices);
+        }
+        catch (Exception ex) {}                         
     }
 	
     // table listener. updates table in panel
@@ -59,7 +110,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
 	    firstIndex =  e.getFirstRow();
             
 	    // create a new table model with the new data
-	    projectTableModel = new ProjectTableModel(projectTableModel.getList(), projectTableModel.getEntityManager());
+	    projectTableModel = new ProjectTableModel(projectTableModel.getList(), projectTableModel.getEntityManager(), projectTableModel.getCategories(), projectTableModel.getTags());
 	    projectTableModel.addTableModelListener(this);
 	    // update the JTable with the data
 	    projectPanel.updateTable();	    
@@ -77,10 +128,10 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
 
     // add a new row to the table
-    public void addRow(String[] array) {   
+    public void addRow(String[] array, String category, List<String> tags) {   
         try {
             if (!locate(array[0])) {
-                projectTableModel.addRow(array); // add row to database
+                projectTableModel.addRow(array, category, tags); // add row to database
             }
             else {
                 JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -94,7 +145,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
     
     // update a row in the table
-    public void updateRow(String[] array) {
+    public void updateRow(String[] array, String category, List<String> tags) {
         try {
             if (jTableRowSelected == true) {
                 if (locate(array[1], array[0])) {                    
@@ -102,7 +153,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 else {
-                    projectTableModel.updateRow(firstIndex, array);
+                    projectTableModel.updateRow(firstIndex, array, category, tags);
                 }
             }
             else {

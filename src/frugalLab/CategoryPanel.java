@@ -4,12 +4,15 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class CategoryPanel extends javax.swing.JPanel {
     FrugalController frugalController;
+    CategoryTableController categoryTableController; // controller for the file type panel
     
     /**
      * Creates new form MediaPanel2
@@ -17,6 +20,9 @@ public class CategoryPanel extends javax.swing.JPanel {
     public CategoryPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.categoryTableController = new CategoryTableController(this);
+        jTable.setModel(categoryTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(categoryTableController); // add a listener to the table model        
     }
 
     /**
@@ -226,19 +232,44 @@ public class CategoryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String category = getCategoryTextField();
+
+        if (category.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a category.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] categoryArray = {category};
+            categoryTableController.addRow(categoryArray);
+            categoryTextField.setText(category);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String category = getCategoryTextField();
+        int[] index = jTable.getSelectedRows();
+
+        if (category.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a category.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (index.length > 1) {
+            JOptionPane.showMessageDialog(this, "Please update 1 category at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] categoryArray = {category};
+            categoryTableController.setSelectedIndex(jTable.getSelectedRow());
+            categoryTableController.updateRow(categoryArray);
+            categoryTextField.setText(category);
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        categoryTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        categoryTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -262,4 +293,24 @@ public class CategoryPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(categoryTableController.getTableModel());
+    }
+
+    /**
+     * @return the categoryTextField
+     */
+    public String getCategoryTextField() {
+        return categoryTextField.getText();
+    }
+
+    /**
+     * @param categoryTextField the categoryTextField to set
+     */
+    public void setCategoryTextField(String categoryTextField) {
+        this.categoryTextField.setText(categoryTextField);
+    }
+
 }

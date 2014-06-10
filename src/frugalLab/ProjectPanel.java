@@ -5,8 +5,12 @@
 package frugalLab;
 
 import java.sql.Date;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelEvent;
 
 /**
  *
@@ -24,6 +28,43 @@ public class ProjectPanel extends javax.swing.JPanel {
         initComponents();
         this.frugalController = frugalController;
         this.projectTableController = new ProjectTableController(this);
+        
+        // get file types from the table                
+        List<Category> categories = ((ProjectTableModel)this.projectTableController.getTableModel()).getCategories();        
+        Collections.sort(categories,new Comparator<Category>() {
+            public int compare(Category a, Category b) {
+                return a.getCategory().compareTo(b.getCategory());
+            }
+        });
+                
+        DefaultListModel listModel = new DefaultListModel();
+        listModel.addElement("Select one...");
+        listModel.addElement("Add new category...");
+        
+        for (int i=0; i<categories.size(); i++) {
+            listModel.addElement(categories.get(i).getCategory());
+        }
+        
+        categoriesList.setModel(listModel);
+        
+        // get file types from the table                
+        List<Tag> tags = ((ProjectTableModel)this.projectTableController.getTableModel()).getTags();        
+        Collections.sort(tags,new Comparator<Tag>() {
+            public int compare(Tag a, Tag b) {
+                return a.getTag().compareTo(b.getTag());
+            }
+        });
+                
+        DefaultListModel listModel2 = new DefaultListModel();
+        listModel2.addElement("Select one or more...");
+        listModel2.addElement("Add new tag...");
+        
+        for (int i=0; i<tags.size(); i++) {
+            listModel2.addElement(tags.get(i).getTag());
+        }
+        
+        tagsList.setModel(listModel2);        
+        
         jTable.setModel(projectTableController.getTableModel()); // set the table model using the controller
         jTable.getSelectionModel().addListSelectionListener(projectTableController); // add a listener to the table model
     }
@@ -144,7 +185,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         leftPropPanelLayout.setHorizontalGroup(
             leftPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftPropPanelLayout.createSequentialGroup()
-                .addContainerGap(61, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addGroup(leftPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(outcomeLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -262,7 +303,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         otherDataLabel.setOpaque(true);
 
         categoriesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Select one...", "Add new category...", "Cat1", "Cat2", "Cat3" };
+            String[] strings = { "Select one...", "Add new category..." };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -273,11 +314,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         });
         categoriesScrollPane.setViewportView(categoriesList);
 
-        tagsList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Select one or more...", "Add new tag...", "Tag1", "Tag2", "Tag3" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        tagsList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tagsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 tagsListValueChanged(evt);
@@ -325,7 +362,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         rightPropPanelLayout.setHorizontalGroup(
             rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rightPropPanelLayout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(studentsLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(partnersLabel, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -344,7 +381,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                         .addComponent(tagScrollPane)
                         .addComponent(mediaButton)
                         .addComponent(categoriesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         rightPropPanelLayout.setVerticalGroup(
             rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,6 +566,11 @@ public class ProjectPanel extends javax.swing.JPanel {
         String startDate = getStartDateTextField();        
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
+        List<String> category = getCategoriesList();
+        List<String> tag = getTagsList();
+        
+        int[] selectedCategory = categoriesList.getSelectedIndices();
+        int[] selectedTag = tagsList.getSelectedIndices();
         
         if (title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
@@ -542,14 +584,37 @@ public class ProjectPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please enter an outcome.", "Error", 
                     JOptionPane.ERROR_MESSAGE);
         }
+        else if (categoriesList.getSelectedIndices().length == 0) {
+            JOptionPane.showMessageDialog(this, "Please select one category.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);                        
+        }
+        else if (categoriesList.getSelectedIndices().length > 1) {
+            JOptionPane.showMessageDialog(this, "Please select only one category.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);            
+        }
         else {
             try {
+                // Validates dates entered
                 Date sDate = Date.valueOf(startDate);
-                Date eDate = Date.valueOf(endDate);
                 
-                String[] projectArray = {title, status, startDate, endDate, outcome};
-                projectTableController.addRow(projectArray);
-                jTable.clearSelection();
+                if (!endDate.isEmpty()) {
+                    Date eDate = Date.valueOf(endDate); 
+                
+                    if (sDate.compareTo(eDate) > 0) {
+                        JOptionPane.showMessageDialog(this, "End date entered must be after start date.", "Error", 
+                                JOptionPane.ERROR_MESSAGE);                           
+                    }
+                    else {
+                        String[] projectArray = {title, status, startDate, endDate, outcome};
+                        projectTableController.addRow(projectArray, category.get(0), tag);
+                        jTable.clearSelection();                        
+                    }
+                }
+                else {                
+                    String[] projectArray = {title, status, startDate, endDate, outcome};
+                    projectTableController.addRow(projectArray, category.get(0), tag);
+                    jTable.clearSelection();
+                }
             }
             catch (IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid date using this format: "
@@ -566,6 +631,8 @@ public class ProjectPanel extends javax.swing.JPanel {
         String startDate = getStartDateTextField();        
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
+        List<String> category = getCategoriesList();      
+        List<String> tag = getTagsList();
         
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No project ID detected. "
@@ -586,18 +653,32 @@ public class ProjectPanel extends javax.swing.JPanel {
         }
         else {
             try {
+                // Validates dates entered
                 Date sDate = Date.valueOf(startDate);
-                Date eDate = Date.valueOf(endDate);
-                
-                int[] index = jTable.getSelectedRows();
-
-                if (index.length > 1) {
-                    JOptionPane.showMessageDialog(this, "Please update 1 file type at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+				
+		int[] index = jTable.getSelectedRows();
+				
+		if (index.length > 1) {
+                    JOptionPane.showMessageDialog(this, "Please update 1 project at a time.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                else {
+                else if (!endDate.isEmpty()) {
+                    Date eDate = Date.valueOf(endDate); 
+                
+                    if (sDate.compareTo(eDate) > 0) {
+                        JOptionPane.showMessageDialog(this, "End date entered must be after start date.", "Error", 
+                                JOptionPane.ERROR_MESSAGE);                           
+                    }
+                    else {
+                        String[] projectArray = {id, title, status, startDate, endDate, outcome};
+                        projectTableController.setSelectedIndex(jTable.getSelectedRow());
+                        projectTableController.updateRow(projectArray, category.get(0), tag);
+                        jTable.clearSelection();
+                    }
+                }
+                else {                
                     String[] projectArray = {id, title, status, startDate, endDate, outcome};
                     projectTableController.setSelectedIndex(jTable.getSelectedRow());
-                    projectTableController.updateRow(projectArray);
+               	    projectTableController.updateRow(projectArray, category.get(0), tag);
                     jTable.clearSelection();
                 }
             }
@@ -613,11 +694,15 @@ public class ProjectPanel extends javax.swing.JPanel {
         int[] index = jTable.getSelectedRows();
         projectTableController.deleteRow(index);
         jTable.clearSelection();
+        categoriesList.clearSelection();
+        tagsList.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     // clear button handler. clears the textfield on the current panel
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         projectTableController.clearRow();
+        categoriesList.clearSelection();
+        tagsList.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void studentsManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsManageButtonActionPerformed
@@ -682,13 +767,19 @@ public class ProjectPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_statusComboBoxActionPerformed
 
     private void categoriesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoriesListValueChanged
-        if (categoriesList.getSelectedIndex() == 1) {
+        if (categoriesList.getSelectedIndex() == 0) {
+            categoriesList.clearSelection();
+        }
+        else if (categoriesList.getSelectedIndex() == 1) {
             frugalController.launchCategoryPanel();
         }
     }//GEN-LAST:event_categoriesListValueChanged
 
     private void tagsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tagsListValueChanged
-        if (tagsList.getSelectedIndex() == 1) {
+        if (tagsList.getSelectedIndex() == 0) {
+            tagsList.clearSelection();
+        }
+        else if (tagsList.getSelectedIndex() == 1) {
             frugalController.launchTagPanel();
         }
     }//GEN-LAST:event_tagsListValueChanged
@@ -826,5 +917,29 @@ public class ProjectPanel extends javax.swing.JPanel {
      */
     public void setOutcomeTextArea(String outcomeTextArea) {
         this.outcomeTextArea.setText(outcomeTextArea);
+    }
+
+    public List<String> getCategoriesList() {
+        return categoriesList.getSelectedValuesList();
+    }
+    
+    public void setCategoriesList(String[] categories) {
+        for (int i = 0; i < categories.length; i++) {
+            categoriesList.setSelectedValue(categories[i], true);    
+        }        
+    }
+    
+    public List<String> getTagsList() {
+        return tagsList.getSelectedValuesList();
+    }
+    
+    public void setTagsList(String[] tags) {
+        for (int i = 0; i < tags.length; i++) {
+            tagsList.setSelectedValue(tags[i], true);    
+        }        
+    }
+    
+    public JList getTagJList() {
+        return tagsList;
     }
 }

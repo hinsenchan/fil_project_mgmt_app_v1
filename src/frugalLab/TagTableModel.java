@@ -16,32 +16,28 @@ import java.util.*;
  *
  * @author Hinsen Chan
  */
-public class ProjectTableModel extends AbstractTableModel {
-    List<Project> projectResultList;   // stores the model data in a List collection of type Project
-    List<Category> categories;
-    List<Tag> tags;    
+public class TagTableModel extends AbstractTableModel {
+    List<Tag> tagResultList;   // stores the model data in a List collection of type Tag
     private static final String PERSISTENCE_UNIT_NAME = "coen275projectPU";  // Used in persistence.xml
     private static EntityManagerFactory factory;  
     private EntityManager manager;
-    private Project project;	
-    private ProjectService projectService;
+    private Tag tag;	
+    private TagService tagService;
     
     int numcols, numrows;           // number of rows and columns
     
-    public ProjectTableModel() {
+    public TagTableModel() {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	manager = factory.createEntityManager();
-	project = new Project();
-	projectService = new ProjectService(manager);
+	tag = new Tag();
+	tagService = new TagService(manager);
 	    
 	// read all the records from courselist
-	projectResultList = projectService.readAll();
-        categories = projectService.readCategories();
-        tags = projectService.readTags();
+	tagResultList = tagService.readAll();
 	    
 	// update the number of rows and columns in the model
-	numrows = projectResultList.size();
-	numcols = project.getNumberOfColumns();
+	numrows = tagResultList.size();
+	numcols = tag.getNumberOfColumns();
     }
     
     // returns a count of the number of rows
@@ -57,7 +53,7 @@ public class ProjectTableModel extends AbstractTableModel {
     // returns the data at the given row and column number
     public Object getValueAt(int row, int col) {
         try {
-            return projectResultList.get(row).getColumnData(col);
+            return tagResultList.get(row).getColumnData(col);
 	} catch (Exception e) {
             e.getMessage();
             return null;
@@ -68,15 +64,15 @@ public class ProjectTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int colIndex) {
         return false;
     }
-	/*
+	
     public Class<?> getColumnClass(int col) {
         return getValueAt(0, col).getClass();
     }
-	*/
+	
     // returns the name of the column
     public String getColumnName(int col) {
         try {
-            return project.getColumnName(col);
+            return tag.getColumnName(col);
 	} catch (Exception err) {
             return err.toString();
 	}             
@@ -85,7 +81,7 @@ public class ProjectTableModel extends AbstractTableModel {
     // update the data in the given row and column to aValue
     public void setValueAt(Object aValue, int row, int col) {
 	try {
-            Project element = projectResultList.get(row);
+            Tag element = tagResultList.get(row);
             element.setColumnData(col, aValue); 
             fireTableCellUpdated(row, col);
 	} catch(Exception err) {
@@ -93,106 +89,83 @@ public class ProjectTableModel extends AbstractTableModel {
         }	
     }
 	
-    public List<Project> getList() {
-        return projectResultList;
+    public List<Tag> getList() {
+        return tagResultList;
     }
-    
-    public List<Category> getCategories() {
-        return categories;
-    }    
-    
-    public List<Tag> getTags() {
-        return tags;
-    }        
 
     public EntityManager getEntityManager() {
         return manager;
     }
 
     // create a new table model using the existing data in list
-    public ProjectTableModel(List<Project> list, EntityManager em, List<Category> categories, List<Tag> tags)  {
-        projectResultList = list;
-        this.categories = categories;
-        this.tags = tags;
-	numrows = projectResultList.size();
-	project = new Project();
-	numcols = project.getNumberOfColumns();     
+    public TagTableModel(List<Tag> list, EntityManager em)  {
+        tagResultList = list;
+	numrows = tagResultList.size();
+	tag = new Tag();
+	numcols = tag.getNumberOfColumns();     
 	manager = em;  
-	projectService = new ProjectService(manager);
+	tagService = new TagService(manager);
     }
 	 
     // In this method, a newly inserted row in the GUI is added to the table model as well as the database table
     // The argument to this method is an array containing the data in the textfields of the new row.
-    public void addRow(Object[] array, String category, List<String> tags) {
-        //data[rowIndex][columnIndex] = (String) aValue;
+    public void addRow(Object[] array) {
+        //data[rowIndex][columnIndex] = (String) aValue;	        
         
 	// add row to database
 	EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
-	Project newRecord = projectService.createProject((String)array[0],(String)array[1],
-                (String)array[2],(String)array[3],(String)array[4], category, tags);
-	userTransaction.commit();		 
-        
+	Tag newRecord = tagService.createTag((String)array[0]);
+	userTransaction.commit();
+		 
 	// set the current row to rowIndex
-        projectResultList.add(newRecord);
+        tagResultList.add(newRecord);
         
-        int row = projectResultList.size();  
+        int row = tagResultList.size();  
+        //int col = 0;
         int col = 1;
 
         // update the data in the model to the entries in array
         for (Object data : array) {
-            setValueAt((String) data, row-1, col++);
+            //setValueAt((String) data, row-1, col++);
+            setValueAt((String) data, row-1, col);
         }
-          
+         
         numrows++;
     }	    
     
     // update a row in the table
-    public void updateRow(int index, String[] array, String category, List<String> tags) {        
+    public void updateRow(int index, String[] array) {        
         EntityTransaction userTransaction = manager.getTransaction();  
 	userTransaction.begin();
-
-	Project updatedRecord = projectService.updateProject(Long.parseLong(array[0]), array[1], 
-                array[2], array[3], array[4], array[5], category, tags);
+	Tag updatedRecord = tagService.updateTag(tagResultList.get(index).getId(), array[0]);
 	userTransaction.commit();
         
-        int col = 0;
+        int col = 1;
+        
         for (String data : array) {
-            setValueAt ((String) data, index, col++);            
+            setValueAt ((String) data, index, col);            
         }
     }
     
     // delete a row from the table
     public void deleteRow(int row) {
         long id = Long.parseLong(getValueAt(row,0).toString());
-        String project = getValueAt(row,1).toString();
+        String tag = getValueAt(row,1).toString();
 	
         EntityTransaction userTransaction = manager.getTransaction();          
         userTransaction.begin();
-        projectService.deleteProject(id);
+        tagService.deleteTag(id);
         userTransaction.commit();
-        projectResultList.remove(row);        
+        tagResultList.remove(row);        
         fireTableRowsUpdated(row, row);
         
         numrows--;
     }
     
-    // locate a project in the table
-    public boolean locate(String title) {
-        if (projectService.findProject(title))        
-            return true;
-        return false;
-    }
-    
-    // locate a project in the table excluding specied primary key
-    public boolean locate(String title, String id) {
-        long longProjectID = -1;
-        try {
-            longProjectID = Long.parseLong(id);
-        }
-        catch (NumberFormatException e) {}
-        
-        if (projectService.findProject(title, longProjectID))        
+    // locate a file type in the table
+    public boolean locate(String tag) {
+        if (tagService.findTag(tag))        
             return true;
         return false;
     }

@@ -39,6 +39,7 @@ public class SearchResultTableController implements ListSelectionListener, Table
     private StudentsService studentsService;
     private PartnersService partnersService;
     private AdvisorsService advisorsService;
+    private CategoryService categoryService;
 
     
 	
@@ -137,23 +138,28 @@ public class SearchResultTableController implements ListSelectionListener, Table
         
         
         // Handling Categories field
-        /*
-        categoriesService = new CategoriesService(manager, (String)searchResultTableModel.getValueAt(firstIndex, 0));
         
-        List<Categories> categoriesList = categoriesService.readAll();//(Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0)));
+        categoryService = new CategoryService(manager);//, (String)searchResultTableModel.getValueAt(firstIndex, 0));
+        
+        List<Category> categoriesList = categoryService.readAll();//(Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0)));
 
         String categories = "";
         //System.out.println("--------------here" + studentList.size());
         for(int i = 0; i < categoriesList.size(); i++)
         {
-                categories+=categoriesList.get(i).getName();
+            if(categoriesList.get(i).getId() == searchResultTableModel.getValueAt(firstIndex, 0))
+            {
+                categories+=categoriesList.get(i).getCategory();
                 if(i+1 != categoriesList.size())
                     categories+=", ";
+            }
         }
                 
         searchResultPanel.setCategoriesTextArea( categories );        
-        */
+        
         //searchResultPanel.setCategoriesTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 8));
+        
+        
         searchResultPanel.setTagsTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 9));
 
         
