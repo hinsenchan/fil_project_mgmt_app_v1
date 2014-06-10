@@ -3,22 +3,38 @@
  * and open the template in the editor.
  */
 package frugalLab;
-
+import java.sql.Date;
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
 /**
  *
  * @author Hinsen Chan
  */
 public class SearchResultPanel extends javax.swing.JPanel {
     FrugalController frugalController;
-
+    SearchResultTableController searchResultTableController;
+    
+    String searchTerm="";
+    
     /**
+     * 
      * Creates new form SearchResultPanel
      */
     public SearchResultPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.searchResultTableController = new SearchResultTableController(this);
+        table.setModel(searchResultTableController.getTableModel()); // set the table model using the controller
+        this.searchTerm = frugalController.getSearchTerm();
+        this.searchResultTableController.searchTerm = this.searchTerm;
+        table.getSelectionModel().addListSelectionListener(searchResultTableController); // add a listener to the table model
+        
     }
 
+    public SearchResultTableController getTableController()
+    {
+        return searchResultTableController;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -309,7 +325,7 @@ public class SearchResultPanel extends javax.swing.JPanel {
                     .addComponent(advisorsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(partnersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(studentsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         rightPropPanelLayout.setVerticalGroup(
             rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,20 +366,20 @@ public class SearchResultPanel extends javax.swing.JPanel {
         propertyPanelLayout.setHorizontalGroup(
             propertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(propertyPanelLayout.createSequentialGroup()
-                .addComponent(leftPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(leftPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(separatorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(separatorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(rightPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
         );
         propertyPanelLayout.setVerticalGroup(
             propertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(propertyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(propertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(leftPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-                    .addComponent(separatorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-                    .addComponent(rightPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(leftPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                    .addComponent(separatorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                    .addComponent(rightPropPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)))
         );
 
         tablePanel.setBackground(new java.awt.Color(143, 19, 21));
@@ -428,7 +444,7 @@ public class SearchResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(propertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE)
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 309, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -440,7 +456,84 @@ public class SearchResultPanel extends javax.swing.JPanel {
     private void otherDataViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otherDataViewButtonActionPerformed
         frugalController.launchOtherDataViewPanel();
     }//GEN-LAST:event_otherDataViewButtonActionPerformed
+    public void updateTable() {
+    	table.setModel(searchResultTableController.getTableModel());
+    }
+    public String getProjectIDTextField() {
+        return projectIDTextField.getText();
+    }
+    public void setProjectIDTextField(String projectIDTextField) {
+        this.projectIDTextField.setText(projectIDTextField);
+    }
+    public String getEndDateTextField() {
+        return endDateTextField.getText();
+    }
+    public void setEndDateTextField(String projectIDTextField) {
+        this.endDateTextField.setText(projectIDTextField);
+    }
+    public String getStartDateTextField() {
+        return startDateTextField.getText();
+    }
+    public void setStartDateTextField(String projectIDTextField) {
+        this.startDateTextField.setText(projectIDTextField);
+    }
+    public String getStatusTextField() {
+        return statusTextField.getText();
+    }
+    public void setStatusTextField(String statusTextField) {
+        this.statusTextField.setText(statusTextField);
+    }
+    public String getTitleTextField() {
+        return statusTextField.getText();
+    }
+    public void setTitleTextField(String titleTextField) {
+        this.titleTextField.setText(titleTextField);
+    }
+    
+    // Text Areas
+    
+    public String getOutcomeTextArea() {
+        return outcomeTextArea.getText();
+    }
+    public void setOutcomeTextArea(String s) {
+        this.outcomeTextArea.setText(s);
+    }
+    public String getPartnersTextArea() {
+        return partnersTextArea.getText();
+    }
+    public void setPartnersTextArea(String s) {
+        this.partnersTextArea.setText(s);
+    }
+    public String getStudentsTextArea() {
+        return studentsTextArea.getText();
+    }
+    public void setStudentsTextArea(String s) {
+        this.studentsTextArea.setText(s);
+    }
+    public void setAdvisorsTextArea(String s) {
+        this.advisorsTextArea.setText(s);
+    }
+    public String getAdvisorsTextArea() {
+        return advisorsTextArea.getText();
+    }
+    public void setCategoriesTextArea(String s) {
+        this.categoriesTextArea.setText(s);
+    }
+    public String getCategoriesTextArea() {
+        return categoriesTextArea.getText();
+    }
 
+    public void setTagsTextArea(String s) {
+        this.tagsTextArea.setText(s);
+    }
+    
+    public String getTagsTextArea() {
+        return tagsTextArea.getText();
+    }
+
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel advisorsPanel;
     private javax.swing.JScrollPane advisorsScrollPane;

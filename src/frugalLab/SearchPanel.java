@@ -4,19 +4,29 @@
  */
 package frugalLab;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 /**
  *
  * @author Hinsen Chan
  */
 public class SearchPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    private SearchResultTableController s;
 
     /** Creates new form frugalSearchPanel */
-    public SearchPanel(FrugalController frugalController) {
+    public SearchPanel(FrugalController frugalController, SearchResultTableController s) {
         initComponents();
-        this.frugalController = frugalController;        
+        this.frugalController = frugalController; 
+        this.s = s;
     }
 
+    public void setTableController(SearchResultTableController s)
+    {
+        this.s = s;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,9 +105,33 @@ public class SearchPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        frugalController.setSearchTerm(searchTextField.getText());
+        //System.out.println("SearchPanel------"+searchTextField.getText());
+        
+        try{
+                File file = new File("searchTerm.txt");
+ 
+	// if file doesnt exists, then create it
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+ 
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(searchTextField.getText());
+		bw.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+               
         frugalController.launchResultPanel();
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel componentPanel;
     private javax.swing.JButton searchButton;

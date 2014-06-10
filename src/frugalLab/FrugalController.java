@@ -18,6 +18,7 @@ public class FrugalController {
     private JPanel mainPanel;
     private CardLayout cardLayout;
     private String pid;
+    private String searchTerm;
     
     public FrugalController(FrugalView frugalView) {
         this.frugalView = frugalView;
@@ -34,8 +35,11 @@ public class FrugalController {
         cardLayout.show(mainPanel, "SearchPanel");
     }
             
-    public void launchResultPanel() {       
+    public void launchResultPanel() {  
+        frugalView.refreshSearchResultPanel();        
         cardLayout.show(mainPanel, "ResultPanel");
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
     
     public void launchMediaViewPanel() {       
@@ -138,5 +142,12 @@ public class FrugalController {
      */
     public void setPid(String pid) {
         this.pid = pid;
+    }
+    
+    public void setSearchTerm(String searchTerm){
+        this.searchTerm = searchTerm;
+    }
+    public String getSearchTerm(){
+        return this.searchTerm;
     }
 }

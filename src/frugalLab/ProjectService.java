@@ -44,6 +44,28 @@ public class ProjectService {
 
     	return result;   	 
     }
+    /*SELECT * FROM blog_posts WHERE keywords LIKE '%design%' ORDER BY timestamp */
+    // method to read all records that contain search term
+    public List<Project> searchProjects(String s) {
+        System.out.println("S = "+s);
+        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e WHERE e.title = :searchTerm", Project.class).setParameter("searchTerm", s);
+        List<Project> result =  query.getResultList();
+        //System.out.println(result);
+        TypedQuery<String> q = manager.createQuery("SELECT e FROM PROJECT e WHERE e.title = :searchTerm", String.class).setParameter("searchTerm", s);
+    
+        /*
+        createQuery(
+    "SELECT c FROM Customer c WHERE c.name LIKE :custName")
+    .setParameter("custName", name)
+    .setMaxResults(10)
+    .getResultList();
+}
+        */
+        
+        System.out.println(q);
+    	return result;   	 
+    }
+    
      
     // method to update a record
     public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome) {

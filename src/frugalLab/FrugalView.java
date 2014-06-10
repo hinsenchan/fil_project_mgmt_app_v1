@@ -44,10 +44,24 @@ public class FrugalView extends javax.swing.JFrame {
         setupResultPanel();
     }
     
+    public void refreshSearchResultPanel()
+    {
+       // initComponents();
+       // frugalController = new FrugalController(this);
+        setupPanels();
+        setupMainPanel();
+        setupResultPanel();
+        //setSearchResultPanel(new SearchResultPanel(frugalController));
+        //searchResultPanel = new SearchResultPanel(frugalController);
+    }
+    
     public void setupPanels() {
-        setSearchPanel(new SearchPanel(frugalController));
-        setResultPanel(new ResultPanel(frugalController));            
-        setSearchResultPanel(new SearchResultPanel(frugalController));
+        SearchResultPanel s = new SearchResultPanel(frugalController);
+        setSearchResultPanel(s);
+
+        setSearchPanel(new SearchPanel(frugalController, s.getTableController()));
+        setResultPanel(new ResultPanel(frugalController));
+        //ResultPanel.setResultPanel(s);
         setMediaViewPanel(new MediaViewPanel(frugalController));
         setOtherDataViewPanel(new OtherDataViewPanel(frugalController));        
         setStatPanel(new StatPanel(frugalController));

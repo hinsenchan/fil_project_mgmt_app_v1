@@ -40,7 +40,7 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="propertyPanel" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="tablePanel" pref="300" max="32767" attributes="0"/>
+              <Component id="tablePanel" pref="309" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -58,11 +58,11 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="leftPropPanel" max="32767" attributes="0"/>
+                  <Component id="leftPropPanel" pref="451" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="separatorPanel" max="32767" attributes="0"/>
+                  <Component id="separatorPanel" pref="96" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="rightPropPanel" max="32767" attributes="0"/>
+                  <Component id="rightPropPanel" pref="453" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -71,9 +71,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="leftPropPanel" alignment="0" pref="426" max="32767" attributes="0"/>
-                      <Component id="separatorPanel" alignment="0" pref="426" max="32767" attributes="0"/>
-                      <Component id="rightPropPanel" alignment="0" max="32767" attributes="0"/>
+                      <Component id="leftPropPanel" alignment="0" pref="435" max="32767" attributes="0"/>
+                      <Component id="separatorPanel" alignment="0" pref="435" max="32767" attributes="0"/>
+                      <Component id="rightPropPanel" alignment="0" pref="435" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -365,7 +365,7 @@
                           <Component id="partnersScrollPane" alignment="0" min="-2" pref="280" max="-2" attributes="0"/>
                           <Component id="studentsScrollPane" alignment="0" min="-2" pref="280" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="65" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
