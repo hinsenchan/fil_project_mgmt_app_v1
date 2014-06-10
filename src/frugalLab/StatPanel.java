@@ -4,6 +4,13 @@
  */
 package frugalLab;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 /**
  *
  * @author Hinsen Chan
@@ -402,4 +409,46 @@ public class StatPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane tagCountScrollPane;
     private javax.swing.JTextArea tagCountTextArea;
     // End of variables declaration//GEN-END:variables
+
+
+
+    public void setFrugalController(FrugalController frugalController) {
+        this.frugalController = frugalController;
+    }
+
+    public void setAdvisorsCountTextArea(int i) {
+        this.advisorsCountTextArea.setText(Integer.toString(i));
+    }
+
+    public void setCategoryCountTextArea(int i) { // actually status box
+        this.categoryCountTextArea.setText(Integer.toString(i));
+    }
+
+    public void setCategoryCountTextArea1(int i) { //actually category box
+        this.categoryCountTextArea1.setText(Integer.toString(i));
+    }
+
+    public void setEndDateTextField(String s) {
+        this.endDateTextField.setText(s);
+    }
+
+    public void setPartnersCountTextArea(int i) {
+        this.partnersCountTextArea.setText(Integer.toString(i));
+    }
+
+    public void setProjectCountTextField(int i) {
+        this.projectCountTextField.setText(Integer.toString(i));
+    }
+
+    public void setStartDateTextField(String s) {
+        this.startDateTextField.setText(s);
+    }
+
+    public void setStudentsCountTextArea(int i) {
+        this.studentsCountTextArea.setText(Integer.toString(i));
+    }
+
+    public void setTagCountTextArea(int i) {
+        this.tagCountTextArea.setText(Integer.toString(i));
+    }
 }

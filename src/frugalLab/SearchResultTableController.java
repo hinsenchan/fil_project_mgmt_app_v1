@@ -71,7 +71,7 @@ public class SearchResultTableController implements ListSelectionListener, Table
         jTableRowSelected = true; // row is selected in jTable
         ListSelectionModel selectModel = (ListSelectionModel) e.getSource();
 	firstIndex = selectModel.getMinSelectionIndex();             
-		
+
 	// read the data in each column using getValueAt and display it on corresponding textfield
 	searchResultPanel.setProjectIDTextField( (String)searchResultTableModel.getValueAt(firstIndex, 0));
         searchResultPanel.setTitleTextField( (String)searchResultTableModel.getValueAt(firstIndex, 1));
@@ -159,10 +159,42 @@ public class SearchResultTableController implements ListSelectionListener, Table
         
         //searchResultPanel.setCategoriesTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 8));
         
+        // Handling Tags field
         
-        searchResultPanel.setTagsTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 9));
+        TagService tagService = new TagService(manager);//, (String)searchResultTableModel.getValueAt(firstIndex, 0));
+        
+        List<Tag> tagList = tagService.readAll();//(Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0)));
+
+        String tags = "";
+        //System.out.println("--------------here" + studentList.size());
+        for(int i = 0; i < tagList.size(); i++)
+        {
+            if(tagList.get(i).getId() == searchResultTableModel.getValueAt(firstIndex, 0))
+            {
+                tags+=tagList.get(i).getTag();
+                if(i+1 != tagList.size())
+                    tags+=", ";
+            }
+        }
+                
+        searchResultPanel.setTagsTextArea( tags );        
+        
+//        searchResultPanel.setTagsTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 9));
 
         
+        // Update counts
+        
+        		
+        int projectCount = searchResultTableModel.getRowCount();
+        int statusCount = projectCount;
+        int categoryCount = categoriesList.size();
+        int tagCount = tagList.size();
+        int studentCount = studentList.size();
+        int partnerCount = partnerList.size();
+        int advisorCount = advisorList.size();
+        
+        searchResultPanel.updateCounts((String)searchResultTableModel.getValueAt(firstIndex, 3), projectCount, statusCount, categoryCount, tagCount,(String)searchResultTableModel.getValueAt(firstIndex, 4), studentCount, partnerCount, advisorCount);
+    
     }
 	
     // table listener. updates table in panel

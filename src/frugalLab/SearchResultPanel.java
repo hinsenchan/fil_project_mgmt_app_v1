@@ -31,6 +31,11 @@ public class SearchResultPanel extends javax.swing.JPanel {
         
     }
 
+    public void updateCounts(String startDate, int projectCount, int statusCount, int categoryCount, int tagCount, String endDate, int studentsCount, int partnersCount, int advisorsCount)
+    {
+        frugalController.populateCounts(startDate, projectCount, statusCount, categoryCount, tagCount,endDate, studentsCount, partnersCount, advisorsCount);
+    }
+    
     public SearchResultTableController getTableController()
     {
         return searchResultTableController;

@@ -44,6 +44,26 @@ public class FrugalView extends javax.swing.JFrame {
         setupResultPanel();
     }
     
+    public void updateCounts(String startDate, int projectCount, int statusCount, int categoryCount, int tagCount, String endDate, int studentsCount, int partnersCount, int advisorsCount)
+    {
+
+        // Update statPanel
+        
+        statPanel.setAdvisorsCountTextArea(advisorsCount);
+        statPanel.setCategoryCountTextArea(categoryCount);
+        statPanel.setCategoryCountTextArea1(statusCount);
+        statPanel.setEndDateTextField(endDate);
+        statPanel.setStartDateTextField(startDate);
+        statPanel.setPartnersCountTextArea(partnersCount);
+        statPanel.setProjectCountTextField(projectCount);
+        statPanel.setStudentsCountTextArea(studentsCount);
+        statPanel.setTagCountTextArea(tagCount);
+        
+        // refresh screen to reflect changes
+        //refreshSearchResultPanel();
+        //setupResultPanel();
+    }
+    
     public void refreshSearchResultPanel()
     {
        // initComponents();
