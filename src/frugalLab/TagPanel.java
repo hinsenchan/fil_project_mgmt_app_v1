@@ -240,6 +240,7 @@ public class TagPanel extends javax.swing.JPanel {
         else {
             String[] tagArray = {tag};
             tagTableController.addRow(tagArray);
+            tagTextField.setText(tag);
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -257,6 +258,7 @@ public class TagPanel extends javax.swing.JPanel {
             String[] tagArray = {tag};
             tagTableController.setSelectedIndex(jTable.getSelectedRow());
             tagTableController.updateRow(tagArray);
+            tagTextField.setText(tag);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 

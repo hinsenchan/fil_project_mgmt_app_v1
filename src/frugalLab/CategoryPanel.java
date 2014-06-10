@@ -240,6 +240,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         else {
             String[] categoryArray = {category};
             categoryTableController.addRow(categoryArray);
+            categoryTextField.setText(category);
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -257,6 +258,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             String[] categoryArray = {category};
             categoryTableController.setSelectedIndex(jTable.getSelectedRow());
             categoryTableController.updateRow(categoryArray);
+            categoryTextField.setText(category);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 

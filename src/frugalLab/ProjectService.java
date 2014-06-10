@@ -94,21 +94,25 @@ public class ProjectService {
             }
         }
         
-        List<Project> projList2 = findTagRelatedProjects();
-        List<Tag> tagList = findRelatedTags();
+        //List<Project> projList2 = findTagRelatedProjects();
+        //List<Tag> tagList = findRelatedTags();
+        /*
+        for (int i=0; i<projList2.size(); i++) {
+            System.out.println(projList2.get(i));
+        }
+        for (int i=0; i<projList2.size(); i++) {
+            System.out.println(tagList.get(i));
+        }
         
-        for (int i = 0; i < projList2.size(); i++) {
-            if (result.contains(projList2.get(i))) {
-                for (int j = 0; j < result.size(); j++) {
-                    if (result.get(j).getId().equals(projList2.get(i).getId())) {
-                        Set<Tag> tagSet = new TreeSet<Tag>();
-                        tagSet.add(tagList.get(i));                        
-                        result.get(j).setTag(tagSet);
-                    }
+        for (int i = 0; i < projList2.size(); i++) {            
+            for (int j = 0; j < result.size(); j++) {
+                if (result.get(j).getId().equals(projList2.get(i).getId())) {     
+                    result.get(j).getTag().add(tagList.get(i));
+                    break;
                 }
             }
         }
-        /*
+        
         for (int i = 0; i< result.size(); i++) {
             System.out.println(result.get(i));
         }
