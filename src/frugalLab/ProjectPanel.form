@@ -88,7 +88,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="61" max="32767" attributes="0"/>
+                      <EmptySpace pref="59" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="outcomeLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="titleLabel" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -339,7 +339,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="25" max="32767" attributes="0"/>
+                      <EmptySpace pref="22" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="studentsLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="partnersLabel" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -361,7 +361,7 @@
                               <Component id="categoriesScrollPane" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="70" max="32767" attributes="0"/>
+                      <EmptySpace pref="67" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -548,13 +548,10 @@
                 <Component class="javax.swing.JList" name="tagsList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Select one or more..."/>
-                        <StringItem index="1" value="Add new tag..."/>
-                        <StringItem index="2" value="Tag1"/>
-                        <StringItem index="3" value="Tag2"/>
-                        <StringItem index="4" value="Tag3"/>
-                      </StringArray>
+                      <StringArray count="0"/>
+                    </Property>
+                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                      <Color id="Default Cursor"/>
                     </Property>
                   </Properties>
                   <Events>

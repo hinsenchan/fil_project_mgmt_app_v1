@@ -81,11 +81,23 @@ public class ProjectTableController implements ListSelectionListener, TableModel
                 tagList[counter++] = iter2.next().getTag();
             }
             
-            projectPanel.setTagsList(tagList);
+            for (String data : tagList) {
+                System.out.println(data);
+            }
+            
+            int[] indices = new int[tagList.length];
+            counter = 0;
+
+            for (int i = 0; i < projectPanel.getTagJList().getModel().getSize(); i++) {
+                for (int j = 0; j < tagList.length; j++) {
+                    if (projectPanel.getTagJList().getModel().getElementAt(i).toString().equals(tagList[j])) {
+                        indices[counter++] = i;
+                    }
+                }
+            }           
+            projectPanel.getTagJList().setSelectedIndices(indices);
         }
-        catch (Exception ex) {}         
-        
-        //System.out.println(projectTableModel.getList().get(firstIndex).getCategory());        
+        catch (Exception ex) {}                         
     }
 	
     // table listener. updates table in panel

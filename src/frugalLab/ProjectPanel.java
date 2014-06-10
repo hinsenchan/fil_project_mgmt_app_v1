@@ -57,7 +57,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                 
         DefaultListModel listModel2 = new DefaultListModel();
         listModel2.addElement("Select one or more...");
-        listModel2.addElement("Add new category...");
+        listModel2.addElement("Add new tag...");
         
         for (int i=0; i<tags.size(); i++) {
             listModel2.addElement(tags.get(i).getTag());
@@ -185,7 +185,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         leftPropPanelLayout.setHorizontalGroup(
             leftPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftPropPanelLayout.createSequentialGroup()
-                .addContainerGap(61, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addGroup(leftPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(outcomeLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -314,11 +314,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         });
         categoriesScrollPane.setViewportView(categoriesList);
 
-        tagsList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Select one or more...", "Add new tag...", "Tag1", "Tag2", "Tag3" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        tagsList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tagsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 tagsListValueChanged(evt);
@@ -366,7 +362,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         rightPropPanelLayout.setHorizontalGroup(
             rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rightPropPanelLayout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(studentsLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(partnersLabel, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -385,7 +381,7 @@ public class ProjectPanel extends javax.swing.JPanel {
                         .addComponent(tagScrollPane)
                         .addComponent(mediaButton)
                         .addComponent(categoriesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         rightPropPanelLayout.setVerticalGroup(
             rightPropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -595,7 +591,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         else if (categoriesList.getSelectedIndices().length > 1) {
             JOptionPane.showMessageDialog(this, "Please select only one category.", "Error", 
                     JOptionPane.ERROR_MESSAGE);            
-        }       
+        }
         else {
             try {
                 // Validates dates entered
@@ -771,13 +767,19 @@ public class ProjectPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_statusComboBoxActionPerformed
 
     private void categoriesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoriesListValueChanged
-        if (categoriesList.getSelectedIndex() == 1) {
+        if (categoriesList.getSelectedIndex() == 0) {
+            categoriesList.clearSelection();
+        }
+        else if (categoriesList.getSelectedIndex() == 1) {
             frugalController.launchCategoryPanel();
         }
     }//GEN-LAST:event_categoriesListValueChanged
 
     private void tagsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tagsListValueChanged
-        if (tagsList.getSelectedIndex() == 1) {
+        if (tagsList.getSelectedIndex() == 0) {
+            tagsList.clearSelection();
+        }
+        else if (tagsList.getSelectedIndex() == 1) {
             frugalController.launchTagPanel();
         }
     }//GEN-LAST:event_tagsListValueChanged
@@ -935,5 +937,9 @@ public class ProjectPanel extends javax.swing.JPanel {
         for (int i = 0; i < tags.length; i++) {
             tagsList.setSelectedValue(tags[i], true);    
         }        
+    }
+    
+    public JList getTagJList() {
+        return tagsList;
     }
 }
