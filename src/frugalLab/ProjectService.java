@@ -159,6 +159,7 @@ public class ProjectService {
 
     	return result;           
     }  
+//<<<<<<< HEAD
     /*SELECT * FROM blog_posts WHERE keywords LIKE '%design%' ORDER BY timestamp */
     // method to read all records that contain search term
     public List<Project> searchProjects(String s) {
@@ -181,6 +182,8 @@ public class ProjectService {
     	return result;   	 
     }
     
+//=======
+//>>>>>>> origin/master
      
     // method to update a record
     public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome, String category, List<String> tags) {
