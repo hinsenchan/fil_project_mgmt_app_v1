@@ -67,6 +67,12 @@ public class Project implements Serializable, Comparable {
     inverseJoinColumns = @JoinColumn(name="CID"))
     private Set<Category> category;
     
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(name="PROJECT_TAG",
+    joinColumns = @JoinColumn(name="PID"),
+    inverseJoinColumns = @JoinColumn(name="TID"))
+    private Set<Tag> tags;    
+    
     public Long getId() {
         return id;
     }
@@ -210,7 +216,8 @@ public class Project implements Serializable, Comparable {
     public String toString() {
         return "PROJECT [Id = " + id + ", Title = " + title + 
                 ", Status = " + status + ", Start Date = " + startDate + 
-                ", End Date = " + endDate + ", Outcome = " + outcome + ", Category = " + category.toString() + "]";
+                ", End Date = " + endDate + ", Outcome = " + outcome + 
+                ", Category = " + category.toString() + ", Tag = " + tags.toString() + "]";
     }    
 
     /**
@@ -226,6 +233,20 @@ public class Project implements Serializable, Comparable {
     public void setCategory(Set<Category> category) {
         this.category = category;
     }
+    
+    /**
+     * @return the category
+     */
+    public Set<Tag> getTag() {
+        return tags;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setTag(Set<Tag> tags) {
+        this.tags = tags;
+    }    
     
     public int compareTo(Object o1) {
         if (this.title.compareTo(((Project) o1).title) == 0)

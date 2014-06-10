@@ -65,7 +65,25 @@ public class ProjectTableController implements ListSelectionListener, TableModel
             
             projectPanel.setCategoriesList(catList);
         }
-        catch (Exception ex) {}                                                
+        catch (Exception ex) {}     
+        
+        Set<Tag> tagSet;
+        String[] tagList;
+        Iterator<Tag> iter2;
+        counter = 0;
+        
+        try {
+            tagSet = projectTableModel.getList().get(firstIndex).getTag();
+            tagList = new String[tagSet.size()];
+            iter2 = tagSet.iterator();
+            
+            while (iter2.hasNext()) {
+                tagList[counter++] = iter2.next().getTag();
+            }
+            
+            projectPanel.setTagsList(tagList);
+        }
+        catch (Exception ex) {}         
         
         //System.out.println(projectTableModel.getList().get(firstIndex).getCategory());        
     }
@@ -78,7 +96,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
 	    firstIndex =  e.getFirstRow();
             
 	    // create a new table model with the new data
-	    projectTableModel = new ProjectTableModel(projectTableModel.getList(), projectTableModel.getEntityManager(), projectTableModel.getCategories());
+	    projectTableModel = new ProjectTableModel(projectTableModel.getList(), projectTableModel.getEntityManager(), projectTableModel.getCategories(), projectTableModel.getTags());
 	    projectTableModel.addTableModelListener(this);
 	    // update the JTable with the data
 	    projectPanel.updateTable();	    
@@ -96,10 +114,10 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
 
     // add a new row to the table
-    public void addRow(String[] array, String category) {   
+    public void addRow(String[] array, String category, List<String> tags) {   
         try {
             if (!locate(array[0])) {
-                projectTableModel.addRow(array, category); // add row to database
+                projectTableModel.addRow(array, category, tags); // add row to database
             }
             else {
                 JOptionPane.showMessageDialog(projectPanel, "This project title already exists!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +131,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
     }
     
     // update a row in the table
-    public void updateRow(String[] array, String category) {
+    public void updateRow(String[] array, String category, List<String> tags) {
         try {
             if (jTableRowSelected == true) {
                 if (locate(array[1], array[0])) {                    
@@ -121,7 +139,7 @@ public class ProjectTableController implements ListSelectionListener, TableModel
                         "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 else {
-                    projectTableModel.updateRow(firstIndex, array, category);
+                    projectTableModel.updateRow(firstIndex, array, category, tags);
                 }
             }
             else {

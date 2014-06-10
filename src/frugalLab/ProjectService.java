@@ -20,7 +20,7 @@ public class ProjectService {
     }    
     
         // method to create a new record
-    public Project createProject(String title, String status, String startDate, String endDate, String outcome, String category) {        
+    public Project createProject(String title, String status, String startDate, String endDate, String outcome, String category, List<String> tags) {        
         Project project = new Project();
         project.setTitle(title);
         project.setStatus(status);
@@ -45,7 +45,24 @@ public class ProjectService {
         newCategory.setId(newID);
         newCategoryList.add(newCategory);
         project.setCategory(newCategoryList);
- 	
+                
+        Long newID2 = -1L;
+        List<Tag> tagList = readTags();
+        Set<Tag> newTagList = new TreeSet<Tag>();
+        for (int i = 0; i < tagList.size(); i++) {
+            for (int j = 0; j < tags.size(); j++) {
+                if (tagList.get(i).getTag().equals(tags.get(j).toString())) {
+                    Tag newTag = new Tag();
+                    newID2 = tagList.get(i).getId();
+                    newTag.setTag(tags.get(j));
+                    newTag.setId(newID2);
+                    newTagList.add(newTag);  
+                    break;
+                }
+            }
+        }
+        project.setTag(newTagList);        
+        
         manager.persist(project);
  	return project;
     }
@@ -62,8 +79,8 @@ public class ProjectService {
         List<Project> result =  query.getResultList();
         
         
-        List<Project> projList = findRelatedProjects();
-        List<Category> catList = findRelatedCategories();
+        List<Project> projList = findCatRelatedProjects();
+        List<Category> catList = findRelatedCategories();        
         
         for (int i = 0; i < projList.size(); i++) {
             if (result.contains(projList.get(i))) {
@@ -72,6 +89,21 @@ public class ProjectService {
                         Set<Category> catSet = new TreeSet<Category>();
                         catSet.add(catList.get(i));                        
                         result.get(j).setCategory(catSet);
+                    }
+                }
+            }
+        }
+        
+        List<Project> projList2 = findTagRelatedProjects();
+        List<Tag> tagList = findRelatedTags();
+        
+        for (int i = 0; i < projList2.size(); i++) {
+            if (result.contains(projList2.get(i))) {
+                for (int j = 0; j < result.size(); j++) {
+                    if (result.get(j).getId().equals(projList2.get(i).getId())) {
+                        Set<Tag> tagSet = new TreeSet<Tag>();
+                        tagSet.add(tagList.get(i));                        
+                        result.get(j).setTag(tagSet);
                     }
                 }
             }
@@ -85,7 +117,7 @@ public class ProjectService {
     	return result;   	 
     }
     
-    public List<Project> findRelatedProjects() {
+    public List<Project> findCatRelatedProjects() {
         TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e JOIN e.category f", Project.class);
         List<Project> result =  query.getResultList();
         return result;
@@ -97,6 +129,18 @@ public class ProjectService {
         return result;
     }        
     
+    public List<Project> findTagRelatedProjects() {
+        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e JOIN e.tags f", Project.class);
+        List<Project> result =  query.getResultList();
+        return result;
+    }            
+    
+    public List<Tag> findRelatedTags() {
+        TypedQuery<Tag> query = manager.createQuery("SELECT e FROM TAG e JOIN e.projects f", Tag.class);
+        List<Tag> result =  query.getResultList();
+        return result;
+    }     
+    
     
     public List<Category> readCategories() {
         TypedQuery<Category> query = manager.createQuery("SELECT e FROM CATEGORY e", Category.class);
@@ -104,9 +148,16 @@ public class ProjectService {
 
     	return result;           
     }    
+    
+    public List<Tag> readTags() {
+        TypedQuery<Tag> query = manager.createQuery("SELECT e FROM TAG e", Tag.class);
+        List<Tag> result =  query.getResultList();
+
+    	return result;           
+    }  
      
     // method to update a record
-    public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome, String category) {
+    public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome, String category, List<String> tags) {
         Project project = manager.find(Project.class, id);
         
     	if (project != null) {
@@ -130,7 +181,24 @@ public class ProjectService {
             newCategory.setCategory(category);
             newCategory.setId(newID);
             newCategoryList.add(newCategory);
-            project.setCategory(newCategoryList);            
+            project.setCategory(newCategoryList);   
+            
+            Set<Tag> newTagList = new TreeSet<Tag>();
+            Long newID2 = -1L;
+            List<Tag> tagList = readTags();
+            for (int i = 0; i < tagList.size(); i++) {
+                for (int j = 0; j < tags.size(); j++) {
+                    if (tagList.get(i).getTag().equals(tags.get(j).toString())) {
+                        Tag newTag = new Tag();
+                        newID2 = tagList.get(i).getId();
+                        newTag.setTag(tags.get(j));
+                        newTag.setId(newID2);
+                        newTagList.add(newTag);  
+                        break;
+                    }
+                }
+            }
+            project.setTag(newTagList);             
             
             manager.persist(project);
     	}

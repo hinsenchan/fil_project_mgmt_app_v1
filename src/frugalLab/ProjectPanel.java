@@ -47,6 +47,24 @@ public class ProjectPanel extends javax.swing.JPanel {
         
         categoriesList.setModel(listModel);
         
+        // get file types from the table                
+        List<Tag> tags = ((ProjectTableModel)this.projectTableController.getTableModel()).getTags();        
+        Collections.sort(tags,new Comparator<Tag>() {
+            public int compare(Tag a, Tag b) {
+                return a.getTag().compareTo(b.getTag());
+            }
+        });
+                
+        DefaultListModel listModel2 = new DefaultListModel();
+        listModel2.addElement("Select one or more...");
+        listModel2.addElement("Add new category...");
+        
+        for (int i=0; i<tags.size(); i++) {
+            listModel2.addElement(tags.get(i).getTag());
+        }
+        
+        tagsList.setModel(listModel2);        
+        
         jTable.setModel(projectTableController.getTableModel()); // set the table model using the controller
         jTable.getSelectionModel().addListSelectionListener(projectTableController); // add a listener to the table model
     }
@@ -553,7 +571,10 @@ public class ProjectPanel extends javax.swing.JPanel {
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
         List<String> category = getCategoriesList();
+        List<String> tag = getTagsList();
+        
         int[] selectedCategory = categoriesList.getSelectedIndices();
+        int[] selectedTag = tagsList.getSelectedIndices();
         
         if (title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a title.", "Error", 
@@ -574,7 +595,7 @@ public class ProjectPanel extends javax.swing.JPanel {
         else if (categoriesList.getSelectedIndices().length > 1) {
             JOptionPane.showMessageDialog(this, "Please select only one category.", "Error", 
                     JOptionPane.ERROR_MESSAGE);            
-        }
+        }       
         else {
             try {
                 // Validates dates entered
@@ -589,13 +610,13 @@ public class ProjectPanel extends javax.swing.JPanel {
                     }
                     else {
                         String[] projectArray = {title, status, startDate, endDate, outcome};
-                        projectTableController.addRow(projectArray, category.get(0));
+                        projectTableController.addRow(projectArray, category.get(0), tag);
                         jTable.clearSelection();                        
                     }
                 }
                 else {                
                     String[] projectArray = {title, status, startDate, endDate, outcome};
-                    projectTableController.addRow(projectArray, category.get(0));
+                    projectTableController.addRow(projectArray, category.get(0), tag);
                     jTable.clearSelection();
                 }
             }
@@ -614,7 +635,8 @@ public class ProjectPanel extends javax.swing.JPanel {
         String startDate = getStartDateTextField();        
         String endDate = getEndDateTextField();
         String outcome = getOutcomeTextArea();  
-        List<String> category = getCategoriesList();        
+        List<String> category = getCategoriesList();      
+        List<String> tag = getTagsList();
         
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No project ID detected. "
@@ -653,14 +675,14 @@ public class ProjectPanel extends javax.swing.JPanel {
                     else {
                         String[] projectArray = {id, title, status, startDate, endDate, outcome};
                         projectTableController.setSelectedIndex(jTable.getSelectedRow());
-                        projectTableController.updateRow(projectArray, category.get(0));
+                        projectTableController.updateRow(projectArray, category.get(0), tag);
                         jTable.clearSelection();
                     }
                 }
                 else {                
                     String[] projectArray = {id, title, status, startDate, endDate, outcome};
                     projectTableController.setSelectedIndex(jTable.getSelectedRow());
-               	    projectTableController.updateRow(projectArray, category.get(0));
+               	    projectTableController.updateRow(projectArray, category.get(0), tag);
                     jTable.clearSelection();
                 }
             }
@@ -677,12 +699,14 @@ public class ProjectPanel extends javax.swing.JPanel {
         projectTableController.deleteRow(index);
         jTable.clearSelection();
         categoriesList.clearSelection();
+        tagsList.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     // clear button handler. clears the textfield on the current panel
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         projectTableController.clearRow();
         categoriesList.clearSelection();
+        tagsList.clearSelection();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void studentsManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsManageButtonActionPerformed
@@ -900,6 +924,16 @@ public class ProjectPanel extends javax.swing.JPanel {
     public void setCategoriesList(String[] categories) {
         for (int i = 0; i < categories.length; i++) {
             categoriesList.setSelectedValue(categories[i], true);    
+        }        
+    }
+    
+    public List<String> getTagsList() {
+        return tagsList.getSelectedValuesList();
+    }
+    
+    public void setTagsList(String[] tags) {
+        for (int i = 0; i < tags.length; i++) {
+            tagsList.setSelectedValue(tags[i], true);    
         }        
     }
 }

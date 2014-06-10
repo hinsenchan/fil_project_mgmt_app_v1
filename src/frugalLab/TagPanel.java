@@ -4,12 +4,15 @@
  */
 package frugalLab;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class TagPanel extends javax.swing.JPanel {
     FrugalController frugalController;
+    TagTableController tagTableController; // controller for the file type panel    
     
     /**
      * Creates new form MediaPanel2
@@ -17,6 +20,9 @@ public class TagPanel extends javax.swing.JPanel {
     public TagPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.tagTableController = new TagTableController(this);
+        jTable.setModel(tagTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(tagTableController); // add a listener to the table model                    
     }
 
     /**
@@ -30,8 +36,8 @@ public class TagPanel extends javax.swing.JPanel {
 
         propertyPanel = new javax.swing.JPanel();
         propertyLayoutPanel = new javax.swing.JPanel();
-        categoryLabel = new javax.swing.JLabel();
-        categoryTextField = new javax.swing.JTextField();
+        tagLabel = new javax.swing.JLabel();
+        tagTextField = new javax.swing.JTextField();
         buttonPanel = new javax.swing.JPanel();
         buttonLayoutPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
@@ -52,15 +58,15 @@ public class TagPanel extends javax.swing.JPanel {
         propertyLayoutPanel.setBackground(new java.awt.Color(143, 19, 21));
         propertyLayoutPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 35, 100));
 
-        categoryLabel.setBackground(new java.awt.Color(143, 19, 21));
-        categoryLabel.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        categoryLabel.setForeground(java.awt.Color.white);
-        categoryLabel.setText("Tag:");
-        categoryLabel.setOpaque(true);
-        propertyLayoutPanel.add(categoryLabel);
+        tagLabel.setBackground(new java.awt.Color(143, 19, 21));
+        tagLabel.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        tagLabel.setForeground(java.awt.Color.white);
+        tagLabel.setText("Tag:");
+        tagLabel.setOpaque(true);
+        propertyLayoutPanel.add(tagLabel);
 
-        categoryTextField.setPreferredSize(new java.awt.Dimension(180, 27));
-        propertyLayoutPanel.add(categoryTextField);
+        tagTextField.setPreferredSize(new java.awt.Dimension(180, 27));
+        propertyLayoutPanel.add(tagTextField);
 
         javax.swing.GroupLayout propertyPanelLayout = new javax.swing.GroupLayout(propertyPanel);
         propertyPanel.setLayout(propertyPanelLayout);
@@ -226,19 +232,42 @@ public class TagPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String tag = getTagTextField();
+
+        if (tag.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a tag.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] tagArray = {tag};
+            tagTableController.addRow(tagArray);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        String tag = getTagTextField();
+        int[] index = jTable.getSelectedRows();
+
+        if (tag.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a tag.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (index.length > 1) {
+            JOptionPane.showMessageDialog(this, "Please update 1 tag at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] tagArray = {tag};
+            tagTableController.setSelectedIndex(jTable.getSelectedRow());
+            tagTableController.updateRow(tagArray);
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        tagTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        tagTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
@@ -249,8 +278,6 @@ public class TagPanel extends javax.swing.JPanel {
     private javax.swing.JButton addButton;
     private javax.swing.JPanel buttonLayoutPanel;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JLabel categoryLabel;
-    private javax.swing.JTextField categoryTextField;
     private javax.swing.JButton clearButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton doneButton;
@@ -260,6 +287,27 @@ public class TagPanel extends javax.swing.JPanel {
     private javax.swing.JPanel tabelPanel;
     private javax.swing.JPanel tableLayoutPanel;
     private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JLabel tagLabel;
+    private javax.swing.JTextField tagTextField;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    // updates the table model using the controller
+    public void updateTable() {
+    	jTable.setModel(tagTableController.getTableModel());
+    }
+    
+        /**
+     * @return the categoryTextField
+     */
+    public String getTagTextField() {
+        return tagTextField.getText();
+    }
+
+    /**
+     * @param categoryTextField the categoryTextField to set
+     */
+    public void setTagTextField(String tagTextField) {
+        this.tagTextField.setText(tagTextField);
+    }    
 }
