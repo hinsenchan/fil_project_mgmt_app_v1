@@ -159,6 +159,7 @@ public class ProjectService {
 
     	return result;           
     }  
+//
 //<<<<<<< HEAD
     /*SELECT * FROM blog_posts WHERE keywords LIKE '%design%' ORDER BY timestamp */
     // method to read all records that contain search term
@@ -182,89 +183,6 @@ public class ProjectService {
     	return result;   	 
     }
     
-//=======
-//>>>>>>> origin/master
-     
-    // method to update a record
-    public Project updateProject(Long id, String title, String status, String startDate, String endDate, String outcome, String category, List<String> tags) {
-        Project project = manager.find(Project.class, id);
-        
-    	if (project != null) {
-            project.setTitle(title);
-            project.setStatus(status);
-            project.setStartDate(Date.valueOf(startDate));
-            project.setEndDate(Date.valueOf(endDate));
-            project.setOutcome(outcome);
-            
-            Long newID = -1L;
-            List<Category> catList = readCategories();
-            for (int i = 0; i < catList.size(); i++) {
-                if (catList.get(i).getCategory().equals(category)) {
-                    newID = catList.get(i).getId();
-                    break;
-                }
-            }
-        
-            Set<Category> newCategoryList = new TreeSet<Category>();
-            Category newCategory = new Category();
-            newCategory.setCategory(category);
-            newCategory.setId(newID);
-            newCategoryList.add(newCategory);
-            project.setCategory(newCategoryList);   
-            
-            Set<Tag> newTagList = new TreeSet<Tag>();
-            Long newID2 = -1L;
-            List<Tag> tagList = readTags();
-            for (int i = 0; i < tagList.size(); i++) {
-                for (int j = 0; j < tags.size(); j++) {
-                    if (tagList.get(i).getTag().equals(tags.get(j).toString())) {
-                        Tag newTag = new Tag();
-                        newID2 = tagList.get(i).getId();
-                        newTag.setTag(tags.get(j));
-                        newTag.setId(newID2);
-                        newTagList.add(newTag);  
-                        break;
-                    }
-                }
-            }
-            project.setTag(newTagList);             
-            
-            manager.persist(project);
-    	}
-        
-    	return project;
-    }
+//
 
-    // method to delete a record
-    public void deleteProject(Long id) {
-        Project project = manager.find(Project.class, id);
-    	if (project != null) {
-            manager.remove(project);
-    	}
-    }
-    
-    // method to find a record using title
-    public boolean findProject(String projectName) {
-        TypedQuery<Project> query = manager.createQuery("SELECT e.title FROM PROJECT e", Project.class);
-        List<Project> result = query.getResultList();        
-
-        if (result.contains(projectName)) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    // method to find a record using title excluding specified primary key
-    public boolean findProject(String projectName, long id) {
-        TypedQuery<Project> query = manager.createQuery("SELECT e.title FROM PROJECT e WHERE e.id != :targetID", Project.class);
-        query.setParameter("targetID", id);
-        List<Project> result = query.getResultList();        
-
-        if (result.contains(projectName)) {
-            return true;
-        }
-        
-        return false;
-    }
-}
+=======
