@@ -43,7 +43,13 @@ public class PartnersService {
         Partners partners = manager.find(Partners.class, id);
     	return partners;   	 
     }
-
+    public List<Partners> read()
+    {
+        TypedQuery<Partners> query = manager.createQuery("SELECT e FROM PARTNERS e", Partners.class);
+        List<Partners> result =  query.getResultList();
+        
+    	return result;     
+    }
     // method to read all records
     public List<Partners> readAll() {        
 

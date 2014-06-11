@@ -59,6 +59,19 @@ public class StudentsService {
     	return students;   	 
     }
 
+    public List<Students> read()
+    {
+        long longProjectID = -1;
+        try {
+            longProjectID = Long.parseLong(projectID);
+        }
+        catch (NumberFormatException e) {}
+
+        TypedQuery<Students> query = manager.createQuery("SELECT e FROM STUDENTS e", Students.class);
+        List<Students> result =  query.getResultList();
+        
+    	return result;     
+    }
     // method to read all records
     public List<Students> readAll() {        
 

@@ -72,7 +72,15 @@ public class ProjectService {
         Project project = manager.find(Project.class, id);
     	return project;   	 
     }
+    
+    public List<Project> read()
+    {
 
+        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e", Project.class);
+        List<Project> result =  query.getResultList();
+        
+    	return result;     
+    }
     // method to read all records
     public List<Project> readAll() {
         TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e", Project.class);

@@ -44,6 +44,30 @@ public class FrugalView extends javax.swing.JFrame {
         setupResultPanel();
     }
     
+    public void upFilters()
+    {
+        searchPanel.populateFilters();
+        //refreshSearchResultPanel();
+
+    }
+            
+    public void populateFilters()
+    {
+        String[] s = {" "};
+                
+        filterPanel.setStatusComboBox(s);
+        filterPanel.setStartDateTextField("");
+        filterPanel.setEndDateTextField("");
+        filterPanel.setCategoryComboBox(s);
+        filterPanel.setTagList(s);
+        filterPanel.setStudentsList(s);
+        filterPanel.setPartnersList(s);
+        filterPanel.setAdvisorsList(s);
+        filterPanel.setMediaList(s);
+        
+        //refreshSearchResultPanel();
+    }
+    
     public void updateCounts(String startDate, int projectCount, int statusCount, int categoryCount, int tagCount, String endDate, int studentsCount, int partnersCount, int advisorsCount)
     {
 
@@ -68,11 +92,13 @@ public class FrugalView extends javax.swing.JFrame {
     {
        // initComponents();
        // frugalController = new FrugalController(this);
-        setupPanels();
-        setupMainPanel();
-        setupResultPanel();
+        //setupPanels();
+        //setupMainPanel();
+        //setupResultPanel();
         //setSearchResultPanel(new SearchResultPanel(frugalController));
         //searchResultPanel = new SearchResultPanel(frugalController);
+        searchPanel.getS().getSearchResultTableModel().updateTableModel();
+        
     }
     
     public void setupPanels() {
@@ -277,6 +303,7 @@ public class FrugalView extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void filiterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filiterButtonActionPerformed
+        //populateFilters();
         frugalController.launchFilterPanel();
     }//GEN-LAST:event_filiterButtonActionPerformed
 

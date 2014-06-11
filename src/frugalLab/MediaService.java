@@ -45,7 +45,13 @@ public class MediaService {
         Media media = manager.find(Media.class, id);
     	return media;   	 
     }
-
+    public List<Media> read()
+    {
+        TypedQuery<Media> query = manager.createQuery("SELECT e FROM MEDIA e", Media.class);
+        List<Media> result =  query.getResultList();
+        
+    	return result;     
+    }
     // method to read all records
     public List<Media> readAll() {        
         long longProjectID = -1;

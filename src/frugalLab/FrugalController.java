@@ -20,10 +20,84 @@ public class FrugalController {
     private String pid;
     private String searchTerm;
     
+    private String[] statusFilter, categoryFilter, tagFilter, studentFilter, partnerFilter, advisorFilter, mediaFilter;
+
+    public String[] getStatusFilter() {
+        return statusFilter;
+    }
+
+    public void setStatusFilter(String[] statusFilter) {
+        this.statusFilter = statusFilter;
+    }
+
+    public String[] getCategoryFilter() {
+        return categoryFilter;
+    }
+
+    public void setCategoryFilter(String[] categoryFilter) {
+        this.categoryFilter = categoryFilter;
+    }
+
+    public String[] getTagFilter() {
+        return tagFilter;
+    }
+
+    public void setTagFilter(String[] tagFilter) {
+        this.tagFilter = tagFilter;
+    }
+
+    public String[] getStudentFilter() {
+        return studentFilter;
+    }
+
+    public void setStudentFilter(String[] studentFilter) {
+        this.studentFilter = studentFilter;
+    }
+
+    public String[] getPartnerFilter() {
+        return partnerFilter;
+    }
+
+    public void setPartnerFilter(String[] partnerFilter) {
+        this.partnerFilter = partnerFilter;
+    }
+
+    public String[] getAdvisorFilter() {
+        return advisorFilter;
+    }
+
+    public void setAdvisorFilter(String[] advisorFilter) {
+        this.advisorFilter = advisorFilter;
+    }
+
+    public String[] getMediaFilter() {
+        return mediaFilter;
+    }
+
+    public void setMediaFilter(String[] mediaFilter) {
+        this.mediaFilter = mediaFilter;
+    }
+
+    
     public FrugalController(FrugalView frugalView) {
         this.frugalView = frugalView;
         frugalModel = new FrugalModel();        
         setupComponents();
+    }
+    
+    public void setFilters(String[] statusFilter, String[] categoryFilter, String[] tagFilter, String[] studentFilter, String[] partnerFilter, String[] advisorFilter, String[] mediaFilter)
+    {
+        this.statusFilter = statusFilter;
+        this.categoryFilter = categoryFilter;
+        this.tagFilter = tagFilter;
+        this.statusFilter = statusFilter;
+        this.studentFilter = studentFilter;
+        this.partnerFilter = partnerFilter;
+        this.advisorFilter = advisorFilter;
+        this.mediaFilter = mediaFilter;
+        
+        frugalView.upFilters();
+        
     }
     
     public void populateCounts(String startDate, int projectCount, int statusCount, int categoryCount, int tagCount, String endDate, int studentsCount, int partnersCount, int advisorsCount)

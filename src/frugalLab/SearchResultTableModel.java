@@ -25,9 +25,153 @@ public class SearchResultTableModel extends AbstractTableModel {
     private ProjectService projectService;
     private String searchTerm;
     
+    private String[] statusFilter;
+    private String[] categoryFilter;
+    private String[] tagFilter;
+    private String[] studentFilter; 
+    private String[] partnerFilter; 
+    private String[] advisorFilter; 
+    private String[] mediaFilter;
+
+    
     int numcols, numrows;           // number of rows and columns
     
+    public void updateTableModel() {
+                //searchTerm = "";
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+	manager = factory.createEntityManager();
+	project = new Project();
+
+        
+        try{
+            Scanner in = new Scanner(new FileReader("searchTerm.txt"));
+            if(in.hasNext())
+                searchTerm = in.nextLine();
+            in.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }	// read all the records from courselist
+        
+        //System.out.println("SearchResultTableModel --------" + searchTerm);
+        if(searchTerm==null || searchTerm.isEmpty())
+        {
+            projectResultList = projectService.readAll();
+        }
+        else
+        {
+            projectResultList = projectService.searchProjects(searchTerm);
+        }
+        List<Project> TempList = new ArrayList<Project>();
+        Iterator<Project> i = projectResultList.iterator();
+        while (i.hasNext()) {
+            Project p = i.next();
+            Set<Tag> s = p.getTag();
+            Set<Category> c = p.getCategory();
+            Set<Students> S = p.getStudents();
+
+            for(Tag t: s)
+            {
+                if(tagFilter!=null)
+                for(int x = 0; x < tagFilter.length; x++)
+                {
+                    if(t.getTag().equals(tagFilter[x]))
+                    {
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+
+                    }
+                }
+            }
+            for(Category t: c)
+            {
+                if(categoryFilter!=null)
+                for(int x = 0; x < categoryFilter.length; x++)
+                {
+                    if(t.getCategory().equals(categoryFilter[x]))
+                    {
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+
+                    }
+                }
+            }
+            if(statusFilter!=null)
+                for(int x = 0; x < statusFilter.length; x++)
+                {
+                    if(p.getStatus().equals(statusFilter[x]))
+                    {
+                        if(!TempList.contains(p))
+                            TempList.add(p);                    }
+                }
+                        
+            for(Students t: S)
+            {
+                if(studentFilter!=null)
+                for(int x = 0; x < studentFilter.length; x++)
+                {
+                    if(t.getName().equals(studentFilter[x]))
+                    {
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+                    }
+                }
+            }
+  
+            for(int x = 0; x < partnerFilter.length; x++)
+            {
+                String pid = p.getId().toString();
+                PartnersService partnersService = new PartnersService(manager, pid);
+                List<Partners> PTemp = partnersService.readAll();
+                
+                for(Partners n: PTemp)
+                {
+                    if(n.getName().equals(partnerFilter[x]))
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+                }
+            }
+              
+            for(int x = 0; x < advisorFilter.length; x++)
+            {
+                String pid = p.getId().toString();
+                AdvisorsService advisorsService = new AdvisorsService(manager, pid);
+                List<Advisors> ATemp = advisorsService.readAll();
+                
+                for(Advisors n: ATemp)
+                {
+                    if(n.getName().equals(advisorFilter[x]))
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+                }
+            }
+            
+              
+            for(int x = 0; x < mediaFilter.length; x++)
+            {
+                String pid = p.getId().toString();
+                MediaService mediaService = new MediaService(manager, pid);
+                List<Media> MTemp = mediaService.readAll();
+                
+                for(Media n: MTemp)
+                {
+                    if(n.getFileName().equals(mediaFilter[x]))
+                        if(!TempList.contains(p))
+                            TempList.add(p);
+                }
+            }
+        }
+        
+        projectResultList = TempList;
+        numrows = projectResultList.size();
+	numcols = project.getNumberOfColumns();     
+
+    }
+    
+    
     public SearchResultTableModel() {
+        System.out.println("RESETING EVERYTHING");
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	manager = factory.createEntityManager();
 	project = new Project();
@@ -45,7 +189,7 @@ public class SearchResultTableModel extends AbstractTableModel {
             e.printStackTrace();
         }	// read all the records from courselist
         
-        System.out.println("SearchResultTableModel --------" + searchTerm);
+        //System.out.println("SearchResultTableModel --------" + searchTerm);
         if(searchTerm==null || searchTerm.isEmpty())
         {
             projectResultList = projectService.readAll();
@@ -55,10 +199,33 @@ public class SearchResultTableModel extends AbstractTableModel {
             projectResultList = projectService.searchProjects(searchTerm);
         }
         
+        //go through filters, exclude those that don't correspond with at least one
+        
+     //statusFilter, categoryFilter, tagFilter, studentFilter, partnerFilter, advisorFilter, mediaFilter
+
+        
+        
 	// update the number of rows and columns in the model
 	numrows = projectResultList.size();
 	numcols = project.getNumberOfColumns();
+        
+        
     }
+    
+    public void setFilters(String[] statusFilter, String[] categoryFilter, String[] tagFilter, String[] studentFilter, String[] partnerFilter, String[] advisorFilter, String[] mediaFilter)
+    {
+        //System.out.println("HERE - - - -" +tagFilter.length);
+        this.statusFilter = statusFilter;
+        this.categoryFilter = categoryFilter;
+        this.tagFilter = tagFilter;
+        this.statusFilter = statusFilter;
+        this.studentFilter = studentFilter;
+        this.partnerFilter = partnerFilter;
+        this.advisorFilter = advisorFilter;
+        this.mediaFilter = mediaFilter;
+        //System.out.println("HERE + " + tagFilter[0]);
+    }
+    
     
     // returns a count of the number of rows
     public int getRowCount() {
@@ -123,25 +290,39 @@ public class SearchResultTableModel extends AbstractTableModel {
 
     // create a new table model using the existing data in list
     public SearchResultTableModel(List<Project> list, EntityManager em)  {
-                //searchTerm = "";
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+	manager = factory.createEntityManager();
+	project = new Project();
+	projectService = new ProjectService(manager);
+	    
+        //searchTerm = "";
         try{
             Scanner in = new Scanner(new FileReader("searchTerm.txt"));
             if(in.hasNext())
                 searchTerm = in.nextLine();
+            in.close();
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }	// read all the records from courselist
         
+        //System.out.println("SearchResultTableModel --------" + searchTerm);
         if(searchTerm==null || searchTerm.isEmpty())
         {
-            projectResultList = list;
+            projectResultList = projectService.readAll();
         }
         else
         {
             projectResultList = projectService.searchProjects(searchTerm);
         }
+        
+        //go through filters, exclude those that don't correspond with at least one
+        
+     //statusFilter, categoryFilter, tagFilter, studentFilter, partnerFilter, advisorFilter, mediaFilter
+
+        
+        
         
 	numrows = projectResultList.size();
 	project = new Project();

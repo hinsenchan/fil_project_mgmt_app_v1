@@ -16,6 +16,14 @@ public class SearchPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
     private SearchResultTableController s;
 
+    public SearchResultTableController getS() {
+        return s;
+    }
+
+    public void setS(SearchResultTableController s) {
+        this.s = s;
+    }
+
     /** Creates new form frugalSearchPanel */
     public SearchPanel(FrugalController frugalController, SearchResultTableController s) {
         initComponents();
@@ -23,6 +31,13 @@ public class SearchPanel extends javax.swing.JPanel {
         this.s = s;
     }
 
+    public void populateFilters()
+    {
+        //System.out.println("---------------------" + frugalController.getTagFilter().length);
+        s.setFilters(frugalController.getStatusFilter(), frugalController.getCategoryFilter(), frugalController.getTagFilter(), frugalController.getStudentFilter(), frugalController.getPartnerFilter(), frugalController.getAdvisorFilter() ,frugalController.getMediaFilter());
+        //s.updateTableModel();
+    }
+    
     public void setTableController(SearchResultTableController s)
     {
         this.s = s;
@@ -107,6 +122,8 @@ public class SearchPanel extends javax.swing.JPanel {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         frugalController.setSearchTerm(searchTextField.getText());
         //System.out.println("SearchPanel------"+searchTextField.getText());
+        
+        s.setFilters(frugalController.getStatusFilter(), frugalController.getCategoryFilter(), frugalController.getTagFilter(), frugalController.getStudentFilter(), frugalController.getPartnerFilter(), frugalController.getAdvisorFilter() ,frugalController.getMediaFilter());
         
         try{
                 File file = new File("searchTerm.txt");

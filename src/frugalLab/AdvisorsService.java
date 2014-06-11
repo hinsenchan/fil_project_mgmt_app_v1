@@ -43,7 +43,14 @@ public class AdvisorsService {
         Advisors advisors = manager.find(Advisors.class, id);
     	return advisors;   	 
     }
-
+    
+    public List<Advisors> read()
+    {
+        TypedQuery<Advisors> query = manager.createQuery("SELECT e FROM ADVISORS e", Advisors.class);
+        List<Advisors> result =  query.getResultList();
+        
+    	return result;     
+    }
     // method to read all records
     public List<Advisors> readAll() {        
 

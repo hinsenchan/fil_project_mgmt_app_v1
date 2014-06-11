@@ -15,6 +15,7 @@ import java.util.Comparator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.Set;
 
 
 /**
@@ -23,6 +24,14 @@ import javax.persistence.Persistence;
 */
 public class SearchResultTableController implements ListSelectionListener, TableModelListener{
     private SearchResultTableModel searchResultTableModel;
+
+    public SearchResultTableModel getSearchResultTableModel() {
+        return searchResultTableModel;
+    }
+
+    public void setSearchResultTableModel(SearchResultTableModel searchResultTableModel) {
+        this.searchResultTableModel = searchResultTableModel;
+    }
     private SearchResultPanel searchResultPanel; 
     private boolean jTableRowSelected = false; // monitors if row is selected in jTable
     private int firstIndex; // first selected index in the table
@@ -61,11 +70,17 @@ public class SearchResultTableController implements ListSelectionListener, Table
         //System.out.println("SearchResultTableController------"+searchTerm);
     }	
 	
+    public void setFilters(String[] statusFilter, String[] categoryFilter, String[] tagFilter, String[] studentFilter, String[] partnerFilter, String[] advisorFilter, String[] mediaFilter)
+    {
+        searchResultTableModel.setFilters(statusFilter, categoryFilter, tagFilter, studentFilter, partnerFilter ,advisorFilter, mediaFilter);
+        searchResultTableModel.updateTableModel();
+    }
+    
     // returns the table model for this controller
     public TableModel getTableModel() {
         return searchResultTableModel;
     }
-	
+    
     // listselection handler. updates textfield in panel
     public void valueChanged(ListSelectionEvent e) {        
         jTableRowSelected = true; // row is selected in jTable
@@ -132,6 +147,7 @@ public class SearchResultTableController implements ListSelectionListener, Table
                 advisors+=advisorList.get(i).getName();
                 if(i+1 != advisorList.size())
                     advisors+=", ";
+            
         }
                 
         searchResultPanel.setAdvisorsTextArea( advisors );        
@@ -139,25 +155,36 @@ public class SearchResultTableController implements ListSelectionListener, Table
         
         // Handling Categories field
         
-        categoryService = new CategoryService(manager);//, (String)searchResultTableModel.getValueAt(firstIndex, 0));
         
-        List<Category> categoriesList = categoryService.readAll();//(Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0)));
+        CategoryService categoryService = new CategoryService(manager);//, (String)searchResultTableModel.getValueAt(firstIndex, 0));
+        
+        List<Category> categoryList = categoryService.readAll();//(Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0)));
 
         String categories = "";
         //System.out.println("--------------here" + studentList.size());
-        for(int i = 0; i < categoriesList.size(); i++)
+        Long pid = Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0));
+        int categoryCount = 0;
+        for(int i = 0; i < categoryList.size(); i++)
         {
-            if(categoriesList.get(i).getId() == searchResultTableModel.getValueAt(firstIndex, 0))
+            Set<Project> S = categoryList.get(i).getProjects();
+            
+            for (Project p : S)
             {
-                categories+=categoriesList.get(i).getCategory();
-                if(i+1 != categoriesList.size())
-                    categories+=", ";
+                //System.out.println("Categories -- : " + categoryList.get(i).getCategory()+ " -- ProjectID -- : " + p.getId() + " compare to : "+ pid);
+                if(p.getId().longValue() == pid.longValue())
+                {
+                    //System.out.println("HELLO IN Category"+categoryList.get(i).getCategory());
+                        if(!categories.isEmpty())
+                            categories+=", ";
+                        categories+=categoryList.get(i).getCategory();
+                        categoryCount++;
+
+                }
             }
-        }
-                
-        searchResultPanel.setCategoriesTextArea( categories );        
+        }       
         
-        //searchResultPanel.setCategoriesTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 8));
+        searchResultPanel.setCategoriesTextArea( categories );        
+
         
         // Handling Tags field
         
@@ -167,13 +194,24 @@ public class SearchResultTableController implements ListSelectionListener, Table
 
         String tags = "";
         //System.out.println("--------------here" + studentList.size());
+        //Long pid = Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0));
+        int tagCount = 0;
         for(int i = 0; i < tagList.size(); i++)
         {
-            if(tagList.get(i).getId() == searchResultTableModel.getValueAt(firstIndex, 0))
+            Set<Project> S = tagList.get(i).getProjects();
+            
+            for (Project p : S)
             {
-                tags+=tagList.get(i).getTag();
-                if(i+1 != tagList.size())
-                    tags+=", ";
+                //System.out.println("Tags -- : " + tagList.get(i).getTag()+ " -- ProjectID -- : " + p.getId() + " compare to : "+ pid);
+                if(p.getId().longValue() == pid.longValue())
+                {
+                    //System.out.println("HELLO IN TAG");
+                        if(!tags.isEmpty())
+                           tags+=", ";
+                        tags+=tagList.get(i).getTag();
+                        tagCount++;
+
+                }
             }
         }
                 
@@ -187,13 +225,13 @@ public class SearchResultTableController implements ListSelectionListener, Table
         		
         int projectCount = searchResultTableModel.getRowCount();
         int statusCount = projectCount;
-        int categoryCount = categoriesList.size();
-        int tagCount = tagList.size();
+        //int categoryCount = categoriesList.size(); // Done above now
+        //tagCount = tagList.size(); // Done above now
         int studentCount = studentList.size();
         int partnerCount = partnerList.size();
         int advisorCount = advisorList.size();
         
-        searchResultPanel.updateCounts((String)searchResultTableModel.getValueAt(firstIndex, 3), projectCount, statusCount, categoryCount, tagCount,(String)searchResultTableModel.getValueAt(firstIndex, 4), studentCount, partnerCount, advisorCount);
+        searchResultPanel.updateCounts((String)searchResultTableModel.getValueAt(firstIndex, 3), projectCount, categoryCount, statusCount, tagCount,(String)searchResultTableModel.getValueAt(firstIndex, 4), studentCount, partnerCount, advisorCount);
     
     }
 	
