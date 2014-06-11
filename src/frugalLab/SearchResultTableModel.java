@@ -118,7 +118,7 @@ public class SearchResultTableModel extends AbstractTableModel {
                     }
                 }
             }
-  
+            if(partnerFilter!=null)
             for(int x = 0; x < partnerFilter.length; x++)
             {
                 String pid = p.getId().toString();
@@ -132,7 +132,7 @@ public class SearchResultTableModel extends AbstractTableModel {
                             TempList.add(p);
                 }
             }
-              
+            if(advisorFilter!=null)
             for(int x = 0; x < advisorFilter.length; x++)
             {
                 String pid = p.getId().toString();
@@ -147,7 +147,7 @@ public class SearchResultTableModel extends AbstractTableModel {
                 }
             }
             
-              
+            if(mediaFilter!=null)
             for(int x = 0; x < mediaFilter.length; x++)
             {
                 String pid = p.getId().toString();
@@ -162,6 +162,8 @@ public class SearchResultTableModel extends AbstractTableModel {
                 }
             }
         }
+        if(mediaFilter==null && advisorFilter == null && partnerFilter == null && studentFilter == null && statusFilter == null && categoryFilter == null && tagFilter == null)
+            TempList = projectResultList;
         
         projectResultList = TempList;
         numrows = projectResultList.size();
