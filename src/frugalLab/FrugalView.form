@@ -86,9 +86,6 @@
             <Component class="javax.swing.JLabel" name="menuPanelLogo">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/Users/vsuri/NetBeansProjects/coen275/Frugal_Blk_BriteRed_72dpi.jpg"/>
-                </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -102,6 +99,7 @@
                   <Color blue="0" green="dd" red="f0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Search"/>
+                <Property name="toolTipText" type="java.lang.String" value="Search by title"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButtonActionPerformed"/>
@@ -118,6 +116,7 @@
                   <Color blue="23" green="62" red="f1" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Filter"/>
+                <Property name="toolTipText" type="java.lang.String" value="Filter by specified criteria"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filiterButtonActionPerformed"/>
@@ -134,6 +133,7 @@
                   <Color blue="21" green="1a" red="e1" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Manage"/>
+                <Property name="toolTipText" type="java.lang.String" value="Login to administration account"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manageButtonActionPerformed"/>

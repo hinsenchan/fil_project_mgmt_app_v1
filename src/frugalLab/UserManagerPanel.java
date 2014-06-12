@@ -4,17 +4,23 @@
  */
 package frugalLab;
 
+import javax.swing.*;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class UserManagerPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    UserManagerTableController userManagerTableController; // controller for the file type panel
 
     /** Creates new form UserManagerPanel */
     public UserManagerPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        this.userManagerTableController = new UserManagerTableController(this);
+        jTable.setModel(userManagerTableController.getTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(userManagerTableController); // add a listener to the table model
     }
 
     /**
@@ -229,19 +235,52 @@ public class UserManagerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        String userName = usernameTextField.getText();
+        String passWord = pwPasswordField.getText();
+
+        if (userName.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (passWord.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a password.", "Error", JOptionPane.ERROR_MESSAGE);        
+        }
+        else {
+            String[] userNameArray = {userName,passWord};
+            userManagerTableController.addRow(userNameArray);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        
+        String userName = usernameTextField.getText();
+        String passWord = pwPasswordField.getText();
+        String id = userIDTextField.getText();
+        int[] index = jTable.getSelectedRows();
+
+        if (userName.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (passWord.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Please enter a password.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (index.length > 1) {
+            JOptionPane.showMessageDialog(this, "Please update 1 user account at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String[] userNameArray = {userName,passWord,id};
+            userManagerTableController.setSelectedIndex(jTable.getSelectedRow());
+            userManagerTableController.updateRow(userNameArray);
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int[] index = jTable.getSelectedRows();
+        userManagerTableController.deleteRow(index);
+        jTable.clearSelection();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        userManagerTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -262,4 +301,50 @@ public class UserManagerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the pwPasswordField
+     */
+    public String getPwPasswordField() {
+        return pwPasswordField.getText();
+    }
+
+    /**
+     * @param pwPasswordField the pwPasswordField to set
+     */
+    public void setPwPasswordField(String pwPasswordField) {
+        this.pwPasswordField.setText(pwPasswordField);
+    }
+
+    /**
+     * @return the userIDTextField
+     */
+    public String getUserIDTextField() {
+        return userIDTextField.getText();
+    }
+
+    /**
+     * @param userIDTextField the userIDTextField to set
+     */
+    public void setUserIDTextField(String userIDTextField) {
+        this.userIDTextField.setText(userIDTextField);
+    }
+
+    /**
+     * @return the usernameTextField
+     */
+    public String getUsernameTextField() {
+        return usernameTextField.getText();
+    }
+
+    /**
+     * @param usernameTextField the usernameTextField to set
+     */
+    public void setUsernameTextField(String usernameTextField) {
+        this.usernameTextField.setText(usernameTextField);
+    }
+        public void updateTable() {
+    	jTable.setModel(userManagerTableController.getTableModel());
+    }
+
 }

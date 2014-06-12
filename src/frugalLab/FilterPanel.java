@@ -151,7 +151,8 @@ public class FilterPanel extends javax.swing.JPanel {
         int y = 0;
         for(Project x : P)
         {
-            status[y]=x.getTitle();
+            //status[y]=x.getTitle();
+            status[y]=x.getStatus();
             y++;
         }
         
@@ -192,7 +193,8 @@ public class FilterPanel extends javax.swing.JPanel {
         for(Advisors x : A)
         {
             advisors[y]=x.getName();
-            studentsI[y]=y;
+            advisorsI[y]=y;
+            //studentsI[y]=y;
             y++;
         }
         
