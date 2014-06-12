@@ -4,19 +4,86 @@
  */
 package frugalLab;
 
+import javax.swing.*;
+import java.awt.Desktop;
+import java.io.*;
+import java.util.List;
+import java.util.Comparator;
+import java.util.Collections;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class MediaViewPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
+    private MediaViewTableController mediaViewTableController;
+    private String projectID;
+    private String mediaID;  
 
+    public MediaViewTableController getS()
+    {
+        return mediaViewTableController;
+    }
+    
+    public String getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    public String getMediaID() {
+        return mediaID;
+    }
+
+    public void setMediaID(String mediaID) {
+        this.mediaID = mediaID;
+    }
+
+    public JTextField getFileLocationTextField() {
+        return fileLocationTextField;
+    }
+
+    public void setFileLocationTextField(String s) {
+        this.fileLocationTextField.setText(s);
+    }
+
+    public JTextField getFileNameTextField() {
+        return fileNameTextField;
+    }
+
+    public void setFileNameTextField(String s) {
+        this.fileNameTextField.setText(s);
+    }
+
+    public JTextField getFileNameTextField1() {
+        return fileNameTextField1;
+    }
+
+    public void setFileNameTextField1(String s) {
+        this.fileNameTextField1.setText(s);
+    }
+    public void updateTable() {
+    	jTable.setModel(mediaViewTableController.getMediaViewTableModel());
+    }
     /**
      * Creates new form TagPanel
      */
     public MediaViewPanel(FrugalController frugalController) {
         initComponents();
         this.frugalController = frugalController;
+        projectID = frugalController.getPid(); 
+        this.mediaViewTableController = new MediaViewTableController(this);
+        
+        // get file types from the table                
+        List<Media> mediaList = ((MediaViewTableModel)this.mediaViewTableController.getMediaViewTableModel()).getList();
+        String [] s = {"","","",""};
+        
+        jTable.setModel(mediaViewTableController.getMediaViewTableModel()); // set the table model using the controller
+        jTable.getSelectionModel().addListSelectionListener(mediaViewTableController); // add a listener to the table model        
+
     }
 
     /**

@@ -63,7 +63,7 @@ public class MediaService {
         TypedQuery<Media> query = manager.createQuery("SELECT e FROM MEDIA e WHERE e.pid = :pidValue", Media.class);
         query.setParameter("pidValue", longProjectID);
         List<Media> result =  query.getResultList();
-        
+        //System.out.println(result);
     	return result;   	 
     }
     

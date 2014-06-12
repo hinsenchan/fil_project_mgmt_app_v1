@@ -456,6 +456,7 @@ public class SearchResultPanel extends javax.swing.JPanel {
 
     private void mediaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediaViewButtonActionPerformed
         frugalController.launchMediaViewPanel();
+        
     }//GEN-LAST:event_mediaViewButtonActionPerformed
 
     private void otherDataViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otherDataViewButtonActionPerformed

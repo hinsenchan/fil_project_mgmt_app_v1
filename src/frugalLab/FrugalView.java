@@ -101,6 +101,16 @@ public class FrugalView extends javax.swing.JFrame {
         
     }
     
+    public void refreshMediaViewPanel()
+    {
+        //System.out.println("From View --" + frugalController.getPid());
+        frugalController.setPid(searchResultPanel.getProjectIDTextField());
+        //mediaViewPanel = new MediaViewPanel(frugalController);
+        mediaViewPanel.getS().getMediaViewTableModel().updateViewTableModel(searchResultPanel.getProjectIDTextField());
+
+        //mediaViewPanel.setProjectID(searchResultPanel.getProjectIDTextField());
+    }
+    
     public void setupPanels() {
         SearchResultPanel s = new SearchResultPanel(frugalController);
         setSearchResultPanel(s);

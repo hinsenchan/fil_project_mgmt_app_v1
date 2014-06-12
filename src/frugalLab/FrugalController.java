@@ -121,7 +121,8 @@ public class FrugalController {
         mainPanel.repaint();
     }
     
-    public void launchMediaViewPanel() {       
+    public void launchMediaViewPanel() {    
+        frugalView.refreshMediaViewPanel();
         cardLayout.show(mainPanel, "MediaViewPanel");
     }
     
