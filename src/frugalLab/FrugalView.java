@@ -190,6 +190,7 @@ public class FrugalView extends javax.swing.JFrame {
         menuPanel.setLayout(new java.awt.GridBagLayout());
 
         menuPanelLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        menuPanelLogo.setIcon(new javax.swing.ImageIcon("/home/fattymcphatfat/NetBeansProjects/coen275project/Frugal_Blk_BriteRed_72dpi.jpg")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -202,7 +203,6 @@ public class FrugalView extends javax.swing.JFrame {
 
         searchButton.setBackground(new java.awt.Color(240, 221, 0));
         searchButton.setText("Search");
-        searchButton.setToolTipText("Search by title");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
@@ -219,7 +219,6 @@ public class FrugalView extends javax.swing.JFrame {
 
         filiterButton.setBackground(new java.awt.Color(241, 98, 35));
         filiterButton.setText("Filter");
-        filiterButton.setToolTipText("Filter by specified criteria");
         filiterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filiterButtonActionPerformed(evt);
@@ -236,7 +235,6 @@ public class FrugalView extends javax.swing.JFrame {
 
         manageButton.setBackground(new java.awt.Color(225, 26, 33));
         manageButton.setText("Manage");
-        manageButton.setToolTipText("Login to administration account");
         manageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 manageButtonActionPerformed(evt);
@@ -266,7 +264,7 @@ public class FrugalView extends javax.swing.JFrame {
         );
         scrollPanePanelLayout.setVerticalGroup(
             scrollPanePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
@@ -276,7 +274,7 @@ public class FrugalView extends javax.swing.JFrame {
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
                     .addComponent(scrollPanePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -315,7 +313,6 @@ public class FrugalView extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void filiterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filiterButtonActionPerformed
-        //populateFilters();
         frugalController.launchFilterPanel();
     }//GEN-LAST:event_filiterButtonActionPerformed
 
