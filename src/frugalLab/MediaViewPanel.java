@@ -287,7 +287,20 @@ public class MediaViewPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+        String fileLocation = getFileLocationTextField().getText();
+        if (!fileLocation.isEmpty()) {
+            try {
+                File file = new File(fileLocation);
+            
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(file);
+                }
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Unable to open file or directory.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
