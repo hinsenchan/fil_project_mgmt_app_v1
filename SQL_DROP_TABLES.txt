@@ -1,0 +1,11 @@
+drop table `test1`.`PROJECT`;
+drop table `test1`.`STUDENTS`;
+drop table `test1`.`PARTNERS`;
+drop table `test1`.`ADVISORS`;
+drop table `test1`.`CATEGORY`;
+drop table `test1`.`PROJECT_CATEGORY`;
+drop table `test1`.`TAG`;
+drop table `test1`.`PROJECT_TAG`;
+drop table `test1`.`MEDIA`;
+drop table `test1`.`FILE_TYPE`;
+drop table `test1`.`OTHER_DATA`;

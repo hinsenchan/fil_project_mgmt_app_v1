@@ -1,0 +1,98 @@
+CREATE TABLE `test1`.`PROJECT` (
+  `ID` bigint(20) NOT NULL,
+  `TITLE` varchar(255) NOT NULL,
+  `STATUS` varchar(255) NOT NULL,
+  `START_DATE` date NOT NULL,
+  `END_DATE` date DEFAULT NULL,
+  `OUTCOME` text NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`STUDENTS` (
+  `ID` bigint(20) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `PID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`PARTNERS` (
+  `ID` bigint(20) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `PID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`ADVISORS` (
+  `ID` bigint(20) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `PID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`CATEGORY` (
+  `ID` bigint(20) NOT NULL,
+  `CATEGORY` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`PROJECT_CATEGORY` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `PID` bigint(20) NOT NULL,
+  `CID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`TAG` (
+  `ID` bigint(20) NOT NULL,
+  `TAG` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`PROJECT_TAG` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `PID` bigint(20) NOT NULL,
+  `TID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`MEDIA` (
+  `ID` bigint(20) NOT NULL,
+  `FILETYPE` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `FILELOCATION` varchar(255) NOT NULL,
+  `PID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`FILE_TYPE` (
+  `ID` bigint(20) NOT NULL,
+  `FILETYPE` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`OTHER_DATA` (
+  `ID` bigint(20) NOT NULL,
+  `OTHERDATATYPE` varchar(255) NOT NULL,
+  `OTHERDATAVALUE` varchar(255) NOT NULL,
+  `PID` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+);
+
+CREATE TABLE `test1`.`USER_MANAGER` (
+  `ID` BIGINT(20) NOT NULL,
+  `USERNAME` VARCHAR(255) NOT NULL,
+  `PASSWORD` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC)
+);
