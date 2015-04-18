@@ -76,7 +76,7 @@ This page displays the media files that are related to the selected project. The
 
 This page displays extra data fields and values that the project may contain. It has a jTable which may display the various data fields and values that a project may contain. The done button returns the user back to the search results page.
 
-![OtherDataView](https://github.com/hinsenchan/fil_project_mgmt_app_v1/blob/master/readme/img6_otherDataView.png.png)
+![OtherDataView](https://github.com/hinsenchan/fil_project_mgmt_app_v1/blob/master/readme/img6_otherDataView.png)
 
 ## Search Stats Page
 
