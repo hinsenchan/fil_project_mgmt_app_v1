@@ -8,9 +8,9 @@ FIL Project Management App v1 was the runner-up prototype for the [Spring 2014 C
 
 ### Source Code
 
-BannerPanel.java
-FrugalView.java
-FrugalController.java
+* BannerPanel.java
+* FrugalView.java
+* FrugalController.java
 
 ### Description
 
@@ -22,7 +22,7 @@ This is the welcome screen of the program which features the Frugal Innovation L
 
 ### Source Code
 
-SearchPanel.java
+* SearchPanel.java
 
 ### Description
 
@@ -34,7 +34,7 @@ This page searches the database for a project by title.
 
 ### Source Code 
 
-ResultPanel.java
+* ResultPanel.java
 
 ### Description
 
@@ -46,7 +46,7 @@ This is the panel which serves as a container for the search result and search s
 
 ### Source Code
 
-SearchResultPanel.java
+* SearchResultPanel.java
 
 ### Description
 
@@ -58,7 +58,7 @@ This page shows the search results for the projects which are found in a jTable.
 
 ### Source Code
 
-MediaViewPanel.java
+* MediaViewPanel.java
 
 ### Description
 
@@ -70,7 +70,7 @@ This page displays the media files that are related to the selected project. The
 
 ### Source Code
 
-OtherDataViewPanel.java
+* OtherDataViewPanel.java
 
 ### Description
 
@@ -82,7 +82,7 @@ This page displays extra data fields and values that the project may contain. It
 
 ### Source Code
 
-StatPanel.java
+* StatPanel.java
 
 ### Description
 
@@ -94,7 +94,7 @@ This page displays the search statistics returned by the application. Start date
 
 ### Source Code
 
-FilterPanel.java
+* FilterPanel.java
 
 ### Description
 
@@ -106,7 +106,7 @@ The filter panel allows the user to filter search criteria using status, start d
 
 ### Source Code
 
-LoginPanel.java
+* LoginPanel.java
 
 ### Description
 
@@ -118,7 +118,7 @@ The login page allows a user to enter their username and password to login to th
 
 ### Source Code
 
-ManagePanel.java
+* ManagePanel.java
 
 ### Description
 
@@ -130,7 +130,7 @@ The manage page interacts with the FrugalController to launch the user or projec
 
 ### Source Code
 
-UserManagerPanel.java
+* UserManagerPanel.java
 
 ### Description
 
@@ -142,11 +142,11 @@ The user manager page allows administrative accounts to be added, updated, or de
 
 ### Source Code
 
-Project.java
-ProjectPanel.java
-ProjectTableController.java
-ProjectTableModel.java
-ProjectService.java
+* Project.java
+* ProjectPanel.java
+* ProjectTableController.java
+* ProjectTableModel.java
+* ProjectService.java
 
 ### Description
 
@@ -158,11 +158,11 @@ The project management page allows new projects to be created, and existing proj
 
 ### Source Code
 
-Students.java
-StudentsPanel.java
-StudentsTableController.java
-StudentsTableModel.java
-StudentsService.java
+* Students.java
+* StudentsPanel.java
+* StudentsTableController.java
+* StudentsTableModel.java
+* StudentsService.java
 
 ### Description
 
@@ -174,11 +174,11 @@ The student management page allows the user to see the existing students who are
 
 ### Source Code
 
-Partners.java
-PartnersPanel.java
-PartnersTableController.java
-PartnersTableModel.java
-PartnersService.java
+* Partners.java
+* PartnersPanel.java
+* PartnersTableController.java
+* PartnersTableModel.java
+* PartnersService.java
 
 ### Description
 
@@ -190,11 +190,11 @@ The partner management page allows the user to see the existing partners who are
 
 ### Source Code
 
-Advisors.java
-AdvisorsPanel.java
-AdvisorsTableController.java
-AdvisorsTableModel.java
-AdvisorsService.java
+* Advisors.java
+* AdvisorsPanel.java
+* AdvisorsTableController.java
+* AdvisorsTableModel.java
+* AdvisorsService.java
 
 ### Description
 
@@ -206,11 +206,11 @@ The advisor management page allows the user to see the existing advisors who are
 
 ### Source Code
 
-Category.java
-CategoryPanel.java
-CategoryTableController.java
-CategoryTableModel.java
-CategoryService.java
+* Category.java
+* CategoryPanel.java
+* CategoryTableController.java
+* CategoryTableModel.java
+* CategoryService.java
 
 ### Description
 
@@ -222,11 +222,11 @@ The category page allows the users to add new categories to the application. Exi
 
 ### Source Code
 
-Tag.java
-TagPanel.java
-TagTableController.java
-TagTableModel.java
-TagService.java
+* Tag.java
+* TagPanel.java
+* TagTableController.java
+* TagTableModel.java
+* TagService.java
 
 ### Description
 
@@ -238,11 +238,11 @@ The tag page allows the users to add new tags to the application. By selecting e
 
 ### Source Code
 
-Media.java
-MediaPanel.java
-MediaTableController.java
-MediaTableModel.java
-MediaService.java
+* Media.java
+* MediaPanel.java
+* MediaTableController.java
+* MediaTableModel.java
+* MediaService.java
 
 ### Description
 
@@ -254,11 +254,11 @@ The media page allows the user to see the media files that are related to the se
 
 ### Source Code
 
-FileType.java
-FileTypePanel.java
-FileTypeTableController.java
-FileTypeTableModel.java
-FileTypeService.java
+* FileType.java
+* FileTypePanel.java
+* FileTypeTableController.java
+* FileTypeTableModel.java
+* FileTypeService.java
 
 ### Description
 
@@ -270,11 +270,11 @@ The file type page allows the user to add additional file types that can be sele
 
 ### Source Code
 
-OtherData.java
-OtherDataPanel.java
-OtherDataTableController.java
-OtherDataTableModel.java
-OtherDataService.java
+* OtherData.java
+* OtherDataPanel.java
+* OtherDataTableController.java
+* OtherDataTableModel.java
+* OtherDataService.java
 
 ### Description
 
