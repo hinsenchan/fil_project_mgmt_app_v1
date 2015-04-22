@@ -172,20 +172,13 @@ public class ProjectService {
     /*SELECT * FROM blog_posts WHERE keywords LIKE '%design%' ORDER BY timestamp */
     // method to read all records that contain search term
     public List<Project> searchProjects(String s) {
-        //System.out.println("S = "+s);
-        //TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e WHERE e.title = :searchTerm", Project.class).setParameter("searchTerm", s);
-        //List<Project> result =  query.getResultList();
+        System.out.println("S = "+s);
+        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e WHERE e.title LIKE :searchTerm", Project.class).setParameter("searchTerm", "%" + s + "%");
+        List<Project> result =  query.getResultList();
         //System.out.println(result);
         //TypedQuery<String> q = manager.createQuery("SELECT e FROM PROJECT e WHERE e.title = :searchTerm", String.class).setParameter("searchTerm", s);
+    
         
-        TypedQuery<Project> query = manager.createQuery("SELECT e FROM PROJECT e", Project.class);
-        List<Project> result =  query.getResultList();
-        
-        for (int i=0; i<result.size(); i++) {
-            if (!result.get(i).getTitle().contains(s)) {
-                result.remove(i);
-            }
-        }
         /*
         createQuery(
     "SELECT c FROM Customer c WHERE c.name LIKE :custName")

@@ -37,7 +37,7 @@ public class FrugalView extends javax.swing.JFrame {
      * Creates new form TestView
      */
     public FrugalView() {
-        initComponents();
+        myinitComponents();
         frugalController = new FrugalController(this);
         setupPanels();
         setupMainPanel();
@@ -68,7 +68,7 @@ public class FrugalView extends javax.swing.JFrame {
         //refreshSearchResultPanel();
     }
     
-    public void updateCounts(String startDate, int projectCount, int statusCount, int categoryCount, int tagCount, String endDate, int studentsCount, int partnersCount, int advisorsCount)
+    public void updateCounts(String startDate, String projectCount, String statusCount, String categoryCount, String tagCount, String endDate, String studentsCount, String partnersCount, String advisorsCount)
     {
 
         // Update statPanel
@@ -82,10 +82,8 @@ public class FrugalView extends javax.swing.JFrame {
         statPanel.setProjectCountTextField(projectCount);
         statPanel.setStudentsCountTextArea(studentsCount);
         statPanel.setTagCountTextArea(tagCount);
+
         
-        // refresh screen to reflect changes
-        //refreshSearchResultPanel();
-        //setupResultPanel();
     }
     
     public void refreshSearchResultPanel()
@@ -163,6 +161,144 @@ public class FrugalView extends javax.swing.JFrame {
         resultPanel.getStatPanel().add(statPanel);
     }
 
+    private void myinitComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        topPanel = new javax.swing.JPanel();
+        menuPanel = new javax.swing.JPanel();
+        menuPanelLogo = new javax.swing.JLabel();
+        searchButton = new javax.swing.JButton();
+        filiterButton = new javax.swing.JButton();
+        manageButton = new javax.swing.JButton();
+        scrollPanePanel = new javax.swing.JPanel();
+        scrollPane = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        menuPanel.setBackground(java.awt.Color.white);
+        menuPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        menuPanel.setLayout(new java.awt.GridBagLayout());
+
+        menuPanelLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        menuPanelLogo.setIcon(new javax.swing.ImageIcon("/Users/vsuri/NetBeansProjects/coen275project/Frugal_Blk_BriteRed_72dpi.jpg")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 47;
+        gridBagConstraints.ipady = 22;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(13, 13, 13, 0);
+        menuPanel.add(menuPanelLogo, gridBagConstraints);
+
+        searchButton.setBackground(new java.awt.Color(240, 221, 0));
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 113;
+        gridBagConstraints.ipady = 31;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(29, 18, 0, 0);
+        menuPanel.add(searchButton, gridBagConstraints);
+
+        filiterButton.setBackground(new java.awt.Color(241, 98, 35));
+        filiterButton.setText("Filter");
+        filiterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filiterButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 125;
+        gridBagConstraints.ipady = 31;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(29, 18, 0, 0);
+        menuPanel.add(filiterButton, gridBagConstraints);
+
+        manageButton.setBackground(new java.awt.Color(225, 26, 33));
+        manageButton.setText("Manage");
+        manageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 105;
+        gridBagConstraints.ipady = 31;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(29, 18, 0, 36);
+        menuPanel.add(manageButton, gridBagConstraints);
+
+        mainPanel.setBackground(new java.awt.Color(143, 19, 21));
+        mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        mainPanel.setMinimumSize(new java.awt.Dimension(1024, 768));
+        mainPanel.setPreferredSize(new java.awt.Dimension(1024, 768));
+        mainPanel.setLayout(new java.awt.CardLayout());
+        scrollPane.setViewportView(mainPanel);
+
+        javax.swing.GroupLayout scrollPanePanelLayout = new javax.swing.GroupLayout(scrollPanePanel);
+        scrollPanePanel.setLayout(scrollPanePanelLayout);
+        scrollPanePanelLayout.setHorizontalGroup(
+            scrollPanePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane)
+        );
+        scrollPanePanelLayout.setVerticalGroup(
+            scrollPanePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
+        topPanel.setLayout(topPanelLayout);
+        topPanelLayout.setHorizontalGroup(
+            topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
+                    .addComponent(scrollPanePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        topPanelLayout.setVerticalGroup(
+            topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPanePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>           
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -313,6 +449,7 @@ public class FrugalView extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void filiterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filiterButtonActionPerformed
+        //populateFilters();
         frugalController.launchFilterPanel();
     }//GEN-LAST:event_filiterButtonActionPerformed
 

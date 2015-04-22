@@ -2,6 +2,8 @@
 
 FIL Project Management App v1 was the runner-up prototype for the [Spring 2014 COEN275/COEN160 in-class design competition](http://scu.edu/engineering/frugal/gallery/2012/Student-Projects.cfm) held by the Frugal Innovation Lab at Santa Clara University. The application allows coordinators and volunteers from the lab to search, store, and retrieve FIL project information to/from a **SQL database** in an easy to use and accessible GUI platform. FIL Project Management App v1 is a desktop application written in **Java** using the **Swing API** which utilizes the following libraries: **JDK 1.8** is used as the default Java library. **EclipseLink JPA2.1** is used to import the JPA library used for managing the calls to the SQL database. **MySQL-Connector 5.1.31** is utilized to access the SQL database within the Java application.
 
+![fil_proj_mgmt_app_v1_collage](https://github.com/hinsenchan/fil_project_mgmt_app_v1/blob/master/readme/fil_proj_mgmt_app_v1_collage.png)
+
 # Application Features
 
 ## Welcome Page (Main Program)

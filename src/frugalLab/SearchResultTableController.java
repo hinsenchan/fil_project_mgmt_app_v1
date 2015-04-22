@@ -1,21 +1,22 @@
 package frugalLab;
 
-import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableModel;
-import javax.swing.event.*;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.Set;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
 
 
 /**
@@ -49,7 +50,6 @@ public class SearchResultTableController implements ListSelectionListener, Table
     private PartnersService partnersService;
     private AdvisorsService advisorsService;
     private CategoryService categoryService;
-
     
 	
     public SearchResultTableController(SearchResultPanel searchResultPanel) {
@@ -163,7 +163,6 @@ public class SearchResultTableController implements ListSelectionListener, Table
         String categories = "";
         //System.out.println("--------------here" + studentList.size());
         Long pid = Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0));
-        int categoryCount = 0;
         for(int i = 0; i < categoryList.size(); i++)
         {
             Set<Project> S = categoryList.get(i).getProjects();
@@ -177,7 +176,6 @@ public class SearchResultTableController implements ListSelectionListener, Table
                         if(!categories.isEmpty())
                             categories+=", ";
                         categories+=categoryList.get(i).getCategory();
-                        categoryCount++;
 
                 }
             }
@@ -195,7 +193,6 @@ public class SearchResultTableController implements ListSelectionListener, Table
         String tags = "";
         //System.out.println("--------------here" + studentList.size());
         //Long pid = Long.parseLong((String)searchResultTableModel.getValueAt(firstIndex, 0));
-        int tagCount = 0;
         for(int i = 0; i < tagList.size(); i++)
         {
             Set<Project> S = tagList.get(i).getProjects();
@@ -209,7 +206,6 @@ public class SearchResultTableController implements ListSelectionListener, Table
                         if(!tags.isEmpty())
                            tags+=", ";
                         tags+=tagList.get(i).getTag();
-                        tagCount++;
 
                 }
             }
@@ -217,21 +213,136 @@ public class SearchResultTableController implements ListSelectionListener, Table
                 
         searchResultPanel.setTagsTextArea( tags );        
         
-//        searchResultPanel.setTagsTextArea( (String)searchResultTableModel.getValueAt(firstIndex, 9));
+        
 
         
-        // Update counts
+        String startDate = ""; 
+        String endDate = "";         
+        String projectCount = ""; 
+        String statusCount = ""; 
         
-        		
-        int projectCount = searchResultTableModel.getRowCount();
-        int statusCount = projectCount;
-        //int categoryCount = categoriesList.size(); // Done above now
-        //tagCount = tagList.size(); // Done above now
-        int studentCount = studentList.size();
-        int partnerCount = partnerList.size();
-        int advisorCount = advisorList.size();
+        List<Project> projectList = searchResultTableModel.getList();
+        ArrayList<String> stitle = new ArrayList<String>();
+        ArrayList<Integer> scount = new ArrayList<Integer>();
+        int x;
+        Date laterDate = new Date(3000, 03, 03);
         
-        searchResultPanel.updateCounts((String)searchResultTableModel.getValueAt(firstIndex, 3), projectCount, categoryCount, statusCount, tagCount,(String)searchResultTableModel.getValueAt(firstIndex, 4), studentCount, partnerCount, advisorCount);
+        if(projectList.size()>0)
+        {
+        Date sdate = projectList.get(0).getStartDate();
+        Date edate = projectList.get(0).getEndDate();
+        
+        
+        for(Project p : projectList)
+        {
+            if(!stitle.contains(p.getTitle()))
+            {
+                stitle.add(p.getTitle());
+                scount.add(1);
+            }
+            else if(stitle.contains(p.getTitle()))
+            {
+                scount.set(stitle.indexOf(p.getTitle()), stitle.indexOf(p.getTitle())+1);
+            }
+            
+
+            if(sdate.before(p.getStartDate()))
+            {
+                sdate = p.getStartDate();
+            }
+            if(p.getEndDate() == null || edate == null)
+            {
+                edate = null;
+            }
+            else if(edate.after(p.getEndDate()))
+            {
+                edate = p.getEndDate();
+            }
+        }
+        x = 0;
+        for(String p : stitle)
+        {
+            statusCount += p + " : " + scount.get(x) + "\n";
+            x++;
+        }
+        
+        startDate += sdate.toString();
+        if(edate == null)
+            endDate = "In Progress";
+        else
+            endDate += edate.toString();
+        
+        }
+        else
+            statusCount = "";
+        
+
+        
+        projectCount = "" + projectList.size();
+        
+        String categoryCount = "";
+        
+        stitle = new ArrayList<String>();
+        scount = new ArrayList<Integer>();
+        for(Category p : categoryList)
+        {
+            if(!stitle.contains(p.getCategory()))
+            {
+                stitle.add(p.getCategory());
+                scount.add(1);
+            }
+            else if(stitle.contains(p.getCategory()))
+            {
+                scount.set(stitle.indexOf(p.getCategory()), stitle.indexOf(p.getCategory())+1);
+            }
+        }
+        
+        x = 0;
+        for(String p : stitle)
+        {
+            categoryCount += p + " : " + scount.get(x) + "\n";
+            x++;
+        }
+        
+        
+        String tagCount = ""; 
+        
+        stitle = new ArrayList<String>();
+        scount = new ArrayList<Integer>();
+        for(Tag p : tagList)
+        {
+            if(!stitle.contains(p.getTag()))
+            {
+                stitle.add(p.getTag());
+                scount.add(1);
+            }
+            else if(stitle.contains(p.getTag()))
+            {
+                scount.set(stitle.indexOf(p.getTag()), stitle.indexOf(p.getTag())+1);
+            }
+        }
+        
+        x = 0;
+        for(String p : stitle)
+        {
+            tagCount += p + " : " + scount.get(x) + "\n";
+            x++;
+        }
+        
+        String studentsCount = ""; 
+        
+        studentsCount =  "Total number of students in this search : " + studentList.size();
+        
+        String partnersCount = ""; 
+        
+        partnersCount =  "Total number of partners in this search : " + partnerList.size();
+
+        
+        String advisorsCount = "";        
+        
+        advisorsCount =  "Total number of advisors in this search : " + advisorList.size();
+
+        searchResultPanel.updateCounts(startDate, projectCount, statusCount, categoryCount, tagCount, endDate, studentsCount, partnersCount, advisorsCount);
     
     }
 	

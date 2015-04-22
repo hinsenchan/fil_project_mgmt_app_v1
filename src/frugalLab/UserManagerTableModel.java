@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  *
- * @author Hinsen Chan
+ * @author Aram Hamidi
  */
 public class UserManagerTableModel extends AbstractTableModel {
     List<UserManager> userManagerResultList;   // stores the model data in a List collection of type UserManager
@@ -122,7 +122,7 @@ public class UserManagerTableModel extends AbstractTableModel {
         userManagerResultList.add(newRecord);
         
         int row = userManagerResultList.size();  
-        int col = 0;
+        int col = 1;
 
         // update the data in the model to the entries in array
         for (Object data : array) {
@@ -161,8 +161,10 @@ public class UserManagerTableModel extends AbstractTableModel {
     
     // locate a file type in the table
     public boolean locate(String userName) {
-        if (userManagerService.findUserManager(userName))        
+        if (userManagerService.findUserManagerUserName(userName))        
             return true;
         return false;
     }
+    
+    
 }

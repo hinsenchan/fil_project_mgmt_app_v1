@@ -1,6 +1,6 @@
 package frugalLab;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -8,12 +8,15 @@ import javax.swing.table.TableModel;
 import javax.swing.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
 * 
-* @author Hinsen Chan
+* @author Aram Hamidi
 */
 public class UserManagerTableController implements ListSelectionListener, TableModelListener{
     private UserManagerTableModel userManagerTableModel;
@@ -70,8 +73,8 @@ public class UserManagerTableController implements ListSelectionListener, TableM
                 userManagerTableModel.addRow(array); // add row to database
                 tableChanged(new TableModelEvent(getTableModel())); 
             }
-            else {                
-                //JOptionPane.showMessageDialog(userManagerPanel, "This username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+            else {
+                JOptionPane.showMessageDialog(userManagerPanel, "This username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -86,8 +89,8 @@ public class UserManagerTableController implements ListSelectionListener, TableM
         try {
             if (jTableRowSelected == true) {
                 if (locate(array[0])) {
-                    //JOptionPane.showMessageDialog(userManagerPanel, "This username already exists!", 
-                        //"Error", JOptionPane.ERROR_MESSAGE);      
+                    JOptionPane.showMessageDialog(userManagerPanel, "This username already exists!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);      
                 }
                 userManagerTableModel.updateRow(firstIndex, array);
                 tableChanged(new TableModelEvent(getTableModel()));
@@ -96,8 +99,8 @@ public class UserManagerTableController implements ListSelectionListener, TableM
                         userManagerPanel.setPwPasswordField( (String)userManagerTableModel.getValueAt(firstIndex, 2));
             }
             else {
-                //JOptionPane.showMessageDialog(userManagerPanel, "Please select a user account to update.", 
-                    //"Error", JOptionPane.ERROR_MESSAGE);  
+                JOptionPane.showMessageDialog(userManagerPanel, "Please select a user account to update.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
             e.getMessage();
@@ -130,8 +133,8 @@ public class UserManagerTableController implements ListSelectionListener, TableM
                 userManagerPanel.setPwPasswordField("");
             }
             else {
-                //JOptionPane.showMessageDialog(this, "Please select a user account to delete.", 
-                        //"Error", JOptionPane.ERROR_MESSAGE);  
+                JOptionPane.showMessageDialog(userManagerPanel, "Please select a user account to delete.", 
+            	    "Error", JOptionPane.ERROR_MESSAGE);  
             }
         } catch (Exception e) {
             e.getMessage();

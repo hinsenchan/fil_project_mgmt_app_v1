@@ -13,7 +13,7 @@ import javax.persistence.Column;
 
 /**
  *
- * @author Hinsen Chan
+ * @author Aram Hamidi
  */
 @Entity(name = "USER_MANAGER")
 public class UserManager implements Serializable {

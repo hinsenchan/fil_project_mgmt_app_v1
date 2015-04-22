@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  *
- * @author Hinsen Chan
+ * @author Aram Hamidi
  */
 public class UserManagerService {
     private EntityManager manager;
@@ -60,7 +60,7 @@ public class UserManagerService {
     }
     
     // method to find a record using file type
-    public boolean findUserManager(String userName) {
+    public boolean findUserManagerUserName(String userName) {
         TypedQuery<UserManager> query = manager.createQuery("SELECT e.userName FROM USER_MANAGER e", UserManager.class);
         List<UserManager> result = query.getResultList();        
 
@@ -70,4 +70,15 @@ public class UserManagerService {
         
         return false;
     }
+    
+    
+   //Finds the Password related to the specific username
+      public String findUserManagerPassWord(String uName) {
+        TypedQuery<String> query = manager.createQuery("SELECT e.password FROM USER_MANAGER e where e.userName = :userName ", String.class);
+        query.setParameter("userName", uName);       
+        List<String> result = query.getResultList();
+        Iterator<String> iter2 = result.iterator();
+        return iter2.next();                       
+    }
+    
 }

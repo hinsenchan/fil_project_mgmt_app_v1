@@ -86,7 +86,7 @@ public class SearchResultTableModel extends AbstractTableModel {
             }
             for(Category t: c)
             {
-                if(categoryFilter!=null)
+                if(categoryFilter!=null && !categoryFilter[0].equals("Any"))
                 for(int x = 0; x < categoryFilter.length; x++)
                 {
                     if(t.getCategory().equals(categoryFilter[x]))
@@ -97,14 +97,15 @@ public class SearchResultTableModel extends AbstractTableModel {
                     }
                 }
             }
-            if(statusFilter!=null)
+            if(statusFilter!=null && !statusFilter[0].equals("Any"))
                 for(int x = 0; x < statusFilter.length; x++)
                 {
                     if(p.getStatus().equals(statusFilter[x]))
                     {
                         if(!TempList.contains(p))
-                            TempList.add(p);                    }
-                }
+                            TempList.add(p);                    
+                    }
+            }
                         
             for(Students t: S)
             {

@@ -4,6 +4,8 @@
  */
 package frugalLab;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -11,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import java.util.List;
 import javax.swing.ListSelectionModel;
 
 /**
@@ -147,17 +148,27 @@ public class FilterPanel extends javax.swing.JPanel {
         List<Advisors> A = a.read();
         List<Media> M = m.read();
         
-        status = new String[P.size()];
+        ArrayList<String> sList = new ArrayList<String>();
+        //status
         int y = 0;
         for(Project x : P)
         {
-            //status[y]=x.getTitle();
-            status[y]=x.getStatus();
+            if(!sList.contains(x.getStatus()))
+                sList.add(x.getStatus());
+            y++;
+        }
+        status = new String[sList.size()+1];
+        status[0] = "Any";
+        y = 1;
+        for(String q : sList)
+        {
+            status[y] = q;
             y++;
         }
         
-        categories = new String[C.size()];
-        y = 0;
+        categories = new String[C.size()+1];
+        categories[0] = "Any";
+        y = 1;
         for(Category x : C)
         {
             categories[y]=x.getCategory();
@@ -193,8 +204,7 @@ public class FilterPanel extends javax.swing.JPanel {
         for(Advisors x : A)
         {
             advisors[y]=x.getName();
-            advisorsI[y]=y;
-            //studentsI[y]=y;
+            studentsI[y]=y;
             y++;
         }
         

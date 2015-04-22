@@ -4,7 +4,9 @@
  */
 package frugalLab;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+
+/*
 
 /**
  *
@@ -13,7 +15,6 @@ import javax.swing.*;
 public class UserManagerPanel extends javax.swing.JPanel {
     private FrugalController frugalController;
     UserManagerTableController userManagerTableController; // controller for the file type panel
-
     /** Creates new form UserManagerPanel */
     public UserManagerPanel(FrugalController frugalController) {
         initComponents();
@@ -280,7 +281,7 @@ public class UserManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        userManagerTableController.clearRow();
+           userManagerTableController.clearRow();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -346,5 +347,4 @@ public class UserManagerPanel extends javax.swing.JPanel {
         public void updateTable() {
     	jTable.setModel(userManagerTableController.getTableModel());
     }
-
 }

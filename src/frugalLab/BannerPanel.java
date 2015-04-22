@@ -14,8 +14,23 @@ public class BannerPanel extends javax.swing.JPanel {
      * Creates new form bannerPanel
      */
     public BannerPanel() {
-        initComponents();
+        myinitComponents();
     }
+    
+        private void myinitComponents() {
+
+        bannerLabel = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(143, 19, 21));
+        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setLayout(new java.awt.BorderLayout());
+
+        bannerLabel.setBackground(new java.awt.Color(143, 19, 21));
+        bannerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bannerLabel.setIcon(new javax.swing.ImageIcon("/Users/vsuri/NetBeansProjects/coen275project/Frugal_Blk_BriteRed_72dpi.jpg")); // NOI18N
+        add(bannerLabel, java.awt.BorderLayout.CENTER);
+    }// </editor-fold> 
+        
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -4,17 +4,38 @@
  */
 package frugalLab;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hinsen Chan
  */
 public class LoginPanel extends javax.swing.JPanel {
+    
     private FrugalController frugalController;
+        private static final String PERSISTENCE_UNIT_NAME = "coen275projectPU";  // Used in persistence.xml
+
+        private static EntityManagerFactory factory;  
+
+    UserManagerService manager;
+        private EntityManager m;
+       // private UserManager userManager;
+        
 
     /** Creates new form ManagePanel */
     public LoginPanel(FrugalController frugalController) {
-        initComponents();
+                factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+
         this.frugalController = frugalController;
+        m = factory.createEntityManager();
+	//userManager = new UserManager();
+	manager = new UserManagerService(m);
+
+        initComponents();
+
     }
 
     /**
@@ -139,8 +160,25 @@ public class LoginPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        frugalController.setLoggedIn(true);
-        frugalController.launchManagePanel();
+     boolean loggedIn = false;
+        char[] inputPassWord =  getPwPasswordField().getPassword();
+        String inputStringPass = new String(inputPassWord);
+        String inputUserName =  getUsernameTextField().getText();
+        
+        if(manager.findUserManagerUserName(inputUserName)){
+            if(inputStringPass.equals( manager.findUserManagerPassWord(inputUserName))){
+                frugalController.setLoggedIn(true);
+                System.out.println("here");
+                frugalController.launchManagePanel();
+                loggedIn = true;
+             }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Invalid login. Please try again.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            loggedIn = false;
+                }
+        
     }//GEN-LAST:event_loginButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -153,4 +191,19 @@ public class LoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the pwPasswordField
+     */
+    public javax.swing.JPasswordField getPwPasswordField() {
+        return pwPasswordField;
+    }
+
+    /**
+     * @return the usernameTextField
+     */
+    public javax.swing.JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
 }
+

@@ -416,39 +416,39 @@ public class StatPanel extends javax.swing.JPanel {
         this.frugalController = frugalController;
     }
 
-    public void setAdvisorsCountTextArea(int i) {
-        this.advisorsCountTextArea.setText(Integer.toString(i));
+    public void setAdvisorsCountTextArea(String s) {
+        this.advisorsCountTextArea.setText(s);
     }
 
-    public void setCategoryCountTextArea(int i) { // actually status box
-        this.categoryCountTextArea.setText(Integer.toString(i));
+    public void setCategoryCountTextArea(String s) { // actually status box
+        this.categoryCountTextArea.setText(s);
     }
 
-    public void setCategoryCountTextArea1(int i) { //actually category box
-        this.categoryCountTextArea1.setText(Integer.toString(i));
+    public void setCategoryCountTextArea1(String s) { //actually category box
+        this.categoryCountTextArea1.setText(s);
     }
 
     public void setEndDateTextField(String s) {
         this.endDateTextField.setText(s);
     }
 
-    public void setPartnersCountTextArea(int i) {
-        this.partnersCountTextArea.setText(Integer.toString(i));
+    public void setPartnersCountTextArea(String s) {
+        this.partnersCountTextArea.setText(s);
     }
 
-    public void setProjectCountTextField(int i) {
-        this.projectCountTextField.setText(Integer.toString(i));
+    public void setProjectCountTextField(String s) {
+        this.projectCountTextField.setText(s);
     }
 
     public void setStartDateTextField(String s) {
         this.startDateTextField.setText(s);
     }
 
-    public void setStudentsCountTextArea(int i) {
-        this.studentsCountTextArea.setText(Integer.toString(i));
+    public void setStudentsCountTextArea(String s) {
+        this.studentsCountTextArea.setText(s);
     }
 
-    public void setTagCountTextArea(int i) {
-        this.tagCountTextArea.setText(Integer.toString(i));
+    public void setTagCountTextArea(String s) {
+        this.tagCountTextArea.setText(s);
     }
 }
